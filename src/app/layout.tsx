@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Providers as NextUIProvider } from "@/NextUI/provider";
+import { Header } from "@/components/header/Header";
+import { Footer } from "@/components/footer/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,8 +18,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className="bg-main" suppressHydrationWarning>
+      <body className={`${inter.className} h-screen`} suppressHydrationWarning>
+        <NextUIProvider>
+          <Header />
+          <main className="h-[calc(100vh-150px)] overflow-auto">
+            {children}
+          </main>
+          <Footer />
+        </NextUIProvider>
+      </body>
     </html>
   );
 }
