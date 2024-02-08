@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { Button, Input } from "@nextui-org/react";
-import { permanentRedirect, useRouter } from "next/navigation";
-import { useState } from "react";
+import { Button, Input, Progress } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import OTPInput from "react-otp-input";
 
 interface Props {
@@ -11,6 +12,8 @@ interface Props {
 
 export const OTP = ({ email }: Props) => {
   const [otp, setOtp] = useState("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [progress, setProgress] = useState<number>(0);
   const router = useRouter();
 
   const handlePaste: React.ClipboardEventHandler = (event) => {
@@ -19,11 +22,20 @@ export const OTP = ({ email }: Props) => {
   };
 
   const verifyOTP = async () => {
+    setIsLoading(true);
+    setProgress(0);
     const formData = new FormData();
     formData.append("email", email);
     formData.append("token", otp);
     const res = await fetch("/auth/otp", { method: "post", body: formData });
+    setProgress(50);
     const { error, message } = await res.json();
+    setTimeout(() => {
+      setIsLoading(false);
+      setProgress(99);
+    }, 1000);
+    setProgress(100);
+    setOtp("");
 
     if (message === "Verify requires either a token or a token hash") {
       console.log("error");
@@ -32,9 +44,15 @@ export const OTP = ({ email }: Props) => {
       console.log("error");
     }
     if (!error) {
-      router.replace("/home");
+      router.replace("/welcome");
     }
   };
+
+  useEffect(() => {
+    if (otp.length === 6) {
+      verifyOTP();
+    }
+  }, [otp]);
 
   return (
     <div className="relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-50 py-12">
@@ -115,10 +133,25 @@ export const OTP = ({ email }: Props) => {
                 onPaste={handlePaste}
               />
               <div className="pt-8">
-                <Button color="primary" fullWidth onClick={verifyOTP}>
+                <Button
+                  color="primary"
+                  fullWidth
+                  onClick={verifyOTP}
+                  isLoading={isLoading}
+                >
                   Confirm
                 </Button>
               </div>
+              {isLoading && (
+                <div className="pt-4">
+                  <Progress
+                    color="primary"
+                    size="sm"
+                    aria-label="Loading..."
+                    value={progress}
+                  />
+                </div>
+              )}
             </form>
           </div>
         </div>
