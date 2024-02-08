@@ -59,7 +59,7 @@ export const OTP = ({ email }: Props) => {
 
     if (message === "Verify requires either a token or a token hash") {
       console.log("error");
-
+      //
       setAlertProps(
         "error",
         "Code Error",
