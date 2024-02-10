@@ -1,3 +1,5 @@
+"use client";
+
 import { login, signup } from "@/utils/supabase/login";
 import { Button, Divider, Input, Link } from "@nextui-org/react";
 
