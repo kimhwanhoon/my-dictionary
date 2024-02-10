@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import OTPInput from "react-otp-input";
 import { Alert } from "../alerts/alert";
 import useAlertContents from "@/utils/store/alertContents";
-import { PIN } from "./PIN";
 
 interface Props {
   email: string;
