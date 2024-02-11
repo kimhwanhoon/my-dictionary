@@ -1,10 +1,11 @@
 "use client";
 
+import { emailDomainList } from "@/types/emailDomainList";
 import { RouteReturnContents } from "@/types/routeReturnTypes";
 import { ToastContainer } from "@/utils/react-toastify/ToastContainer";
 import { Button, Divider, Input, Link, Progress } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
 interface Props {
@@ -19,8 +20,72 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const router = useRouter();
+  const toastId = useRef<any>(null);
+  const [emailInfo, setEmailInfo] = useState({ title: "", domain: "" });
+
+  const signInErrorToast = (timeOutId: number) => {
+    toastId.current = toast.error(
+      <div className="flex flex-col items-center">
+        <h6 className="w-full font-medium">Email doesn&apos;t exist</h6>
+        <p className="w-full text-sm">We will redirect you to sign up page.</p>
+        <Button
+          fullWidth
+          size="sm"
+          className="text-sm font-medium my-2"
+          color="danger"
+          onClick={() => {
+            clearTimeout(timeOutId);
+            toast.dismiss();
+          }}
+        >
+          Click to abort
+        </Button>
+      </div>
+    );
+    toast.play();
+  };
+
+  const signUpToast = () => {
+    const userDomain = emailValue.split("@")[1];
+    emailDomainList.forEach((el) => {
+      if (userDomain === el.domain) {
+        setEmailInfo({ title: el.title, domain: el.domain });
+      }
+    });
+    setTimeout(() => {
+      toast.success(
+        <div className="flex flex-col items-center">
+          <h6 className="w-full font-medium">Email Sent</h6>
+          <p className="w-full text-sm">
+            We just sent you the confirmation email. Please check.
+          </p>
+          <Button
+            fullWidth
+            size="sm"
+            className="text-sm font-medium my-2 text-white"
+            color="success"
+            onClick={() => {
+              {
+                emailInfo.title === ""
+                  ? toast.dismiss()
+                  : router.push(`https://www.${userDomain}`);
+              }
+            }}
+          >
+            {emailInfo.title === ""
+              ? "Close"
+              : `Check ${
+                  emailInfo.title.charAt(0).toUpperCase() +
+                  emailInfo.title.slice(1)
+                }`}
+          </Button>
+        </div>
+      );
+    }, 0);
+  };
+
   //
-  const performSignIn = async (e: MouseEvent<HTMLButtonElement>) => {
+  const performAuthAction = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsLoading(true);
     const buttonInnerText = e.currentTarget.innerText;
@@ -45,27 +110,7 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
             const timeOutId = setTimeout(() => {
               router.push(`/signup?email=${emailValue}`);
             }, 5500);
-
-            toast.error(
-              <div className="flex flex-col items-center">
-                <h6 className="w-full font-medium">Email doesn&apos;t exist</h6>
-                <p className="w-full text-sm">
-                  We will redirect you to sign up page.
-                </p>
-                <Button
-                  fullWidth
-                  size="sm"
-                  className="text-sm font-medium my-2"
-                  color="danger"
-                  onClick={() => {
-                    clearTimeout(timeOutId);
-                    toast.dismiss();
-                  }}
-                >
-                  Click to abort
-                </Button>
-              </div>
-            );
+            signInErrorToast(timeOutId as any);
           } else {
             router.replace(`/signin?error=true`);
           }
@@ -77,12 +122,22 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
       }
     } else {
       try {
+        setProgress(50);
+        setTimeout(() => {
+          setProgress(75);
+        }, 1000);
         const response = await fetch("/auth/signup", {
           method: "post",
           body: formData,
         });
-        const data = await response.json();
-        console.log(data);
+        const { error, message } = await response.json();
+        setProgress(100);
+        setIsLoading(false);
+        if (error) {
+          router.replace("/signup?error=true");
+        } else {
+          signUpToast();
+        }
       } catch (error) {
         console.log(error);
       }
@@ -129,7 +184,7 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
               fullWidth
               type="submit"
               // formAction={type === "sign-in" ? login : signup}
-              onClick={(e) => performSignIn(e)}
+              onClick={(e) => performAuthAction(e)}
               isLoading={isLoading}
             >
               {type === "sign-in" ? "Sign In" : "Sign Up"}

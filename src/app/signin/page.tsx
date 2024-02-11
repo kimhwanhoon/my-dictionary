@@ -1,6 +1,5 @@
 import { AuthPage } from "@/components/auth/AuthPage";
 import { checkUserSession } from "@/utils/supabase/sessionChecker";
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 interface Props {
