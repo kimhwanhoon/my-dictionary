@@ -1,11 +1,46 @@
+"use client";
+
 import { login, signup } from "@/utils/supabase/login";
 import { Button, Divider, Input, Link } from "@nextui-org/react";
+import { MouseEvent, useState } from "react";
 
 interface Props {
   type: "sign-in" | "sign-up";
 }
 
 export const AuthPage = ({ type }: Props) => {
+  const [emailValue, setEmailValue] = useState<string>("");
+  const performSignIn = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const buttonInnerText = e.currentTarget.innerText;
+    const formData = new FormData();
+    formData.append("email", emailValue);
+
+    if (buttonInnerText === "Sign In") {
+      try {
+        const response = await fetch("/auth/signin", {
+          method: "post",
+          body: formData,
+        });
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        const response = await fetch("/auth/signup", {
+          method: "post",
+          body: formData,
+        });
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <div className=" mx-auto max-w-[400px] space-y-6">
       <div className="space-y-2 text-center">
@@ -25,17 +60,19 @@ export const AuthPage = ({ type }: Props) => {
             size={"md"}
             type="email"
             label="Email"
+            value={emailValue}
+            onChange={(e) => setEmailValue(e.target.value)}
             placeholder="Enter your email"
             required
           />
         </div>
-
         <div className="flex items-center space-x-2">
           <Button
             color="primary"
             fullWidth
             type="submit"
-            formAction={type === "sign-in" ? login : signup}
+            // formAction={type === "sign-in" ? login : signup}
+            onClick={(e) => performSignIn(e)}
           >
             {type === "sign-in" ? "Sign In" : "Sign Up"}
           </Button>
