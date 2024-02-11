@@ -24,7 +24,7 @@ export default function RootLayout({
       <body className={`${inter.className} h-screen`} suppressHydrationWarning>
         <NextUIProvider>
           <Header />
-          <main className="h-[calc(100vh-150px)] overflow-auto">
+          <main className="h-[calc(100vh-140px)] overflow-auto">
             {children}
           </main>
           <Footer />
