@@ -2,10 +2,10 @@ import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-const otpRoute = async (request: Request) => {
+const otpRoute = async (req: Request) => {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-  const formData = await request.formData();
+  const formData = await req.formData();
   const email = String(formData.get("email"));
   const token = String(formData.get("token"));
 
@@ -19,8 +19,9 @@ const otpRoute = async (request: Request) => {
   });
 
   if (session) {
+    cookieStore.delete("email");
     console.log(session);
-    return NextResponse.json({ error: false, message: null }, { status: 200 });
+    return NextResponse.json({ error: false, message: "ok" }, { status: 200 });
   }
   if (error) {
     console.log(error);

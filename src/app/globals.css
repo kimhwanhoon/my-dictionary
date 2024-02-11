@@ -1,3 +1,262 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.pattern-bg-knitting {
+  background: conic-gradient(
+      at 50% calc(100% / 6),
+      rgba(86, 71, 234, 0.31) 60deg,
+      #0000 0
+    ),
+    conic-gradient(
+      at calc(100% / 6) 50%,
+      #0000 240deg,
+      rgba(86, 71, 234, 0.31) 0
+    ),
+    conic-gradient(
+      from 180deg at calc(100% / 6) calc(500% / 6),
+      rgba(86, 71, 234, 0.31) 60deg,
+      #0000 0
+    ),
+    conic-gradient(
+        from 180deg at calc(500% / 6),
+        #0000 240deg,
+        rgba(86, 71, 234, 0.31) 0
+      )
+      calc(4 * 0.866 * 32.5px) 0,
+    repeating-linear-gradient(
+      -150deg,
+      rgba(215, 212, 255, 0.51) 0 calc(100% / 6),
+      #0000 0 50%
+    ),
+    repeating-linear-gradient(
+      -30deg,
+      rgba(254, 254, 255, 0.31) 0 calc(100% / 6),
+      #f5f7fa 0 50%
+    );
+  background-size: calc(6 * 0.866 * 32.5px) calc(3 * 32.5px);
+  background: conic-gradient(
+      at 50% calc(100% / 6),
+      rgba(86, 71, 234, 0.2) 60deg,
+      #0000 0
+    ),
+    conic-gradient(
+      at calc(100% / 6) 50%,
+      #0000 240deg,
+      rgba(86, 71, 234, 0.2) 0
+    ),
+    conic-gradient(
+      from 180deg at calc(100% / 6) calc(500% / 6),
+      rgba(86, 71, 234, 0.2) 60deg,
+      #0000 0
+    ),
+    conic-gradient(
+        from 180deg at calc(500% / 6),
+        #0000 240deg,
+        rgba(86, 71, 234, 0.2) 0
+      )
+      calc(4 * 0.866 * 27.5px) 0,
+    repeating-linear-gradient(
+      -150deg,
+      rgba(215, 212, 255, 0.4) 0 calc(100% / 6),
+      #0000 0 50%
+    ),
+    repeating-linear-gradient(
+      -30deg,
+      rgba(254, 254, 255, 0.2) 0 calc(100% / 6),
+      #f5f7fa 0 50%
+    );
+  background-size: calc(6 * 0.866 * 27.5px) calc(3 * 27.5px);
+  background: conic-gradient(
+      at 50% calc(100% / 6),
+      rgba(86, 71, 234, 0.15) 60deg,
+      #0000 0
+    ),
+    conic-gradient(
+      at calc(100% / 6) 50%,
+      #0000 240deg,
+      rgba(86, 71, 234, 0.15) 0
+    ),
+    conic-gradient(
+      from 180deg at calc(100% / 6) calc(500% / 6),
+      rgba(86, 71, 234, 0.15) 60deg,
+      #0000 0
+    ),
+    conic-gradient(
+        from 180deg at calc(500% / 6),
+        #0000 240deg,
+        rgba(86, 71, 234, 0.15) 0
+      )
+      calc(4 * 0.866 * 27.5px) 0,
+    repeating-linear-gradient(
+      -150deg,
+      rgba(215, 212, 255, 0.3) 0 calc(100% / 6),
+      #0000 0 50%
+    ),
+    repeating-linear-gradient(
+      -30deg,
+      rgba(254, 254, 255, 0.15) 0 calc(100% / 6),
+      #f5f7fa 0 50%
+    );
+  background-size: calc(6 * 0.866 * 27.5px) calc(3 * 27.5px);
+  background: conic-gradient(
+      at 50% calc(100% / 6),
+      rgba(86, 71, 234, 0.15) 60deg,
+      #0000 0
+    ),
+    conic-gradient(
+      at calc(100% / 6) 50%,
+      #0000 240deg,
+      rgba(86, 71, 234, 0.15) 0
+    ),
+    conic-gradient(
+      from 180deg at calc(100% / 6) calc(500% / 6),
+      rgba(86, 71, 234, 0.15) 60deg,
+      #0000 0
+    ),
+    conic-gradient(
+        from 180deg at calc(500% / 6),
+        #0000 240deg,
+        rgba(86, 71, 234, 0.15) 0
+      )
+      calc(4 * 0.866 * 20px) 0,
+    repeating-linear-gradient(
+      -150deg,
+      rgba(215, 212, 255, 0.3) 0 calc(100% / 6),
+      #0000 0 50%
+    ),
+    repeating-linear-gradient(
+      -30deg,
+      rgba(254, 254, 255, 0.15) 0 calc(100% / 6),
+      #f5f7fa 0 50%
+    );
+  background-size: calc(6 * 0.866 * 20px) calc(3 * 20px);
+  background: conic-gradient(
+      at 50% calc(100% / 6),
+      rgba(86, 71, 234, 0.15) 60deg,
+      #0000 0
+    ),
+    conic-gradient(
+      at calc(100% / 6) 50%,
+      #0000 240deg,
+      rgba(86, 71, 234, 0.15) 0
+    ),
+    conic-gradient(
+      from 180deg at calc(100% / 6) calc(500% / 6),
+      rgba(86, 71, 234, 0.15) 60deg,
+      #0000 0
+    ),
+    conic-gradient(
+        from 180deg at calc(500% / 6),
+        #0000 240deg,
+        rgba(86, 71, 234, 0.15) 0
+      )
+      calc(4 * 0.866 * 50px) 0,
+    repeating-linear-gradient(
+      -150deg,
+      rgba(215, 212, 255, 0.3) 0 calc(100% / 6),
+      #0000 0 50%
+    ),
+    repeating-linear-gradient(
+      -30deg,
+      rgba(254, 254, 255, 0.15) 0 calc(100% / 6),
+      #f5f7fa 0 50%
+    );
+  background-size: calc(6 * 0.866 * 50px) calc(3 * 50px);
+  background: conic-gradient(
+      at 50% calc(100% / 6),
+      rgba(86, 71, 234, 0.15) 60deg,
+      #0000 0
+    ),
+    conic-gradient(
+      at calc(100% / 6) 50%,
+      #0000 240deg,
+      rgba(86, 71, 234, 0.15) 0
+    ),
+    conic-gradient(
+      from 180deg at calc(100% / 6) calc(500% / 6),
+      rgba(86, 71, 234, 0.15) 60deg,
+      #0000 0
+    ),
+    conic-gradient(
+        from 180deg at calc(500% / 6),
+        #0000 240deg,
+        rgba(86, 71, 234, 0.15) 0
+      )
+      calc(4 * 0.866 * 40px) 0,
+    repeating-linear-gradient(
+      -150deg,
+      rgba(215, 212, 255, 0.3) 0 calc(100% / 6),
+      #0000 0 50%
+    ),
+    repeating-linear-gradient(
+      -30deg,
+      rgba(254, 254, 255, 0.15) 0 calc(100% / 6),
+      #f5f7fa 0 50%
+    );
+  background-size: calc(6 * 0.866 * 40px) calc(3 * 40px);
+  background: conic-gradient(
+      at 50% calc(100% / 6),
+      rgba(86, 71, 234, 0.15) 60deg,
+      #0000 0
+    ),
+    conic-gradient(
+      at calc(100% / 6) 50%,
+      #0000 240deg,
+      rgba(86, 71, 234, 0.15) 0
+    ),
+    conic-gradient(
+      from 180deg at calc(100% / 6) calc(500% / 6),
+      rgba(86, 71, 234, 0.15) 60deg,
+      #0000 0
+    ),
+    conic-gradient(
+        from 180deg at calc(500% / 6),
+        #0000 240deg,
+        rgba(86, 71, 234, 0.15) 0
+      )
+      calc(4 * 0.866 * 42.5px) 0,
+    repeating-linear-gradient(
+      -150deg,
+      rgba(215, 212, 255, 0.3) 0 calc(100% / 6),
+      #0000 0 50%
+    ),
+    repeating-linear-gradient(
+      -30deg,
+      rgba(254, 254, 255, 0.15) 0 calc(100% / 6),
+      #f5f7fa 0 50%
+    );
+  background-size: calc(6 * 0.866 * 42.5px) calc(3 * 42.5px);
+  background: conic-gradient(
+      at 50% calc(100% / 6),
+      rgba(86, 71, 234, 0.1) 60deg,
+      #0000 0
+    ),
+    conic-gradient(
+      at calc(100% / 6) 50%,
+      #0000 240deg,
+      rgba(86, 71, 234, 0.1) 0
+    ),
+    conic-gradient(
+      from 180deg at calc(100% / 6) calc(500% / 6),
+      rgba(86, 71, 234, 0.1) 60deg,
+      #0000 0
+    ),
+    conic-gradient(
+        from 180deg at calc(500% / 6),
+        #0000 240deg,
+        rgba(86, 71, 234, 0.1) 0
+      )
+      calc(4 * 0.866 * 42.5px) 0,
+    repeating-linear-gradient(
+      -150deg,
+      rgba(215, 212, 255, 0.2) 0 calc(100% / 6),
+      #0000 0 50%
+    ),
+    repeating-linear-gradient(
+      -30deg,
+      rgba(254, 254, 255, 0.1) 0 calc(100% / 6),
+      #f5f7fa 0 50%
+    );
+  background-size: calc(6 * 0.866 * 42.5px) calc(3 * 42.5px);
+}

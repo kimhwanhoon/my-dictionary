@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { Button, Input, Progress, useDisclosure } from "@nextui-org/react";
+import { Button, Progress, useDisclosure } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import OTPInput from "react-otp-input";
@@ -9,17 +9,16 @@ import { Alert } from "../alerts/alert";
 import useAlertContents from "@/utils/store/alertContents";
 
 interface Props {
-  email: string;
+  email: string | null;
 }
 
 export const OTP = ({ email }: Props) => {
   const [otp, setOtp] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
+  const [codeMatched, setCodeMatched] = useState<boolean>(false);
 
   // alert
-  // const { toggleModal, setToggleModal } = useToggleModal();
-  // setToggleModal(true);
   const { onOpen, isOpen, onClose, onOpenChange } = useDisclosure();
   const { setAlertProps } = useAlertContents();
   //
@@ -34,7 +33,7 @@ export const OTP = ({ email }: Props) => {
     setIsLoading(true);
     setProgress(0);
     const formData = new FormData();
-    formData.append("email", email);
+    formData.append("email", email!);
     formData.append("token", otp);
     const res = await fetch("/auth/otp", { method: "post", body: formData });
     setProgress(50);
@@ -44,10 +43,9 @@ export const OTP = ({ email }: Props) => {
       setProgress(99);
     }, 1000);
     setProgress(100);
-    setOtp("");
 
     if (message === "Verify requires either a token or a token hash") {
-      console.log("error");
+      setOtp("");
       //
       setAlertProps(
         "error",
@@ -57,11 +55,12 @@ export const OTP = ({ email }: Props) => {
       onOpen();
     }
     if (message === "Token has expired or is invalid") {
-      console.log("error");
+      setOtp("");
       setAlertProps("error", "Token Error", "Token has expired or is invalid.");
       onOpen();
     }
     if (!error) {
+      setCodeMatched(true);
       router.replace("/welcome");
     }
   };
@@ -96,21 +95,27 @@ export const OTP = ({ email }: Props) => {
             <div>
               <form action="#" method="post">
                 <div className="flex justify-center">
-                  <OTPInput
-                    shouldAutoFocus
-                    inputType="number"
-                    value={otp}
-                    onChange={setOtp}
-                    numInputs={6}
-                    renderInput={(props) => (
-                      <input
-                        {...props}
-                        className="bg-gray-100 py-3 mx-1 rounded-md shadow-small"
-                        style={{ textAlign: "center", width: "100%" }}
-                      />
-                    )}
-                    onPaste={handlePaste}
-                  />
+                  {codeMatched ? (
+                    <span className="text-gray-600 font-medium text-base">
+                      CODE MATCHED
+                    </span>
+                  ) : (
+                    <OTPInput
+                      shouldAutoFocus
+                      inputType="number"
+                      value={otp}
+                      onChange={setOtp}
+                      numInputs={6}
+                      renderInput={(props) => (
+                        <input
+                          {...props}
+                          className="bg-gray-100 py-3 mx-1 rounded-md shadow-small"
+                          style={{ textAlign: "center", width: "100%" }}
+                        />
+                      )}
+                      onPaste={handlePaste}
+                    />
+                  )}
                 </div>
 
                 <div className="pt-8">

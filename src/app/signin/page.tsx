@@ -1,17 +1,21 @@
 import { AuthPage } from "@/components/auth/AuthPage";
-import { OTP } from "@/components/auth/OTP";
+import { checkUserSession } from "@/utils/supabase/sessionChecker";
+import { redirect } from "next/navigation";
 
 interface Props {
-  searchParams: { "otp-sent": boolean; email: string };
+  searchParams: { error: string };
 }
 
-const SignInPage = ({ searchParams }: Props) => {
-  const optSent = searchParams["otp-sent"];
-  const email = searchParams.email;
+const SignInPage = async ({ searchParams }: Props) => {
+  const isError = searchParams.error === "true" ? true : false;
+  const { isSession, userData } = await checkUserSession();
 
+  if (isSession) {
+    redirect("/welcome");
+  }
   return (
-    <section className="h-full bg-main flex flex-col items-center justify-center">
-      {optSent ? <OTP email={email} /> : <AuthPage type="sign-in" />}
+    <section className="pattern-bg-knitting h-full bg-main flex flex-col items-center justify-center ">
+      <AuthPage type="sign-in" isError={isError} />
     </section>
   );
 };
