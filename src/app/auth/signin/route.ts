@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { RouteReturnType } from "@/types/routeReturnTypes";
 
-const signIn = async (req: NextRequest): RouteReturnType => {
+const signIn = async (req: NextRequest): Promise<RouteReturnType> => {
   const formData = await req.formData();
   const email = formData.get("email") as string;
 
