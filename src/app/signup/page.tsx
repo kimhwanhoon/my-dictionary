@@ -6,7 +6,7 @@ interface Props {
 
 const SignUpPage = ({ searchParams: { email } }: Props) => {
   return (
-    <section className="h-full bg-main flex flex-col items-center justify-center">
+    <section className="pattern-bg-knitting h-full bg-main flex flex-col items-center justify-center">
       <AuthPage type="sign-up" email={email} />
     </section>
   );

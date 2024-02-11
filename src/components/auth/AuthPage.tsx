@@ -92,12 +92,12 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
   return (
     <>
       <ToastContainer />
-      <div className=" mx-auto max-w-[400px] space-y-6">
+      <div className="px-8 w-full mx-auto max-w-[400px] space-y-6">
         <div className="space-y-2 text-center">
           <h1 className="text-3xl font-bold text-main-5 py-4">
             {type === "sign-in" ? "Sign In" : "Sign Up"}
           </h1>
-          <p className="text-gray-500 dark:text-gray-400">
+          <p className="text-gray-500 dark:text-gray-400 text-15">
             {type === "sign-in"
               ? "Enter your information to sign in"
               : "Enter your information to sign up"}
@@ -106,13 +106,14 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
         <form className="space-y-4">
           <div className="space-y-2">
             <Input
+              className="py-2"
               name="email"
               size={"md"}
               type="email"
               label="Email"
               value={emailValue}
               onChange={(e) => setEmailValue(e.target.value)}
-              placeholder="Enter your email"
+              // placeholder="Enter your email"
               required
             />
           </div>
@@ -144,34 +145,22 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
           ) : (
             <Divider className="my-8" />
           )}
-
-          {type === "sign-in" ? (
-            <div className="text-center flex flex-col items-center">
-              <span className="text-15">Don&apos;t have an account?</span>
-              <Link
-                className="flex justify-end underline-offset-2 mr-2 text-sm"
-                size="sm"
-                color="primary"
-                underline="always"
-                href="/signup"
-              >
-                Create an Account
-              </Link>
-            </div>
-          ) : (
-            <div className="text-center flex flex-col items-center">
-              <span className="text-15">Already have an account?</span>
-              <Link
-                className="flex justify-end underline-offset-2 mr-2 text-sm"
-                size="sm"
-                color="primary"
-                underline="always"
-                href="/signin"
-              >
-                Go to Sign in page
-              </Link>
-            </div>
-          )}
+          <div className="text-center flex flex-col items-center gap-1">
+            <span className="text-sm">
+              {type === "sign-in"
+                ? "Don't have an account?"
+                : "Already have an account?"}
+            </span>
+            <Link
+              className="flex justify-end underline-offset-2 mr-2 text-sm"
+              size="sm"
+              color="primary"
+              underline="always"
+              href={type === "sign-in" ? "/signup" : "/signin"}
+            >
+              {type === "sign-in" ? "Create an Account" : "Go to Sign in page"}
+            </Link>
+          </div>
         </form>
       </div>
     </>
