@@ -20,11 +20,9 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const router = useRouter();
-  const toastId = useRef<any>(null);
-  const [emailInfo, setEmailInfo] = useState({ title: "", domain: "" });
 
   const signInErrorToast = (timeOutId: number) => {
-    toastId.current = toast.error(
+    toast.error(
       <div className="flex flex-col items-center">
         <h6 className="w-full font-medium">Email doesn&apos;t exist</h6>
         <p className="w-full text-sm">We will redirect you to sign up page.</p>
@@ -46,12 +44,7 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
   };
 
   const signUpToast = () => {
-    const userDomain = emailValue.split("@")[1];
-    emailDomainList.forEach((el) => {
-      if (userDomain === el.domain) {
-        setEmailInfo({ title: el.title, domain: el.domain });
-      }
-    });
+    setEmailValue("");
     setTimeout(() => {
       toast.success(
         <div className="flex flex-col items-center">
@@ -64,20 +57,9 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
             size="sm"
             className="text-sm font-medium my-2 text-white"
             color="success"
-            onClick={() => {
-              {
-                emailInfo.title === ""
-                  ? toast.dismiss()
-                  : router.push(`https://www.${userDomain}`);
-              }
-            }}
+            onClick={() => toast.dismiss()}
           >
-            {emailInfo.title === ""
-              ? "Close"
-              : `Check ${
-                  emailInfo.title.charAt(0).toUpperCase() +
-                  emailInfo.title.slice(1)
-                }`}
+            Close
           </Button>
         </div>
       );
