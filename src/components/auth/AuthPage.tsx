@@ -1,6 +1,5 @@
 "use client";
 
-import { emailDomainList } from "@/types/emailDomainList";
 import { RouteReturnContents } from "@/types/routeReturnTypes";
 import { ToastContainer } from "@/utils/react-toastify/ToastContainer";
 import { Button, Divider, Input, Link, Progress } from "@nextui-org/react";
