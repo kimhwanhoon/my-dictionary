@@ -11,4 +11,4 @@ const loadingAnimationPlayed = async (): Promise<RouteReturnType> => {
   return NextResponse.json({ error: null, message: "ok" });
 };
 
-export { loadingAnimationPlayed as GET };
+export { loadingAnimationPlayed as POST };

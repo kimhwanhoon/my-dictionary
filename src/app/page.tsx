@@ -16,7 +16,7 @@ const Home = async () => {
 
   return (
     <div className="h-full bg-main flex flex-col items-center justify-center">
-      {isLoadingAlreadyPlayed || <LaunchAnimation isSession={isSession} />}
+      {!isLoadingAlreadyPlayed && <LaunchAnimation isSession={isSession} />}
     </div>
   );
 };

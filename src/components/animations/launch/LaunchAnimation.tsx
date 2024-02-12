@@ -16,7 +16,7 @@ export const LaunchAnimation = ({ isSession }: Props) => {
   useEffect(() => {
     if (isCompleted) {
       const setCookie = async () => {
-        const res = await fetch("/cookies/set");
+        const res = await fetch("/cookies/set", { method: "post" });
         const data = await res.json();
         console.log(data);
       };
