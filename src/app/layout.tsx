@@ -5,7 +5,10 @@ import { Providers as NextUIProvider } from "@/NextUI/provider";
 import { Header } from "@/components/header/Header";
 import { Footer } from "@/components/footer/Footer";
 
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 import "react-toastify/dist/ReactToastify.css";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +33,8 @@ export default function RootLayout({
           </main>
           <Footer />
         </NextUIProvider>
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
