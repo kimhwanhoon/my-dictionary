@@ -23,6 +23,10 @@ This is usable like this.
 const POST = async (req: NextRequest): Promise<RouteReturnType> => {};
 ```
 
-### What to edit before promoting to the production.
+## What I did that I learned new
+
+1. By setting the body height to 100dvh, the header and the footer will be always shown even on Safari or Android dynamic browsers.
+
+### What to edit before promoting to the production
 
 1. Supabase Auth setup -> SMTP Provider settings -> Minimum interval between emails being sent to 60 seconds.
