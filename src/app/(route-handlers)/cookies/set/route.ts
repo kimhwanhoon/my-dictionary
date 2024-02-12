@@ -7,7 +7,7 @@ const loadingAnimationPlayed = async (): Promise<RouteReturnType> => {
   const oneHour = 1000 * 60;
   cookieStore.set("loadingAnimationPlayed", "true", {
     expires: Date.now() + oneHour,
-    secure: false,
+    secure: true,
   });
   return NextResponse.json({ error: null, message: "ok" });
 };
