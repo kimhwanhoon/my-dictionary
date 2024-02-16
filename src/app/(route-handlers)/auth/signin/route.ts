@@ -27,6 +27,7 @@ const signIn = async (req: NextRequest): Promise<RouteReturnType> => {
     console.log(data);
     //
     if (error) {
+      console.log("error2", error);
       return NextResponse.json({ error: true, message: error.message });
     } else {
       cookies().set("email", email, { secure: true });

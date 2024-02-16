@@ -17,6 +17,7 @@ const otpRoute = async (req: Request) => {
     token,
     type: "email",
   });
+  console.log(error);
 
   if (session) {
     cookieStore.delete("email");

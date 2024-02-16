@@ -9,7 +9,7 @@ interface Props {
 const SignUpPage = async ({ searchParams: { email } }: Props) => {
   const { isSession, userData } = await checkUserSession();
   if (isSession) {
-    redirect("/welcome");
+    redirect("/home");
   }
   return (
     <section className="pattern-bg-knitting h-full bg-main flex flex-col items-center justify-center">

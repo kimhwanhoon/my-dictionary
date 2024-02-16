@@ -1,5 +1,10 @@
 # Title: My-dictionary
 
+## Crucial plan
+
+> Make sure to follow this plan and always think about the big streams.
+> Never fall into the rabbit hole! => MVP FIRST
+
 ## Types
 
 I have set route-handler's return type on `src/types/routeReturnTypes.ts`.

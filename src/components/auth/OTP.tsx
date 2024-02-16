@@ -61,7 +61,7 @@ export const OTP = ({ email }: Props) => {
     }
     if (!error) {
       setCodeMatched(true);
-      router.replace("/welcome");
+      router.replace("/home");
     }
   };
 

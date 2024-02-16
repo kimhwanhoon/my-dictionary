@@ -16,13 +16,16 @@ export const LaunchAnimation = ({ isSession }: Props) => {
   useEffect(() => {
     if (isCompleted) {
       const setCookie = async () => {
-        const res = await fetch("/cookies/set", { method: "post" });
+        const res = await fetch("/cookies/set", {
+          method: "post",
+          credentials: "include",
+        });
         const data = await res.json();
-        console.log(data);
+        return;
       };
       setCookie();
       if (isSession) {
-        router.replace("/welcome");
+        router.replace("/home");
       } else {
         router.replace("/signin");
       }

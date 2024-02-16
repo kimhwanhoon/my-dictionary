@@ -5,10 +5,11 @@ import { Providers as NextUIProvider } from "@/NextUI/provider";
 import { Header } from "@/components/header/Header";
 import { Footer } from "@/components/footer/Footer";
 
-import { SpeedInsights } from "@vercel/speed-insights/next";
-
 import "react-toastify/dist/ReactToastify.css";
+
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
+import { headers } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +24,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const requestUrl = headers().get("x-url") || "";
+
   return (
     <html lang="en" className="bg-main" suppressHydrationWarning>
       <body className={`${inter.className} h-dvh`} suppressHydrationWarning>
@@ -31,7 +34,7 @@ export default function RootLayout({
           <main className="h-[calc(100dvh-150px)] overflow-auto">
             {children}
           </main>
-          <Footer />
+          <Footer url={requestUrl} />
         </NextUIProvider>
         <SpeedInsights />
         <Analytics />
