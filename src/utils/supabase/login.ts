@@ -18,9 +18,7 @@ export async function login(formData: FormData) {
       shouldCreateUser: true,
     },
   });
-  console.log("🚀 ~ login ~ data:", data);
-  console.log(data);
-  console.log("🚀 ~ login ~ error:", error);
+
   if (error) {
     return NextResponse.json({ error: true });
   }
@@ -44,10 +42,8 @@ export async function signup(formData: FormData) {
   };
 
   const { error, data: signupData } = await supabase.auth.signUp(data);
-  console.log("🚀 ~ signup ~ signupData:", signupData);
 
   if (error) {
-    console.log("signup error:" + error);
     redirect("/error");
   }
 

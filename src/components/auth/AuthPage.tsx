@@ -121,7 +121,7 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
           signUpToast();
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     }
   };

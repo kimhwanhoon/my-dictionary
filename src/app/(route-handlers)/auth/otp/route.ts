@@ -17,15 +17,13 @@ const otpRoute = async (req: Request) => {
     token,
     type: "email",
   });
-  console.log(error);
 
   if (session) {
     cookieStore.delete("email");
-    console.log(session);
+
     return NextResponse.json({ error: false, message: "ok" }, { status: 200 });
   }
   if (error) {
-    console.log(error);
     return NextResponse.json({ error: true, message: error.message });
   }
 };

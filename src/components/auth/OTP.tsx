@@ -26,7 +26,6 @@ export const OTP = ({ email }: Props) => {
 
   const handlePaste: React.ClipboardEventHandler = (event) => {
     const data = event.clipboardData.getData("text");
-    console.log(data);
   };
 
   const verifyOTP = async () => {

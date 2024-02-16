@@ -2,8 +2,15 @@
 
 ## Crucial plan
 
-> Make sure to follow this plan and always think about the big streams.
+> Make sure to follow this plan and always think about the big streams.<br>
 > Never fall into the rabbit hole! => MVP FIRST
+> Never try to do design.
+
+- Try to finish MVP first and if any bugs are found, write them down on "Bugs" below this page.
+
+1. Organize basic routing plans.
+2. Connect auth
+3. Create tables for the database.
 
 ## Types
 
@@ -35,3 +42,7 @@ const POST = async (req: NextRequest): Promise<RouteReturnType> => {};
 ### What to edit before promoting to the production
 
 1. Supabase Auth setup -> SMTP Provider settings -> Minimum interval between emails being sent to 60 seconds.
+
+### Bugs
+
+1. Footer icons must be filled with purple color depending on the current URL. But when it goes to layout, it seems that the code is cached so the current URL won't be updated.

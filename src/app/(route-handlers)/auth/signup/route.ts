@@ -24,7 +24,7 @@ const signUp = async (req: NextRequest): Promise<RouteReturnType> => {
       },
     });
     //
-    console.log(data);
+    // console.log(data);
     //
     if (error) {
       return NextResponse.json({ error: true, message: error.message });
