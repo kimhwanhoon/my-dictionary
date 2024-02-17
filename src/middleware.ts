@@ -2,9 +2,16 @@ import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+  const origin = request.nextUrl.origin;
+
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-url", request.url);
+  // console.log(requestHeaders);
+
   let response = NextResponse.next({
     request: {
-      headers: request.headers,
+      headers: requestHeaders,
     },
   });
 
@@ -54,7 +61,13 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  await supabase.auth.getUser();
+  const { data, error } = await supabase.auth.getUser();
+
+  // if (!data.user) {
+  //   if (!pathname.includes("signin") && !pathname.includes("signup")) {
+  //     return NextResponse.redirect(origin + "/signin");
+  //   }
+  // }
 
   return response;
 }
@@ -69,5 +82,6 @@ export const config = {
      * Feel free to modify this pattern to include more paths.
      */
     "/((?!_next/static|_next/image|favicon.ico).*)",
+    "/:path",
   ],
 };

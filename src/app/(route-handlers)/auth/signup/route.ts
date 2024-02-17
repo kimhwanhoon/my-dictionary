@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { RouteReturnType } from "@/types/routeReturnTypes";
 
-const signIn = async (req: NextRequest): Promise<RouteReturnType> => {
+const signUp = async (req: NextRequest): Promise<RouteReturnType> => {
   const formData = await req.formData();
   const email = formData.get("email") as string;
 
@@ -20,28 +20,23 @@ const signIn = async (req: NextRequest): Promise<RouteReturnType> => {
     const { data, error } = await supabase.auth.signInWithOtp({
       email: email as string,
       options: {
-        shouldCreateUser: false,
+        shouldCreateUser: true,
       },
     });
     //
-    console.log(data);
+    // console.log(data);
     //
     if (error) {
       return NextResponse.json({ error: true, message: error.message });
     } else {
-      cookies().set("email", email, { secure: true });
       return NextResponse.json({
         error: null,
         message: "ok",
       });
     }
   } catch (error) {
-    console.log("error3", error);
     return NextResponse.json({ error: true, message: "" });
   }
-
-  // revalidatePath("/", "layout");
-  // redirect("/");
 };
 
-export { signIn as POST };
+export { signUp as POST };

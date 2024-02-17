@@ -1,8 +1,8 @@
 "use client";
 
-import { emailDomainList } from "@/types/emailDomainList";
 import { RouteReturnContents } from "@/types/routeReturnTypes";
 import { ToastContainer } from "@/utils/react-toastify/ToastContainer";
+import { emailRegex } from "@/utils/regex/email";
 import { Button, Divider, Input, Link, Progress } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { MouseEvent, useRef, useState } from "react";
@@ -121,7 +121,7 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
           signUpToast();
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     }
   };
@@ -165,9 +165,10 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
               color="primary"
               fullWidth
               type="submit"
-              // formAction={type === "sign-in" ? login : signup}
               onClick={(e) => performAuthAction(e)}
               isLoading={isLoading}
+              disabled={emailRegex.test(emailValue) ? false : true}
+              className="disabled:bg-opacity-50"
             >
               {type === "sign-in" ? "Sign In" : "Sign Up"}
             </Button>

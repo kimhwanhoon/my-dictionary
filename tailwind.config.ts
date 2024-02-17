@@ -1,20 +1,6 @@
 import { nextui } from "@nextui-org/react";
 import type { Config } from "tailwindcss";
 
-const nextUITheme = {
-  themes: {
-    light: {
-      colors: {
-        primary: {
-          DEFAULT: "#5648eb",
-          foreground: "#ffffff",
-        },
-        focus: "#d7d4ff",
-      },
-    },
-  },
-};
-
 const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -45,6 +31,23 @@ const config: Config = {
     },
   },
   darkMode: "class",
-  plugins: [nextui(nextUITheme)],
+  plugins: [
+    nextui({
+      layout: {
+        disabledOpacity: "0.3",
+      },
+      themes: {
+        light: {
+          colors: {
+            primary: {
+              DEFAULT: "#5648eb",
+              foreground: "#ffffff",
+            },
+            focus: "#d7d4ff",
+          },
+        },
+      },
+    }),
+  ],
 };
 export default config;

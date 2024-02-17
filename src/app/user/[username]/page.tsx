@@ -7,7 +7,7 @@ interface Props {
 
 const UserPage = async ({ searchParams }: Props) => {
   const { isSession, userData } = await checkUserSession();
-  console.log(userData);
+  // console.log("userData:", userData);
   return <div>UserPage</div>;
 };
 
