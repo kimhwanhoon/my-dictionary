@@ -3,10 +3,17 @@ import react from "react"
 
 const SettingsPage = async() => {
     const supabase = createClient()
-    const signout = async()=> {
+    const signOut = async() => {
         await supabase.auth.signOut()
     }
-    return <div>Settings<button onClick={()=>signout()}>Sign out</button></div>
+    return (
+    <div>
+        Settings
+        <button onClick={signOut}>
+            Sign Out
+        </button>
+    </div>
+    )
 }
 
 export default SettingsPage
