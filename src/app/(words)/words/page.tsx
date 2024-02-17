@@ -9,7 +9,7 @@ const WordsPage = () => {
       <h1 className="text-center font-medium">Insert words</h1>
       <WordInput />
       <Divider className="my-2" />
-      <h1 className="text-center font-medium">My words</h1>
+      <h1 className="text-center font-medium mb-4">My words</h1>
       <WordsList />
     </div>
   );

@@ -42,6 +42,8 @@ export const WordInput = () => {
       return false;
     } finally {
       setWordValue("");
+      setDefValue("");
+      setExampleValue("");
     }
   };
 
@@ -61,8 +63,12 @@ export const WordInput = () => {
         <AccordionItem
           key={"definition & example"}
           aria-label="definition & example"
-          title={<p className="text-sm">definition & example</p>}
-          subtitle={<p className="text-sm">(optional)</p>}
+          title={
+            <p className="text-sm">
+              definition & example{" "}
+              <span className="text-gray-500 text-xs">(optional)</span>
+            </p>
+          }
         >
           <div className="flex flex-col gap-2">
             <Input

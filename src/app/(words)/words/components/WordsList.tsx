@@ -16,29 +16,24 @@ export const WordsList = async () => {
 
     if (error) {
       console.log(error);
-      return <span>Error fetching data</span>;
+      return <div></div>;
     } else {
       const words: wordType[] = data.words;
-      const cards = words.map((word) => (
-        <WordCard
-          key={word.word}
-          word={word.word}
-          definition={word.definition}
-          example={word.example}
-        />
-      ));
-      return <>{cards}</>;
+
+      return (
+        <div>
+          {words.map((word) => (
+            <WordCard
+              key={word.word}
+              word={word.word}
+              definition={word.definition}
+              example={word.example}
+            />
+          ))}
+        </div>
+      );
     }
-    // const cards = data.map((el) => (
-    //   <WordCard
-    //     key={el.word}
-    //     word={el.word}
-    //     definition={el.definition}
-    //     example={el.example}
-    //   />
-    // ));
-    // return <div>{cards}</div>;
   } catch (error) {
-    return <span>Error fetching data</span>;
+    return <div></div>;
   }
 };
