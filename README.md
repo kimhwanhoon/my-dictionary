@@ -12,9 +12,11 @@
 2. Connect auth
 3. Create tables for the database.
 
+- Let's make the card clickable so after clicking the definition and examples can be revealed.
+
 ## Types
 
-I have set route-handler's return type on `src/types/routeReturnTypes.ts`.
+I have set the route-handler's return type on `src/types/routeReturnTypes.ts`.
 
 ```ts
 import { NextResponse } from "next/server";

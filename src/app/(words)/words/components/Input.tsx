@@ -33,7 +33,6 @@ export const WordInput = () => {
         console.log(error);
         return false;
       } else {
-        console.log("word added.");
         router.refresh();
         return true;
       }
