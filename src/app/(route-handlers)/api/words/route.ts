@@ -17,7 +17,7 @@ const insert = async (req: NextRequest) => {
   const supabase = createClient(cookies());
 
   const { data: userData } = await supabase.auth.getUser();
-  const uid = userData.user?.id;
+  const uid = userData.user?.id!;
 
   const { data: prevWordsData, error: selectError } = await supabase
     .from("my_words")
@@ -40,7 +40,7 @@ const insert = async (req: NextRequest) => {
       return NextResponse.json({ error: null, message: "ok" });
     }
   } else {
-    const dataToUpdate = prevWordsData.words.concat(newWord);
+    const dataToUpdate = prevWordsData.words!.concat(newWord);
 
     const { error } = await supabase
       .from("my_words")

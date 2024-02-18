@@ -54,6 +54,7 @@ export const Result = ({
       <h3 className="text-center font-medium text-15">Result</h3>
       {renderData && (
         <Pagination
+          showShadow
           total={totalPage}
           isCompact
           page={currentPage}
