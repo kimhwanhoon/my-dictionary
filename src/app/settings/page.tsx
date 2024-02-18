@@ -1,19 +1,18 @@
-import { createClient } from "@/utils/supabase/client"
-import react from "react"
+import { checkUserSession } from "@/utils/supabase/sessionChecker";
+import { redirect } from "next/navigation";
+import { SignOutButton } from "@/components/auth/SignOutButton";
 
-const SettingsPage = async() => {
-    const supabase = createClient()
-    const signOut = async() => {
-        await supabase.auth.signOut()
-    }
+const SettingsPage = async () => {
+  const { isSession, userData } = await checkUserSession();
+  if (!isSession) {
+    redirect("/signin");
+  } else {
     return (
-    <div>
-        Settings
-        <button onClick={signOut}>
-            Sign Out
-        </button>
-    </div>
-    )
-}
+      <div>
+        <SignOutButton />
+      </div>
+    );
+  }
+};
 
-export default SettingsPage
+export default SettingsPage;

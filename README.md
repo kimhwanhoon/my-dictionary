@@ -13,6 +13,7 @@
 3. Create tables for the database.
 
 - Let's make the card clickable so after clicking the definition and examples can be revealed.
+- If url is signin or signup, let's hide header and footer.
 
 ## Types
 
