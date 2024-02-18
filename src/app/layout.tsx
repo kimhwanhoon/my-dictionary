@@ -31,10 +31,10 @@ export default function RootLayout({
       <body className={`${inter.className} h-dvh`} suppressHydrationWarning>
         <NextUIProvider>
           <Header />
-          <main className="h-[calc(100dvh-150px)] overflow-auto">
+          <main className="h-[calc(100dvh-130px)] overflow-auto">
             {children}
           </main>
-          <Footer url={requestUrl} />
+          <Footer />
         </NextUIProvider>
         <SpeedInsights />
         <Analytics />

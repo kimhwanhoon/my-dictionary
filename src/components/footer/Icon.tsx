@@ -1,7 +1,7 @@
 "use client";
 
+import { footerIconColor } from "@/types/icons";
 import { TablerIconsProps } from "@tabler/icons-react";
-import React from "react";
 
 import {
   IconHome,
@@ -9,35 +9,38 @@ import {
   IconSettings,
   IconUser,
 } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface Props {
   Icon: React.ComponentType<TablerIconsProps>;
   href: string;
-  fill: boolean;
 }
 
 export const footerIcons = [
-  { icon: IconHome, href: "/", target: "home" },
-  { icon: IconNotebook, href: "/words", target: "dictionary" },
-  { icon: IconUser, href: "/user", target: "user" },
-  { icon: IconSettings, href: "/settings", target: "settings" },
+  { icon: IconHome, href: "/home" },
+  { icon: IconNotebook, href: "/words" },
+  { icon: IconUser, href: "/user" },
+  { icon: IconSettings, href: "/settings" },
 ];
 
-export const FooterIcon = ({ Icon, href, fill }: Props) => {
+export const FooterIcon = ({ Icon, href }: Props) => {
   const router = useRouter();
+  const currentPath = usePathname();
 
-  const selectedFillColor = "#8980f2";
-  const selectedLineColor = "#aba5f7";
-
-  const notSelectedFillColor = "#fff";
-  const notSelectedLineColor = "#d3d8ec";
   return (
     <div className="flex justify-center items-center">
       <Icon
-        fill={fill ? selectedFillColor : notSelectedFillColor}
+        fill={
+          currentPath.includes(href)
+            ? footerIconColor.selected.fill
+            : footerIconColor.base.fill
+        }
         size={32}
-        color={fill ? selectedLineColor : notSelectedLineColor}
+        color={
+          currentPath.includes(href)
+            ? footerIconColor.selected.line
+            : footerIconColor.base.line
+        }
         onClick={() => router.push(href)}
       />
     </div>

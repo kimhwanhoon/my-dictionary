@@ -1,3 +1,4 @@
+import { IconProps } from "@/types/icons";
 import { Button } from "@nextui-org/react";
 import { IconX } from "@tabler/icons-react";
 

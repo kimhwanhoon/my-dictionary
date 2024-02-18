@@ -1,3 +1,5 @@
+import { IconProps } from "@/types/icons";
+
 export function BookIcon(props: IconProps) {
   return (
     <svg
