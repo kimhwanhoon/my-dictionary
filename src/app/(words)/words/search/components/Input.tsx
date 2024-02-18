@@ -1,30 +1,17 @@
 "use client";
 
 import { Button, Input } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 export const SearchInput = () => {
   const [inputValue, setInputValue] = useState<string>("");
+  const router = useRouter();
 
   const searchQuery = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const formData = new FormData();
-      formData.append("word", inputValue);
-      const res = await fetch("/api/dictionary/search", {
-        method: "post",
-        body: formData,
-      });
-      const { data } = await res.json();
-      console.log(data);
-
-      return data;
-    } catch (error) {
-      console.log("error, not found");
-      return error;
-    } finally {
-      setInputValue("");
-    }
+    setInputValue("");
+    router.push(`/words/search?q=${inputValue}`);
   };
 
   return (
