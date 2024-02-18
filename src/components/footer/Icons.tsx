@@ -10,7 +10,7 @@ interface IconType {
 }
 
 export const FooterIcons = () => {
-  const footerIcons = Icons.map((icon: IconType) => {
+  const footerIcons = Icons.map((icon: any) => {
     return (
       <FooterIcon
         key={icon.icon.displayName}
