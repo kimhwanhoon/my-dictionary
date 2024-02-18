@@ -11,18 +11,18 @@ export const WordsList = async () => {
     const { data, error } = await supabase
       .from("my_words")
       .select("words")
-      .eq("author_id", uid)
+      .eq("author_id", uid!)
       .single();
 
     if (error) {
       console.log(error);
       return <div></div>;
     } else {
-      const words: wordType[] = data.words;
+      const words: any = data.words;
 
       return (
         <div>
-          {words.map((word) => (
+          {words.map((word: wordType) => (
             <WordCard
               key={word.word}
               word={word.word}

@@ -46,7 +46,11 @@ export const Result = ({
   const output = !renderData ? (
     <>Data not found.</>
   ) : (
-    renderData.map((el, i) => <span key={i}>{el.word}</span>)
+    renderData.map((el, i) => (
+      <span key={i} className="border-b-1 pt-1">
+        {el.word}
+      </span>
+    ))
   );
 
   return (
@@ -61,7 +65,7 @@ export const Result = ({
           onChange={(e) => router.push(`?q=${query}&p=${e}`)}
         />
       )}
-      <div className="flex flex-col gap-2 p-2">
+      <div className="flex flex-col gap-2 p-2 mt-4">
         {renderData?.length === 0 ? "Result not found." : output}
       </div>
     </div>
