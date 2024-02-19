@@ -5,7 +5,7 @@ import { ToastContainer } from "@/utils/react-toastify/ToastContainer";
 import { emailRegex } from "@/utils/regex/email";
 import { Button, Divider, Input, Link, Progress } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { MouseEvent, useRef, useState } from "react";
+import { MouseEvent, useState } from "react";
 import { toast } from "react-toastify";
 
 interface Props {

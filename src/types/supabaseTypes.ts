@@ -4,70 +4,73 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[]
+  | Json[];
 
 export type Database = {
   public: {
     Tables: {
       french_dictionary: {
         Row: {
-          definition: string[] | null
-          id: number
-          purified_word: string | null
-          word: string
-        }
+          definition: string[] | null;
+          example: string[] | null;
+          id: number;
+          purified_word: string | null;
+          word: string;
+        };
         Insert: {
-          definition?: string[] | null
-          id?: number
-          purified_word?: string | null
-          word: string
-        }
+          definition?: string[] | null;
+          example?: string[] | null;
+          id?: number;
+          purified_word?: string | null;
+          word: string;
+        };
         Update: {
-          definition?: string[] | null
-          id?: number
-          purified_word?: string | null
-          word?: string
-        }
-        Relationships: []
-      }
+          definition?: string[] | null;
+          example?: string[] | null;
+          id?: number;
+          purified_word?: string | null;
+          word?: string;
+        };
+        Relationships: [];
+      };
       my_words: {
         Row: {
-          author_id: string
-          words: Json[] | null
-        }
+          author_id: string;
+          words: Json[] | null;
+        };
         Insert: {
-          author_id?: string
-          words?: Json[] | null
-        }
+          author_id?: string;
+          words?: Json[] | null;
+        };
         Update: {
-          author_id?: string
-          words?: Json[] | null
-        }
+          author_id?: string;
+          words?: Json[] | null;
+        };
         Relationships: [
           {
-            foreignKeyName: "public_my_words_created_by_fkey"
-            columns: ["author_id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            foreignKeyName: "public_my_words_created_by_fkey";
+            columns: ["author_id"];
+            isOneToOne: true;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
           }
-        ]
-      }
-    }
+        ];
+      };
+    };
     Views: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Functions: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Enums: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-}
+      [_ in never]: never;
+    };
+  };
+};
 
 export type Tables<
   PublicTableNameOrOptions extends
@@ -80,7 +83,7 @@ export type Tables<
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R
+      Row: infer R;
     }
     ? R
     : never
@@ -88,11 +91,11 @@ export type Tables<
       Database["public"]["Views"])
   ? (Database["public"]["Tables"] &
       Database["public"]["Views"])[PublicTableNameOrOptions] extends {
-      Row: infer R
+      Row: infer R;
     }
     ? R
     : never
-  : never
+  : never;
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
@@ -103,17 +106,17 @@ export type TablesInsert<
     : never = never
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
+      Insert: infer I;
     }
     ? I
     : never
   : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
   ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
-      Insert: infer I
+      Insert: infer I;
     }
     ? I
     : never
-  : never
+  : never;
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
@@ -124,17 +127,17 @@ export type TablesUpdate<
     : never = never
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
+      Update: infer U;
     }
     ? U
     : never
   : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
   ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
-      Update: infer U
+      Update: infer U;
     }
     ? U
     : never
-  : never
+  : never;
 
 export type Enums<
   PublicEnumNameOrOptions extends
@@ -147,4 +150,4 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof Database["public"]["Enums"]
   ? Database["public"]["Enums"][PublicEnumNameOrOptions]
-  : never
+  : never;

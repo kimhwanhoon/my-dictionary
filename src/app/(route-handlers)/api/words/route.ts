@@ -5,8 +5,8 @@ import { NextRequest, NextResponse } from "next/server";
 const insert = async (req: NextRequest) => {
   const formData = await req.formData();
   const word = formData.get("word") as string;
-  const definition = (formData.get("definition") as string) || "";
-  const example = (formData.get("example") as string) || "";
+  const definition = JSON.parse(formData.get("definition") as string) || [];
+  const example = JSON.parse(formData.get("example") as string) || [];
 
   const newWord = {
     word,

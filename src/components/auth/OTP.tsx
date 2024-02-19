@@ -5,7 +5,7 @@ import { Button, Progress, useDisclosure } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import OTPInput from "react-otp-input";
-import { Alert } from "../alerts/alert";
+import { Alert } from "../modals/alert";
 import useAlertContents from "@/utils/store/alertContents";
 
 interface Props {

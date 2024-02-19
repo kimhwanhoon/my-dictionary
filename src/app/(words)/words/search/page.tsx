@@ -26,7 +26,7 @@ const WordsSearchPage = async ({ searchParams }: Props) => {
       const supabase = createClient(cookies());
       const { data, error } = await supabase
         .from("french_dictionary")
-        .select("word")
+        .select("word, definition, example")
         .ilike("word", `${query}%`);
 
       if (error) {
