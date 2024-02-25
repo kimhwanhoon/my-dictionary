@@ -1,15 +1,19 @@
 import { Divider } from "@nextui-org/react";
-import { WordInput } from "../components/Input";
+import { InputContainer } from "./components/InputContainer";
 import { WordsList } from "../components/WordsList";
 
 const WordsAddPage = () => {
   return (
     <div className="flex flex-col p-4 bg-white h-dvh">
-      <h1 className="text-center font-medium">Insert words</h1>
-      <WordInput />
+      <h1 className="text-center font-medium">Add words</h1>
+      <InputContainer />
+
       <Divider className="my-2" />
-      <h1 className="text-center font-medium mb-4">My words</h1>
-      <WordsList />
+
+      <section>
+        <h1 className="text-center font-medium mb-4">My words</h1>
+        <WordsList />
+      </section>
     </div>
   );
 };

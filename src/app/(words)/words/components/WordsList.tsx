@@ -15,8 +15,13 @@ export const WordsList = async () => {
       .single();
 
     if (error) {
-      console.log(error);
-      return <div></div>;
+      return (
+        <div>
+          <p className="text-gray-400 text-sm text-center">
+            Your word is empty.
+          </p>
+        </div>
+      );
     } else {
       const words: any = data.words;
 

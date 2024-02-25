@@ -14,6 +14,8 @@ const insert = async (req: NextRequest) => {
     example,
   };
 
+  console.log(newWord);
+
   const supabase = createClient(cookies());
 
   const { data: userData } = await supabase.auth.getUser();

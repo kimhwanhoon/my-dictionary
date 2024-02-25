@@ -4,6 +4,7 @@ import { RouteReturnContents } from "@/types/routeReturnTypes";
 import { ToastContainer } from "@/utils/react-toastify/ToastContainer";
 import { emailRegex } from "@/utils/regex/email";
 import { Button, Divider, Input, Link, Progress } from "@nextui-org/react";
+import { IconMail } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { MouseEvent, useState } from "react";
 import { toast } from "react-toastify";
@@ -144,14 +145,27 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
           <div className="space-y-2">
             <Input
               className="py-2"
+              classNames={{ inputWrapper: "bg-white" }}
               name="email"
               size={"md"}
               type="email"
-              label="Email"
+              label={
+                <div className="flex items-center gap-1 text-gray-500">
+                  <IconMail size={"1rem"} />
+                  <span>Email</span>
+                </div>
+              }
               value={emailValue}
               onChange={(e) => setEmailValue(e.target.value)}
-              // placeholder="Enter your email"
+              autoComplete="email"
               required
+              description={
+                isError && (
+                  <span className="text-red-400">
+                    Error occurred. Please try again.
+                  </span>
+                )
+              }
             />
           </div>
 

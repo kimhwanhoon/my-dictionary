@@ -51,3 +51,8 @@ const POST = async (req: NextRequest): Promise<RouteReturnType> => {};
 ### Bugs
 
 1. Footer icons must be filled with purple color depending on the current URL. But when it goes to layout, it seems that the code is cached so the current URL won't be updated.
+2. On iPhone (android not tested, when clicking input, it zooms so the user has to zoom out again.)
+
+#### Ideas
+
+1. french_dictionary 테이블에서 다른 컬럼 추가하고 모든 유저를 넣을 수 있게 해서 해당 유저가 직접 그 단어의 뜻을 커스텀해서 볼 수 있게 하는 기능. official app에서 검색해도 자기가 저장했던 의미가 자신에게만 보인다!!!
