@@ -1,13 +1,11 @@
 "use client";
 
-import { SearchInput } from "@/components/inputs/SearchInput";
 import { WordInput } from "./Input";
 
 export const InputContainer = () => {
   return (
     <section>
       <WordInput />
-      <SearchInput />
     </section>
   );
 };

@@ -1,5 +1,6 @@
 "use client";
 
+import { SearchInput } from "@/components/inputs/SearchInput";
 import { Accordion, AccordionItem, Button, Input } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -51,13 +52,7 @@ export const WordInput = () => {
       className="flex flex-col justify-center items-center gap-2 py-2 "
       onSubmit={(e) => registerWord(e)}
     >
-      <Input
-        type="text"
-        label="Word"
-        placeholder="Enter your word"
-        value={wordValue}
-        onChange={(e) => setWordValue(e.target.value)}
-      />
+      <SearchInput inputValue={wordValue} setInputValue={setWordValue} />
       <Accordion isCompact variant="shadow" className="py-2">
         <AccordionItem
           key={"definition & example"}
