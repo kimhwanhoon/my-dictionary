@@ -260,3 +260,7 @@
     );
   background-size: calc(6 * 0.866 * 42.5px) calc(3 * 42.5px);
 }
+
+.animate-500 {
+  @apply duration-500 ease-soft-spring;
+}

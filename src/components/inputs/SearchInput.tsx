@@ -1,7 +1,7 @@
 "use client";
 
 import { removeAccents } from "@/utils/regex/removeAccents";
-import { Input } from "@nextui-org/react";
+import { Input, Listbox, ListboxItem, ScrollShadow } from "@nextui-org/react";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 const words_french: string[] = require("an-array-of-french-words");
@@ -27,7 +27,7 @@ export const SearchInput = ({ inputValue, setInputValue }: Props) => {
         }
       });
 
-      const limitWords = result.slice(0, 5);
+      const limitWords = result.slice(0, 20);
       setFilteredItems(limitWords);
     }
   }, [inputValue]);
@@ -42,18 +42,78 @@ export const SearchInput = ({ inputValue, setInputValue }: Props) => {
         onChange={(e) => setInputValue(e.target.value)}
       />
 
-      {filteredItems.length === 0 ? null : (
-        <div className="flex flex-col gap-2 p-2">
-          {filteredItems.map((word) => (
-            <p
-              key={word}
-              className="hover:bg-slate-50 active:bg-slate-50 text-sm text-gray-600"
-              onClick={() => setInputValue(word)}
-            >
-              {word}
-            </p>
-          ))}
-        </div>
+      {filteredItems.length === 0 ? (
+        <ScrollShadow
+          key={"scrollShadow"}
+          className="w-full h-[0px] animate-500"
+          size={30}
+        ></ScrollShadow>
+      ) : filteredItems.length === 1 ? (
+        <ScrollShadow
+          key={"scrollShadow"}
+          className="w-full h-[50px] animate-500"
+          size={30}
+        >
+          <Listbox
+            className="flex flex-col gap-2 p-2"
+            onAction={(key) => setInputValue(key as string)}
+            shouldFocusWrap
+          >
+            {filteredItems.map((word) => (
+              <ListboxItem
+                key={word}
+                className=" text-sm text-gray-600"
+                onClick={() => setInputValue(word)}
+              >
+                {word}
+              </ListboxItem>
+            ))}
+          </Listbox>
+        </ScrollShadow>
+      ) : filteredItems.length < 4 ? (
+        <ScrollShadow
+          key={"scrollShadow"}
+          className="w-full h-[100px] animate-500"
+          size={30}
+        >
+          <Listbox
+            className="flex flex-col gap-2 p-2"
+            onAction={(key) => setInputValue(key as string)}
+            shouldFocusWrap
+          >
+            {filteredItems.map((word) => (
+              <ListboxItem
+                key={word}
+                className=" text-sm text-gray-600"
+                onClick={() => setInputValue(word)}
+              >
+                {word}
+              </ListboxItem>
+            ))}
+          </Listbox>
+        </ScrollShadow>
+      ) : (
+        <ScrollShadow
+          key={"scrollShadow"}
+          className="w-full h-[175px] animate-500"
+          size={30}
+        >
+          <Listbox
+            className="flex flex-col gap-2 p-2"
+            onAction={(key) => setInputValue(key as string)}
+            shouldFocusWrap
+          >
+            {filteredItems.map((word) => (
+              <ListboxItem
+                key={word}
+                className=" text-sm text-gray-600"
+                onClick={() => setInputValue(word)}
+              >
+                {word}
+              </ListboxItem>
+            ))}
+          </Listbox>
+        </ScrollShadow>
       )}
     </div>
   );
