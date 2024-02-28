@@ -1,5 +1,5 @@
 import { WordCard } from "@/components/cards/WordCard";
-import { wordType } from "@/types/words";
+import { WordType } from "@/types/supabaseMyWordsType";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 
@@ -26,8 +26,8 @@ export const WordsList = async () => {
       const words: any = data.words;
 
       return (
-        <div>
-          {words.map((word: wordType) => (
+        <>
+          {words.map((word: WordType) => (
             <WordCard
               key={word.word}
               word={word.word}
@@ -35,7 +35,7 @@ export const WordsList = async () => {
               example={word.example}
             />
           ))}
-        </div>
+        </>
       );
     }
   } catch (error) {

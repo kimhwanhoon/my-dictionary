@@ -4,9 +4,8 @@
 import { WordDetailModal } from "@/components/modals/WordDetail";
 import { Database } from "@/types/supabaseTypes";
 import { Pagination } from "@nextui-org/pagination";
-import { useDisclosure } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 type RenderDataType = Pick<
   Database["public"]["Tables"]["french_dictionary"]["Row"],
@@ -35,7 +34,7 @@ export const Result = ({
     if (queryResult) {
       setRenderData(queryResult[currentPage - 1]);
     } else {
-      console.log("what the heck");
+      console.log("error");
     }
   }, [queryResult, currentPage]);
 

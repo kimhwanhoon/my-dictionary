@@ -1,3 +1,5 @@
+import { WordType } from "./supabaseMyWordsType";
+
 export type Json =
   | string
   | number
@@ -36,15 +38,15 @@ export type Database = {
       my_words: {
         Row: {
           author_id: string;
-          words: Json[] | null;
+          words: WordType[] | null;
         };
         Insert: {
           author_id?: string;
-          words?: Json[] | null;
+          words?: WordType[] | null;
         };
         Update: {
           author_id?: string;
-          words?: Json[] | null;
+          words?: WordType[] | null;
         };
         Relationships: [
           {

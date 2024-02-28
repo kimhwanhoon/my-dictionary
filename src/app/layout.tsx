@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers as NextUIProvider } from "@/NextUI/provider";
@@ -17,6 +17,13 @@ export const metadata: Metadata = {
   title: "My Dictionary",
   description:
     "This web app is where we save our vocabularies, idioms and sentences that we want to memorize.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  interactiveWidget: "resizes-content",
 };
 
 export default function RootLayout({

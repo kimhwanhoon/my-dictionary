@@ -1,7 +1,8 @@
 "use client";
 
 import { SearchInput } from "@/components/inputs/SearchInput";
-import { Accordion, AccordionItem, Button, Input } from "@nextui-org/react";
+import { RouteReturnContents } from "@/types/routeReturnTypes";
+import { Accordion, AccordionItem, Button, Textarea } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
@@ -10,6 +11,12 @@ export const WordInput = () => {
   const [wordValue, setWordValue] = useState<string>("");
   const [defValue, setDefValue] = useState<string>("");
   const [exampleValue, setExampleValue] = useState<string>("");
+
+  const clearInputValues = () => {
+    setWordValue("");
+    setDefValue("");
+    setExampleValue("");
+  };
 
   const registerWord = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,22 +35,21 @@ export const WordInput = () => {
         method: "post",
         body: formData,
       });
-      const { error } = await res.json();
+      const { error, message } = (await res.json()) as RouteReturnContents;
 
       if (error) {
-        console.log(error);
+        if (message.includes("already")) {
+          console.log(message);
+        }
         return false;
       } else {
+        clearInputValues();
         router.refresh();
         return true;
       }
     } catch (error) {
       console.log(error);
       return false;
-    } finally {
-      setWordValue("");
-      setDefValue("");
-      setExampleValue("");
     }
   };
 
@@ -65,14 +71,16 @@ export const WordInput = () => {
           }
         >
           <div className="flex flex-col gap-2">
-            <Input
+            <Textarea
+              minRows={1}
               size="sm"
               type="text"
               label="Definition"
               value={defValue}
               onChange={(e) => setDefValue(e.target.value)}
             />
-            <Input
+            <Textarea
+              minRows={1}
               size="sm"
               type="text"
               label="Example"
@@ -90,7 +98,7 @@ export const WordInput = () => {
         fullWidth
         type="submit"
       >
-        Submit
+        Add
       </Button>
     </form>
   );

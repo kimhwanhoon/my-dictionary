@@ -1,12 +1,26 @@
+import { RouteReturnType } from "@/types/routeReturnTypes";
 import { createClient } from "@/utils/supabase/server";
+import { checkUserSession } from "@/utils/supabase/sessionChecker";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-const insert = async (req: NextRequest) => {
+const insert = async (req: NextRequest): Promise<RouteReturnType> => {
+  const supabase = createClient(cookies());
+  const { userData } = await checkUserSession();
+
+  if (!userData) {
+    return NextResponse.json({
+      error: true,
+      message: "User not signed in.",
+    });
+  }
+
+  const uid = userData.user?.id!;
+
   const formData = await req.formData();
   const word = formData.get("word") as string;
-  const definition = JSON.parse(formData.get("definition") as string) || [];
-  const example = JSON.parse(formData.get("example") as string) || [];
+  const definition = (formData.get("definition") as string) || "";
+  const example = (formData.get("example") as string) || "";
 
   const newWord = {
     word,
@@ -14,21 +28,26 @@ const insert = async (req: NextRequest) => {
     example,
   };
 
-  console.log(newWord);
-
-  const supabase = createClient(cookies());
-
-  const { data: userData } = await supabase.auth.getUser();
-  const uid = userData.user?.id!;
-
   const { data: prevWordsData, error: selectError } = await supabase
     .from("my_words")
     .select("words")
     .eq("author_id", uid)
     .single();
 
+  const wordExist: boolean = !!prevWordsData?.words!.some(
+    (word_DB) => word_DB.word === word
+  );
+
+  if (wordExist) {
+    console.log("word exists!");
+    return NextResponse.json({
+      error: true,
+      message: "Word already exists.",
+    });
+  }
+
   if (selectError) {
-    // insert
+    // insert - if there is no prior data
     const dataToInsert = [newWord];
 
     const { error } = await supabase
@@ -37,11 +56,15 @@ const insert = async (req: NextRequest) => {
       .eq("author_id", uid);
 
     if (error) {
-      return NextResponse.json({ error, message: "insert failed: words" });
+      return NextResponse.json({
+        error: true,
+        message: "insert failed: words",
+      });
     } else {
       return NextResponse.json({ error: null, message: "ok" });
     }
   } else {
+    // update - if there is already data exist
     const dataToUpdate = prevWordsData.words!.concat(newWord);
 
     const { error } = await supabase
@@ -50,7 +73,10 @@ const insert = async (req: NextRequest) => {
       .eq("author_id", uid);
 
     if (error) {
-      return NextResponse.json({ error, message: "insert failed: words" });
+      return NextResponse.json({
+        error: true,
+        message: "insert failed: words",
+      });
     } else {
       return NextResponse.json({ error: null, message: "ok" });
     }
