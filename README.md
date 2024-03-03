@@ -57,3 +57,9 @@ const POST = async (req: NextRequest): Promise<RouteReturnType> => {};
 #### Ideas
 
 1. french_dictionary 테이블에서 다른 컬럼 추가하고 모든 유저를 넣을 수 있게 해서 해당 유저가 직접 그 단어의 뜻을 커스텀해서 볼 수 있게 하는 기능. official app에서 검색해도 자기가 저장했던 의미가 자신에게만 보인다!!!
+
+2. Maybe, connect dictionary API first, and then put unique id for each word, and then add customizable user note (or definition, examples, etc) for that uid(word).
+
+3. on Searching word, should I just push the url to `?word={value}` and do the searching work on page server component? Or should I just make client -> route handler logic..?
+
+3-1. if (!searchURLParam...) => show default, if param value exist -> search function (server side) activates.

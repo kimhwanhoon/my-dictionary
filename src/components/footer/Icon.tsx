@@ -18,7 +18,7 @@ interface Props {
 
 export const footerIcons = [
   { icon: IconHome, href: "/home" },
-  { icon: IconNotebook, href: "/words" },
+  { icon: IconNotebook, href: "/dictionary" },
   { icon: IconUser, href: "/user" },
   { icon: IconSettings, href: "/settings" },
 ];

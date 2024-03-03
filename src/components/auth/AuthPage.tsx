@@ -88,7 +88,7 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
         if (error) {
           setIsLoading(false);
           setProgress(100);
-          if (message.includes("Signups not allowed for otp")) {
+          if (message?.includes("Signups not allowed for otp")) {
             // when trying to sign in without having email registered.
             const timeOutId = setTimeout(() => {
               router.push(`/signup?email=${emailValue}`);

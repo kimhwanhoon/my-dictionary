@@ -1,13 +1,6 @@
 "use client";
 
 import { FooterIcon, footerIcons as Icons } from "./Icon";
-import { TablerIconsProps } from "@tabler/icons-react";
-
-interface IconType {
-  icon: React.ComponentType<TablerIconsProps>;
-  href: string;
-  target: string;
-}
 
 export const FooterIcons = () => {
   const footerIcons = Icons.map((icon: any) => {

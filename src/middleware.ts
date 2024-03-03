@@ -1,5 +1,6 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { urlToOrigin } from "./utils/middleware/urlToOrigin";
 
 const allowedOrigins = [
   "https://en.wikipedia.org",
@@ -28,6 +29,8 @@ export async function middleware(request: NextRequest) {
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-url", request.url);
+  const originFromHeader = urlToOrigin(request.url);
+  requestHeaders.set("x-origin", originFromHeader);
   // console.log(requestHeaders);
 
   let response = NextResponse.next({
