@@ -1,9 +1,30 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+const allowedOrigins = [
+  "https://en.wikipedia.org",
+  "https://en.wikipedia.org/w/api.php",
+];
+
+const corsOptions = {
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
-  const origin = request.nextUrl.origin;
+  const origin = request.headers.get("origin") ?? "";
+  const isAllowedOrigin = allowedOrigins.includes(origin);
+
+  const isPreflight = request.method === "OPTIONS";
+
+  if (isPreflight) {
+    const preflightHeaders = {
+      ...(isAllowedOrigin && { "Access-Control-Allow-Origin": origin }),
+      ...corsOptions,
+    };
+    return NextResponse.json({}, { headers: preflightHeaders });
+  }
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-url", request.url);
@@ -13,6 +34,14 @@ export async function middleware(request: NextRequest) {
     request: {
       headers: requestHeaders,
     },
+  });
+
+  if (isAllowedOrigin) {
+    response.headers.set("Access-Control-Allow-Origin", origin);
+  }
+
+  Object.entries(corsOptions).forEach(([key, value]) => {
+    response.headers.set(key, value);
   });
 
   const supabase = createServerClient(

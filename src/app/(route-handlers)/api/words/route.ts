@@ -3,15 +3,16 @@ import { createClient } from "@/utils/supabase/server";
 import { checkUserSession } from "@/utils/supabase/sessionChecker";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { select } from "./select";
 
 const insert = async (req: NextRequest): Promise<RouteReturnType> => {
   const supabase = createClient(cookies());
-  const { userData } = await checkUserSession();
+  const { userData, sessionErrorMessage } = await checkUserSession();
 
   if (!userData) {
     return NextResponse.json({
       error: true,
-      message: "User not signed in.",
+      message: sessionErrorMessage,
     });
   }
 
@@ -28,11 +29,11 @@ const insert = async (req: NextRequest): Promise<RouteReturnType> => {
     example,
   };
 
-  const { data: prevWordsData, error: selectError } = await supabase
-    .from("my_words")
-    .select("words")
-    .eq("author_id", uid)
-    .single();
+  const {
+    data: prevWordsData,
+    error: selectError,
+    errorMessage,
+  } = await select({ supabase, uid });
 
   const wordExist: boolean = !!prevWordsData?.words!.some(
     (word_DB) => word_DB.word === word

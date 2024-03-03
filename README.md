@@ -51,7 +51,8 @@ const POST = async (req: NextRequest): Promise<RouteReturnType> => {};
 ### Bugs
 
 1. Footer icons must be filled with purple color depending on the current URL. But when it goes to layout, it seems that the code is cached so the current URL won't be updated.
-2. On iPhone (android not tested, when clicking input, it zooms so the user has to zoom out again.)
+2. [solved]On iPhone (android not tested, when clicking input, it zooms so the user has to zoom out again.) => The problem has been fixed by setting meta option interactive-widget to resizes-content.
+   ref: <https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag>
 
 #### Ideas
 
