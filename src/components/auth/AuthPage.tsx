@@ -6,7 +6,7 @@ import { emailRegex } from "@/utils/regex/email";
 import { Button, Divider, Input, Link, Progress } from "@nextui-org/react";
 import { IconMail } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
 interface Props {
@@ -17,6 +17,9 @@ interface Props {
 
 export const AuthPage = ({ type, isError, email = "" }: Props) => {
   const [emailValue, setEmailValue] = useState<string>(email);
+  const [emailVerifyPassed, setEmailVerifyPassed] = useState<boolean>(false);
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const submitButtonRef = useRef<HTMLButtonElement>(null);
   // UX: Loading, routing
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
@@ -67,11 +70,67 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
     }, 0);
   };
 
+  const duplicatedEmailToast = () => {
+    setProgress(100);
+    setIsLoading(false);
+    setTimeout(() => {
+      toast.error(
+        <div className="flex flex-col items-center">
+          <h6 className="w-full font-medium">Email Already Registered</h6>
+          <p className="w-full text-sm">
+            Email address you entered is already registered.
+            <br />
+            Please enter different email address.
+          </p>
+          <Button
+            fullWidth
+            size="sm"
+            className="text-sm font-medium my-2 text-white"
+            color="danger"
+            onClick={() => {
+              toast.dismiss();
+              emailInputRef.current?.focus();
+            }}
+          >
+            Close
+          </Button>
+        </div>
+      );
+    }, 0);
+  };
+
+  const duplicatedTestPassed = (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+  ) => {
+    setTimeout(() => {
+      toast.success(
+        <div className="flex flex-col items-center">
+          <h6 className="w-full font-medium">Email Available</h6>
+          <p className="w-full text-sm">
+            Your email is available.
+            <br />
+            We will proceed to sign you up in a few seconds.
+          </p>
+        </div>
+      );
+    }, 0);
+    setTimeout(() => {
+      setEmailVerifyPassed(true);
+    }, 1000);
+
+    setTimeout(() => {
+      performAuthAction(e);
+    }, 2000);
+  };
+
   //
-  const performAuthAction = async (e: MouseEvent<HTMLButtonElement>) => {
+  const performAuthAction = async (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+  ) => {
+    console.log("e", e);
     e.preventDefault();
     setIsLoading(true);
-    const buttonInnerText = e.currentTarget.innerText;
+    const buttonInnerText = submitButtonRef.current?.innerText;
     const formData = new FormData();
     formData.append("email", emailValue);
     setProgress(25);
@@ -103,7 +162,7 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
       } catch (error) {
         router.replace(`/signin?error=true`);
       }
-    } else {
+    } else if (buttonInnerText === "Sign Up") {
       try {
         setProgress(50);
         setTimeout(() => {
@@ -122,7 +181,33 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
           signUpToast();
         }
       } catch (error) {
-        // console.log(error);
+        router.replace("/signup?error=true");
+      }
+    } else if (buttonInnerText === "Verify Email") {
+      try {
+        formData.append("verifyingEmail", "true");
+        setProgress(50);
+        const response = await fetch("/auth/signup", {
+          method: "post",
+          body: formData,
+        });
+        const { error, message }: { error: unknown; message: string } =
+          await response.json();
+        setProgress(75);
+        if (message.includes("error")) {
+          console.log("error");
+        } else if (message.includes("duplicated")) {
+          duplicatedEmailToast();
+        } else if (message === "ok") {
+          duplicatedTestPassed(e);
+        }
+      } catch (error) {
+        console.log("error");
+      } finally {
+        setTimeout(() => {
+          setProgress(100);
+          setIsLoading(false);
+        }, 1000);
       }
     }
   };
@@ -144,6 +229,7 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
         <form className="space-y-4">
           <div className="space-y-2">
             <Input
+              ref={emailInputRef}
               className="py-2"
               classNames={{ inputWrapper: "bg-white" }}
               name="email"
@@ -176,6 +262,7 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
               </span>
             )}
             <Button
+              ref={submitButtonRef}
               color="primary"
               fullWidth
               type="submit"
@@ -184,7 +271,13 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
               disabled={emailRegex.test(emailValue) ? false : true}
               className="disabled:bg-opacity-50"
             >
-              {type === "sign-in" ? "Sign In" : "Sign Up"}
+              {type === "sign-in"
+                ? "Sign In"
+                : type === "sign-up" && !emailVerifyPassed
+                ? "Verify Email"
+                : type === "sign-up" && emailVerifyPassed
+                ? "Sign Up"
+                : ""}
             </Button>
           </div>
           {isLoading ? (
