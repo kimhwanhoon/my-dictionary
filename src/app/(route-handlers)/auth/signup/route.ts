@@ -1,72 +1,62 @@
+import "server-only";
+
 import { NextRequest } from "next/server.js";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { RouteReturnType } from "@/types/routeReturnTypes";
+import { isUserEmailDuplicated } from "@/utils/supabase/auth/isUserEmailDuplicated";
 
 const signUp = async (req: NextRequest): Promise<RouteReturnType> => {
-  const formData = await req.formData();
-  const email = formData.get("email") as string;
-  const verifyEmailClicked: boolean = formData.get("verifyingEmail")
-    ? true
-    : false;
-  console.log("verifyEmailClicked", verifyEmailClicked);
+  const {
+    email,
+    duplicateChecked,
+  }: { email: string; duplicateChecked: boolean } = await req.json();
 
-  // if email was empty, return error
-  if (!formData || !email) {
-    return NextResponse.json({ error: true, message: "email is empty." });
-  }
+  //
+  // Email duplicate check
+  //
+  if (!duplicateChecked) {
+    const { duplicated, error: duplicateEmailCheckingError } =
+      await isUserEmailDuplicated(email);
 
-  const cookieStore = cookies();
-
-  if (verifyEmailClicked) {
-    try {
-      const supabase = createClient(cookieStore, { auth: true });
-
-      const {
-        data: { users },
-        error,
-      } = await supabase.auth.admin.listUsers();
-
-      if (error) {
-        return NextResponse.json({
-          error: true,
-          message: "Error caught fetching user list.",
-        });
-      }
-
-      const isEmailDuplicated = users.some(
-        (userinfo) => email === userinfo.email
-      );
-
-      if (isEmailDuplicated) {
-        return NextResponse.json({ error: true, message: "Email duplicated." });
-      } else {
-        return NextResponse.json({ error: false, message: "ok" });
-      }
-    } catch (error) {
-      return NextResponse.json({ error: true, message: "Error caught" });
-    }
-  } else {
-    try {
-      const supabase = createClient(cookieStore);
-      const { data, error } = await supabase.auth.signInWithOtp({
-        email: email as string,
-        options: {
-          shouldCreateUser: true,
-        },
+    if (duplicateEmailCheckingError) {
+      return NextResponse.json({
+        error: true,
+        message: "Error occurred.",
       });
+    }
 
-      if (error) {
-        return NextResponse.json({ error: true, message: error.message });
-      } else {
-        return NextResponse.json({
-          error: null,
-          message: "ok",
-        });
-      }
-    } catch (error) {
-      return NextResponse.json({ error: true, message: "Error caught" });
+    if (duplicated) {
+      return NextResponse.json({
+        error: true,
+        message: "Email already registered.",
+      });
+    } else {
+      return NextResponse.json({
+        error: false,
+        message: "Email not duplicated.",
+      });
+    }
+    //
+    // Create user by "signin through OTP"
+    //
+  } else {
+    const supabase = createClient(cookies());
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        shouldCreateUser: true,
+      },
+    });
+    if (error) {
+      console.log(error);
+      return NextResponse.json({ error: true, message: error.message });
+    } else {
+      return NextResponse.json({
+        error: null,
+        message: "ok",
+      });
     }
   }
 };

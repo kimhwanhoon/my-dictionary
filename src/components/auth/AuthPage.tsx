@@ -1,13 +1,21 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { RouteReturnContents } from "@/types/routeReturnTypes";
-import { ToastContainer } from "@/utils/react-toastify/ToastContainer";
+import { block } from "@/utils/block";
 import { emailRegex } from "@/utils/regex/email";
-import { Button, Divider, Input, Link, Progress } from "@nextui-org/react";
+import {
+  Button,
+  Divider,
+  Input,
+  Link,
+  Modal,
+  ModalContent,
+  Progress,
+  useDisclosure,
+} from "@nextui-org/react";
 import { IconMail } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
-import { MouseEvent, useRef, useState } from "react";
-import { toast } from "react-toastify";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
 interface Props {
   type: "sign-in" | "sign-up";
@@ -16,205 +24,152 @@ interface Props {
 }
 
 export const AuthPage = ({ type, isError, email = "" }: Props) => {
+  const isErrorOccurred =
+    useSearchParams().get("error") === "true" ? true : false;
   const [emailValue, setEmailValue] = useState<string>(email);
-  const [emailVerifyPassed, setEmailVerifyPassed] = useState<boolean>(false);
   const emailInputRef = useRef<HTMLInputElement>(null);
   const submitButtonRef = useRef<HTMLButtonElement>(null);
   // UX: Loading, routing
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [progress, setProgress] = useState<number>(0);
+  const [progressTitle, setProgressTitle] = useState<ReactNode>(<></>);
+  const [progressValue, setProgressValue] = useState<number>(0);
+  const [progressBarColor, setProgressBarColor] = useState<
+    "danger" | "default" | "primary" | "secondary" | "success" | "warning"
+  >("primary");
+  const changeProgress = ({
+    title,
+    value,
+  }: {
+    title: ReactNode;
+    value: number;
+  }) => {
+    setProgressTitle(title);
+    setProgressValue(value);
+  };
+  const { isOpen, onOpen: openModal, onClose: closeModal } = useDisclosure();
+  const [duplicateChecked, setDuplicateChecked] = useState<boolean>(false);
   const router = useRouter();
 
-  const signInErrorToast = (timeOutId: number) => {
-    toast.error(
-      <div className="flex flex-col items-center">
-        <h6 className="w-full font-medium">Email doesn&apos;t exist</h6>
-        <p className="w-full text-sm">We will redirect you to sign up page.</p>
-        <Button
-          fullWidth
-          size="sm"
-          className="text-sm font-medium my-2"
-          color="danger"
-          onClick={() => {
-            clearTimeout(timeOutId);
-            toast.dismiss();
-          }}
-        >
-          Click to abort
-        </Button>
-      </div>
-    );
-    toast.play();
-  };
-
-  const signUpToast = () => {
-    setEmailValue("");
-    setTimeout(() => {
-      toast.success(
-        <div className="flex flex-col items-center">
-          <h6 className="w-full font-medium">Email Sent</h6>
-          <p className="w-full text-sm">
-            We just sent you the confirmation email. Please check.
-          </p>
-          <Button
-            fullWidth
-            size="sm"
-            className="text-sm font-medium my-2 text-white"
-            color="success"
-            onClick={() => toast.dismiss()}
-          >
-            Close
-          </Button>
-        </div>
-      );
-    }, 0);
-  };
-
-  const duplicatedEmailToast = () => {
-    setProgress(100);
-    setIsLoading(false);
-    setTimeout(() => {
-      toast.error(
-        <div className="flex flex-col items-center">
-          <h6 className="w-full font-medium">Email Already Registered</h6>
-          <p className="w-full text-sm">
-            Email address you entered is already registered.
-            <br />
-            Please enter different email address.
-          </p>
-          <Button
-            fullWidth
-            size="sm"
-            className="text-sm font-medium my-2 text-white"
-            color="danger"
-            onClick={() => {
-              toast.dismiss();
-              emailInputRef.current?.focus();
-            }}
-          >
-            Close
-          </Button>
-        </div>
-      );
-    }, 0);
-  };
-
-  const duplicatedTestPassed = (
-    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
-  ) => {
-    setTimeout(() => {
-      toast.success(
-        <div className="flex flex-col items-center">
-          <h6 className="w-full font-medium">Email Available</h6>
-          <p className="w-full text-sm">
-            Your email is available.
-            <br />
-            We will proceed to sign you up in a few seconds.
-          </p>
-        </div>
-      );
-    }, 0);
-    setTimeout(() => {
-      setEmailVerifyPassed(true);
-    }, 1000);
-
-    setTimeout(() => {
-      performAuthAction(e);
-    }, 2000);
-  };
-
-  //
-  const performAuthAction = async (
-    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
-  ) => {
-    console.log("e", e);
-    e.preventDefault();
-    setIsLoading(true);
-    const buttonInnerText = submitButtonRef.current?.innerText;
-    const formData = new FormData();
-    formData.append("email", emailValue);
-    setProgress(25);
-
-    if (buttonInnerText === "Sign In") {
-      try {
-        setProgress(50);
-        const response = await fetch("/auth/signin", {
-          method: "post",
-          body: formData,
-        });
-        const { error, message }: RouteReturnContents = await response.json();
-        setProgress(100);
-        if (error) {
-          setIsLoading(false);
-          setProgress(100);
-          if (message?.includes("Signups not allowed for otp")) {
-            // when trying to sign in without having email registered.
-            const timeOutId = setTimeout(() => {
-              router.push(`/signup?email=${emailValue}`);
-            }, 5500);
-            signInErrorToast(timeOutId as any);
-          } else {
-            router.replace(`/signin?error=true`);
-          }
-        } else {
-          router.replace(`/signin/otp?sent=true`);
-        }
-      } catch (error) {
-        router.replace(`/signin?error=true`);
-      }
-    } else if (buttonInnerText === "Sign Up") {
-      try {
-        setProgress(50);
-        setTimeout(() => {
-          setProgress(75);
-        }, 1000);
-        const response = await fetch("/auth/signup", {
-          method: "post",
-          body: formData,
-        });
-        const { error, message } = await response.json();
-        setProgress(100);
+  const onSignUpHandler = async () => {
+    // On Error
+    const onError = async (message: string) => {
+      setProgressBarColor("danger");
+      changeProgress({
+        title: <span className="text-red-500">{message}</span>,
+        value: 100,
+      });
+      await block(3000);
+      setProgressBarColor("primary");
+    };
+    // Email duplicate check
+    //
+    if (!duplicateChecked) {
+      setIsLoading(true);
+      changeProgress({ title: "Checking your email", value: 0 });
+      await block(500);
+      setProgressValue(10);
+      await block(500);
+      setProgressValue(20);
+      const body = { email: emailValue, duplicateChecked };
+      const response = await fetch("/auth/signup", {
+        method: "post",
+        body: JSON.stringify(body),
+      });
+      await block(300);
+      setProgressValue(25);
+      const { error, message } = await response.json();
+      if (error) {
+        setDuplicateChecked(false);
+        await onError("Email is already registered.");
         setIsLoading(false);
-        if (error) {
-          router.replace("/signup?error=true");
-        } else {
-          signUpToast();
-        }
-      } catch (error) {
         router.replace("/signup?error=true");
-      }
-    } else if (buttonInnerText === "Verify Email") {
-      try {
-        formData.append("verifyingEmail", "true");
-        setProgress(50);
-        const response = await fetch("/auth/signup", {
-          method: "post",
-          body: formData,
+      } else {
+        changeProgress({
+          title: "Your email is available.",
+          value: 50,
         });
-        const { error, message }: { error: unknown; message: string } =
-          await response.json();
-        setProgress(75);
-        if (message.includes("error")) {
-          console.log("error");
-        } else if (message.includes("duplicated")) {
-          duplicatedEmailToast();
-        } else if (message === "ok") {
-          duplicatedTestPassed(e);
-        }
-      } catch (error) {
-        console.log("error");
-      } finally {
-        setTimeout(() => {
-          setProgress(100);
-          setIsLoading(false);
-        }, 1000);
+        await block(1000);
+        setDuplicateChecked(true);
+      }
+      // Create user by "signin through OTP"
+      // , signing you up...
+    } else {
+      changeProgress({
+        title: "Signing you up...",
+        value: 65,
+      });
+      await block(500);
+      setProgressValue(75);
+      const body = { email: emailValue, duplicateChecked };
+      const response = await fetch("/auth/signup", {
+        method: "post",
+        body: JSON.stringify(body),
+      });
+      setProgressValue(85);
+      const { error, message } = await response.json();
+      console.log(message);
+      if (error) {
+        await onError("Error occurred. Please try again.");
+        setIsLoading(false);
+        router.replace("/signup?error=true");
+      } else {
+        changeProgress({
+          title: (
+            <>
+              <span className="text-base font-medium">You&apos;re up!</span>
+              <br />
+              Check your email for the verification.
+            </>
+          ),
+          value: 100,
+        });
+        await block(5000);
+        setIsLoading(false);
       }
     }
   };
 
+  useEffect(() => {
+    if (duplicateChecked) {
+      onSignUpHandler();
+    }
+  }, [duplicateChecked]);
+
+  useEffect(() => {
+    if (isLoading) {
+      openModal();
+    } else {
+      closeModal();
+    }
+  }, [isLoading]);
+
   return (
     <>
-      <ToastContainer />
+      {/* Modal starts */}
+      <Modal
+        placement="top"
+        backdrop="opaque"
+        isOpen={isOpen}
+        onClose={() => setIsLoading(false)}
+        isDismissable={false}
+        hideCloseButton
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <div className="p-5 pb-3 flex flex-col gap-2">
+                <p className="text-sm text-gray-800">{progressTitle}</p>
+                <Progress
+                  color={progressBarColor}
+                  size="sm"
+                  value={progressValue}
+                />
+              </div>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+      {/* Modal ends */}
       <div className="px-8 w-full mx-auto max-w-[400px] space-y-6">
         <div className="space-y-2 text-center">
           <h1 className="text-3xl font-bold text-main-5 py-4">
@@ -229,6 +184,7 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
         <form className="space-y-4">
           <div className="space-y-2">
             <Input
+              isDisabled={isLoading}
               ref={emailInputRef}
               className="py-2"
               classNames={{ inputWrapper: "bg-white" }}
@@ -253,6 +209,11 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
                 )
               }
             />
+            {isErrorOccurred && (
+              <p className="text-sm w-full text-right text-gray-700 font-medium cursor-pointer hover:underline underline-offset-1">
+                Having a problem?
+              </p>
+            )}
           </div>
 
           <div className="flex items-center space-x-2 flex-col gap-2">
@@ -266,30 +227,20 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
               color="primary"
               fullWidth
               type="submit"
-              onClick={(e) => performAuthAction(e)}
+              onClick={(e) => {
+                e.preventDefault();
+                if (submitButtonRef.current?.innerText === "Sign Up") {
+                  onSignUpHandler();
+                }
+              }}
               isLoading={isLoading}
               disabled={emailRegex.test(emailValue) ? false : true}
               className="disabled:bg-opacity-50"
             >
-              {type === "sign-in"
-                ? "Sign In"
-                : type === "sign-up" && !emailVerifyPassed
-                ? "Verify Email"
-                : type === "sign-up" && emailVerifyPassed
-                ? "Sign Up"
-                : ""}
+              {type === "sign-in" ? "Sign In" : "Sign Up"}
             </Button>
           </div>
-          {isLoading ? (
-            <Progress
-              color="primary"
-              size="sm"
-              aria-label="Loading progress bar"
-              value={progress}
-            />
-          ) : (
-            <Divider className="my-8" />
-          )}
+          {isLoading ? <></> : <Divider className="my-8" />}
           <div className="text-center flex flex-col items-center gap-1">
             <span className="text-sm">
               {type === "sign-in"
