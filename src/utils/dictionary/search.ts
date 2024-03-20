@@ -1,24 +1,36 @@
+import { env } from "process";
 import "server-only";
 
 interface SearchProps {
   word: string | null;
+  lang: "en" | "fr-en" | "en-fr";
 }
 
-export const searchDictionary = async ({ word }: SearchProps) => {
+export const searchDictionary = async ({ word, lang }: SearchProps) => {
   if (!word) return;
-  const ROOT_API = "https://fr.wiktionary.org/w/api.php";
+  const API_URL = env.COLLINS_DICTIONARY_URL;
+  const API_KEY = env.COLLINS_DICTIONARY_API_KEY || "";
 
-  const params = new URLSearchParams({
-    action: "query",
-    list: "search",
-    srsearch: word,
-    format: "json",
-    titles: word,
-    prop: "extracts",
-    srlimit: "1",
+  const language =
+    lang === "en"
+      ? "english"
+      : lang === "en-fr"
+      ? "english-french"
+      : lang === "fr-en"
+      ? "french-english"
+      : null;
+
+  const API_URL2 = `/${language}/search/first/?q=${word}&format=html`;
+
+  const requestURL = API_URL + API_URL2;
+
+  const res = await fetch(requestURL, {
+    headers: {
+      accept: "application/json",
+      accessKey: API_KEY,
+      hotname: "http://localhost:3000",
+    },
   });
-
-  const res = await fetch(`${ROOT_API}?${params}`);
   const data = await res.json();
 
   return data;

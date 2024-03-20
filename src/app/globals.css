@@ -264,3 +264,38 @@
 .animate-500 {
   @apply duration-500 ease-soft-spring;
 }
+
+.inline {
+  @apply text-sm flex gap-[0.5px] items-end;
+}
+.pron {
+  @apply text-xs flex gap-2 items-center;
+}
+
+.hwd {
+  @apply text-4xl font-semibold pr-2;
+}
+
+.gramGrp {
+  @apply text-sm font-light tracking-wide p-1 text-gray-600 text-right;
+}
+
+.hom {
+  @apply flex flex-col gap-1 my-2 w-full;
+}
+
+.sense {
+  @apply text-15 text-gray-700;
+}
+
+.sensenum {
+  @apply text-lg font-medium;
+}
+
+.etym {
+  @apply text-sm text-gray-500;
+}
+
+.subc {
+  @apply text-sm;
+}
