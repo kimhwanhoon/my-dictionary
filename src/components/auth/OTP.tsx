@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
+import { block } from "@/utils/block";
 import { Button, Progress, useDisclosure } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -27,23 +28,18 @@ export const OTP = ({ email }: Props) => {
 
   const verifyOTP = async () => {
     setIsLoading(true);
-    setProgress(0);
-    const formData = new FormData();
-    formData.append("email", email!);
-    formData.append("token", otp);
-    const res = await fetch("/auth/otp", { method: "post", body: formData });
+    setProgress(20);
+    const body = JSON.stringify({ email, token: otp });
+    const res = await fetch("/auth/otp", { method: "post", body });
     setProgress(50);
     const { error, message } = await res.json();
-    setTimeout(() => {
-      setIsLoading(false);
-      setProgress(99);
-    }, 1000);
+    setProgress(95);
+    await block(1000);
+    setIsLoading(false);
     setProgress(100);
 
     if (message === "Verify requires either a token or a token hash") {
       setOtp("");
-      //
-
       onOpen();
     }
     if (message === "Token has expired or is invalid") {
@@ -52,7 +48,8 @@ export const OTP = ({ email }: Props) => {
     }
     if (!error) {
       setCodeMatched(true);
-      router.replace("/home");
+      await block(1000);
+      router.replace("/");
     }
   };
 
@@ -63,7 +60,7 @@ export const OTP = ({ email }: Props) => {
   }, [otp]);
 
   return (
-    <div className="relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-50 py-12">
+    <div className="flex-col justify-center overflow-hidden bg-gray-50 py-12">
       <div className="relative bg-white px-6 pt-10 pb-9 shadow-xl mx-auto w-full max-w-lg rounded-2xl">
         <div className="mx-auto flex w-full max-w-md flex-col space-y-16">
           <div className="flex flex-col items-center justify-center text-center space-y-2">

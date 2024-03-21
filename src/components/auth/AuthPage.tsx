@@ -16,6 +16,7 @@ import {
 import { IconMail } from "@tabler/icons-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ReactNode, useEffect, useRef, useState } from "react";
+import { OTP } from "./OTP";
 
 interface Props {
   type: "sign-in" | "sign-up";
@@ -50,7 +51,7 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
   const [duplicateChecked, setDuplicateChecked] = useState<boolean>(false);
   const router = useRouter();
 
-  const onSignUpHandler = async () => {
+  const onSignUpHandler = async (type: "sign-in" | "sign-up") => {
     // On Error
     const onError = async (message: string) => {
       setProgressBarColor("danger");
@@ -61,77 +62,127 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
       await block(3000);
       setProgressBarColor("primary");
     };
-    // Email duplicate check
+    // Email duplicate check (sign-up)
     //
-    if (!duplicateChecked) {
-      setIsLoading(true);
-      changeProgress({ title: "Checking your email", value: 0 });
-      await block(500);
-      setProgressValue(10);
-      await block(500);
-      setProgressValue(20);
-      const body = { email: emailValue, duplicateChecked };
-      const response = await fetch("/auth/signup", {
-        method: "post",
-        body: JSON.stringify(body),
-      });
-      await block(300);
-      setProgressValue(25);
-      const { error, message } = await response.json();
-      if (error) {
-        setDuplicateChecked(false);
-        await onError("Email is already registered.");
-        setIsLoading(false);
-        router.replace("/signup?error=true");
+    if (type === "sign-up") {
+      if (!duplicateChecked) {
+        setIsLoading(true);
+        changeProgress({ title: "Checking your email", value: 0 });
+        await block(500);
+        setProgressValue(10);
+        await block(500);
+        setProgressValue(20);
+        const body = { email: emailValue, duplicateChecked };
+        const response = await fetch("/auth/signup", {
+          method: "post",
+          body: JSON.stringify(body),
+        });
+        await block(300);
+        setProgressValue(25);
+        const { error, message } = await response.json();
+        if (error) {
+          setDuplicateChecked(false);
+          await onError("Email is already registered.");
+          setIsLoading(false);
+          router.replace("/signup?error=true");
+        } else {
+          changeProgress({
+            title: "Your email is available.",
+            value: 50,
+          });
+          await block(1000);
+          setDuplicateChecked(true);
+        }
+        // Create user by "signin through OTP"
+        // , signing you up...
       } else {
         changeProgress({
-          title: "Your email is available.",
-          value: 50,
+          title: "Signing you up...",
+          value: 65,
         });
-        await block(1000);
-        setDuplicateChecked(true);
+        await block(500);
+        setProgressValue(75);
+        const body = { email: emailValue, duplicateChecked };
+        const response = await fetch("/auth/signup", {
+          method: "post",
+          body: JSON.stringify(body),
+        });
+        setProgressValue(85);
+        const { error, message } = await response.json();
+        console.log(message);
+        if (error) {
+          await onError("Error occurred. Please try again.");
+          await block(3000);
+          setIsLoading(false);
+          router.replace("/signup?error=true");
+        } else {
+          changeProgress({
+            title: (
+              <>
+                <span className="text-base font-medium">You&apos;re up!</span>
+                <br />
+                Check your email for the verification.
+              </>
+            ),
+            value: 100,
+          });
+          await block(5000);
+          setIsLoading(false);
+        }
       }
-      // Create user by "signin through OTP"
-      // , signing you up...
     } else {
-      changeProgress({
-        title: "Signing you up...",
-        value: 65,
-      });
+      // sign in
+      setIsLoading(true);
+      changeProgress({ title: "Checking your email", value: 15 });
       await block(500);
-      setProgressValue(75);
-      const body = { email: emailValue, duplicateChecked };
-      const response = await fetch("/auth/signup", {
-        method: "post",
-        body: JSON.stringify(body),
-      });
-      setProgressValue(85);
-      const { error, message } = await response.json();
-      console.log(message);
-      if (error) {
-        await onError("Error occurred. Please try again.");
-        setIsLoading(false);
-        router.replace("/signup?error=true");
-      } else {
-        changeProgress({
-          title: (
-            <>
-              <span className="text-base font-medium">You&apos;re up!</span>
-              <br />
-              Check your email for the verification.
-            </>
-          ),
-          value: 100,
+      setProgressValue(25);
+      await block(500);
+      changeProgress({ title: "Finding your email...", value: 50 });
+      try {
+        const body = { email: emailValue };
+        const response = await fetch("/auth/signin", {
+          method: "post",
+          body: JSON.stringify(body),
         });
-        await block(5000);
+        changeProgress({ title: "Sending you a mail.", value: 75 });
+        await block(500);
+        changeProgress({ title: "Sending you a mail..", value: 80 });
+        await block(600);
+        changeProgress({ title: "Sending you a mail...", value: 90 });
+        await block(1000);
+        const { error } = await response.json();
+        if (error) {
+          await onError("Error occurred. Please try again.");
+          await block(3000);
+          setIsLoading(false);
+        } else {
+          changeProgress({
+            title: (
+              <>
+                <span className="text-base font-medium">We sent you mail.</span>
+                <br />
+                Check your email for sign in.
+              </>
+            ),
+            value: 100,
+          });
+          await block(2000);
+          router.replace("/signin/otp?sent=true");
+          setIsLoading(false);
+        }
+      } catch (error) {
+        await onError("Error occurred. Please try again.");
+        await block(3000);
         setIsLoading(false);
+      } finally {
+        setProgressValue(100);
       }
     }
   };
 
   useEffect(() => {
     if (duplicateChecked) {
-      onSignUpHandler();
+      onSignUpHandler("sign-up");
     }
   }, [duplicateChecked]);
 
@@ -229,7 +280,9 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
               onClick={(e) => {
                 e.preventDefault();
                 if (submitButtonRef.current?.innerText === "Sign Up") {
-                  onSignUpHandler();
+                  onSignUpHandler("sign-up");
+                } else if (submitButtonRef.current?.innerText === "Sign In") {
+                  onSignUpHandler("sign-in");
                 }
               }}
               isLoading={isLoading}

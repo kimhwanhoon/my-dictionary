@@ -5,11 +5,10 @@ import { NextResponse } from "next/server";
 import { RouteReturnType } from "@/types/routeReturnTypes";
 
 const signIn = async (req: NextRequest): Promise<RouteReturnType> => {
-  const formData = await req.formData();
-  const email = formData.get("email") as string;
+  const { email }: { email: string } = await req.json();
 
   // if email was empty, return error
-  if (!formData || !email) {
+  if (!email) {
     return NextResponse.json({ error: true, message: "email is empty." });
   }
 
@@ -18,14 +17,10 @@ const signIn = async (req: NextRequest): Promise<RouteReturnType> => {
     const supabase = createClient(cookieStore);
 
     const { data, error } = await supabase.auth.signInWithOtp({
-      email: email as string,
-      options: {
-        shouldCreateUser: false,
-      },
+      email,
     });
-    //
-    //
     if (error) {
+      console.log(error);
       return NextResponse.json({ error: true, message: error.message });
     } else {
       cookies().set("email", email, { secure: true });
@@ -35,11 +30,9 @@ const signIn = async (req: NextRequest): Promise<RouteReturnType> => {
       });
     }
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ error: true, message: "" });
   }
-
-  // revalidatePath("/", "layout");
-  // redirect("/");
 };
 
 export { signIn as POST };

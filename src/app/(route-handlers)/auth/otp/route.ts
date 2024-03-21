@@ -5,10 +5,8 @@ import { NextResponse } from "next/server";
 const otpRoute = async (req: Request) => {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-  const formData = await req.formData();
-  const email = String(formData.get("email"));
-  const token = String(formData.get("token"));
-
+  const { email, token } = await req.json();
+  console.log(email);
   const {
     data: { session },
     error,
@@ -20,7 +18,6 @@ const otpRoute = async (req: Request) => {
 
   if (session) {
     cookieStore.delete("email");
-
     return NextResponse.json({ error: false, message: "ok" }, { status: 200 });
   }
   if (error) {
