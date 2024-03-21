@@ -9,8 +9,9 @@ export const SearchInput = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentLanguage = searchParams.get("lang");
+  const currentWord = searchParams.get("search") ?? "";
 
-  const [inputValue, setInputValue] = useState<string>("");
+  const [inputValue, setInputValue] = useState<string>(currentWord);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,7 +24,6 @@ export const SearchInput = () => {
       onSubmit={onSubmitHandler}
     >
       <Input
-        size="sm"
         label={"Search words"}
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}

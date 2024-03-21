@@ -138,18 +138,20 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
       setProgressValue(25);
       await block(500);
       changeProgress({ title: "Finding your email...", value: 50 });
+      setTimeout(() => {
+        changeProgress({ title: "Finding your email...", value: 60 });
+      }, 1000);
+      setTimeout(() => {
+        changeProgress({ title: "Finding your email...", value: 70 });
+      }, 1500);
       try {
         const body = { email: emailValue };
         const response = await fetch("/auth/signin", {
           method: "post",
           body: JSON.stringify(body),
         });
-        changeProgress({ title: "Sending you a mail.", value: 75 });
+        changeProgress({ title: "Sending you a mail...", value: 75 });
         await block(500);
-        changeProgress({ title: "Sending you a mail..", value: 80 });
-        await block(600);
-        changeProgress({ title: "Sending you a mail...", value: 90 });
-        await block(1000);
         const { error } = await response.json();
         if (error) {
           await onError("Error occurred. Please try again.");

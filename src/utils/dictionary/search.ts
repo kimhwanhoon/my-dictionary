@@ -3,7 +3,7 @@ import "server-only";
 
 interface SearchProps {
   word: string | null;
-  lang: "en" | "fr-en" | "en-fr";
+  lang: string;
 }
 
 export const searchDictionary = async ({ word, lang }: SearchProps) => {

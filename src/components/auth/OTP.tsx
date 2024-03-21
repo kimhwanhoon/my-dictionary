@@ -98,14 +98,16 @@ export const OTP = ({ email }: Props) => {
               </div>
 
               <div className="pt-8">
-                <Button
-                  color="primary"
-                  fullWidth
-                  onClick={verifyOTP}
-                  isLoading={isLoading}
-                >
-                  Confirm
-                </Button>
+                {!codeMatched && (
+                  <Button
+                    color="primary"
+                    fullWidth
+                    onClick={verifyOTP}
+                    isLoading={isLoading}
+                  >
+                    Confirm
+                  </Button>
+                )}
               </div>
               {isLoading && (
                 <div className="pt-4">

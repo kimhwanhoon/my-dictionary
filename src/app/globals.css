@@ -266,12 +266,14 @@
 }
 
 .inline {
-  @apply text-sm flex gap-[0.5px] items-end;
+  @apply text-sm flex gap-[0.5px] items-center;
 }
 .pron {
   @apply text-xs flex gap-2 items-center;
 }
-
+.bold {
+  @apply font-mono;
+}
 .hwd {
   @apply text-4xl font-semibold pr-2;
 }
@@ -281,7 +283,7 @@
 }
 
 .hom {
-  @apply flex flex-col gap-1 my-2 w-full;
+  @apply flex flex-col my-2 w-full p-2;
 }
 
 .sense {
@@ -568,3 +570,38 @@
 
 /* 
   */
+
+/* 
+   */
+.dictionary-result-background {
+  background-color: #ffffff;
+  opacity: 1;
+  background-image: linear-gradient(#444cf720 1.1px, transparent 1.1px),
+    linear-gradient(to right, #444cf720 1.1px, #ffffff 1.1px);
+  background-size: 22px 22px;
+}
+
+/* 
+    */
+
+.lbl {
+  @apply font-serif text-sm  bg-[#f4f4f6] px-1 py-[2px] rounded-lg;
+}
+
+.orth {
+  @apply text-primary-600 font-serif text-15;
+}
+
+.pos {
+  @apply px-2 py-1 bg-gray-700 text-white rounded-xl font-medium text-sm;
+}
+
+/* .quote {
+  @apply text-blue-400;
+} */
+.cit {
+  @apply font-sans text-gray-800;
+}
+.playback {
+  @apply hidden;
+}

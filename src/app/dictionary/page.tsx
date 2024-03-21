@@ -1,7 +1,6 @@
 import React from "react";
 import { SearchInput } from "./components/SearchInput";
 import { SearchResult } from "./components/SearchResult";
-import { Divider } from "@nextui-org/react";
 import { checkUserSession } from "@/utils/supabase/sessionChecker";
 import { redirect } from "next/navigation";
 
@@ -11,11 +10,12 @@ interface Props {
 
 const DictionaryPage = async ({ searchParams: { search, lang } }: Props) => {
   const { isSession, userData } = await checkUserSession();
+  console.log(isSession);
   if (!isSession) {
     redirect("/signin");
   } else {
     return (
-      <div>
+      <div className="h-full dictionary-result-background">
         <SearchInput />
         <SearchResult search={search} lang={lang} />
       </div>
