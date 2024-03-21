@@ -6,7 +6,7 @@ import { checkUserSession } from "@/utils/supabase/sessionChecker";
 import { redirect } from "next/navigation";
 
 interface Props {
-  searchParams: { search: string | null; lang: "en" | "fr-en" | "en-fr" };
+  searchParams: { search: string | null; lang: string };
 }
 
 const DictionaryPage = async ({ searchParams: { search, lang } }: Props) => {

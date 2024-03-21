@@ -7,7 +7,9 @@ interface SearchProps {
 }
 
 export const searchDictionary = async ({ word, lang }: SearchProps) => {
-  if (!word) return;
+  if (!word || !lang) {
+    return false;
+  }
   const API_URL = env.COLLINS_DICTIONARY_URL;
   const API_KEY = env.COLLINS_DICTIONARY_API_KEY || "";
 
