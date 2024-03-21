@@ -21,7 +21,7 @@ const OTPPage = ({ searchParams }: Props) => {
     redirect("/signin?error=true");
   }
   return (
-    <div className="flex items-center h-full">
+    <div className="flex justify-center items-center h-full">
       <OTP email={userEmail} />
     </div>
   );

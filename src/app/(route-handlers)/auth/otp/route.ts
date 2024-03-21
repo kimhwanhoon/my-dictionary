@@ -6,7 +6,6 @@ const otpRoute = async (req: Request) => {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
   const { email, token } = await req.json();
-  console.log(email);
   const {
     data: { session },
     error,

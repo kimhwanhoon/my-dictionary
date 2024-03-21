@@ -10,7 +10,6 @@ interface Props {
 
 const DictionaryPage = async ({ searchParams: { search, lang } }: Props) => {
   const { isSession, userData } = await checkUserSession();
-  console.log(isSession);
   if (!isSession) {
     redirect("/signin");
   } else {

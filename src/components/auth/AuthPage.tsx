@@ -109,7 +109,6 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
         });
         setProgressValue(85);
         const { error, message } = await response.json();
-        console.log(message);
         if (error) {
           await onError("Error occurred. Please try again.");
           await block(3000);
