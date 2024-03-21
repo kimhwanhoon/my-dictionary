@@ -152,7 +152,6 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
         isOpen={isOpen}
         onClose={() => setIsLoading(false)}
         isDismissable={false}
-        hideCloseButton
       >
         <ModalContent>
           {(onClose) => (

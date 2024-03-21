@@ -15,9 +15,8 @@ const DictionaryPage = async ({ searchParams: { search, lang } }: Props) => {
     redirect("/signin");
   } else {
     return (
-      <div className="p-4 ">
+      <div>
         <SearchInput />
-        <Divider className="my-4" />
         <SearchResult search={search} lang={lang} />
       </div>
     );

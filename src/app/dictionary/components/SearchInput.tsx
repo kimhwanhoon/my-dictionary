@@ -19,7 +19,7 @@ export const SearchInput = () => {
 
   return (
     <form
-      className="flex flex-col gap-2 bg-blue-200 p-6 rounded-xl"
+      className="flex flex-col gap-2 p-6 primary-bg"
       onSubmit={onSubmitHandler}
     >
       <Input
