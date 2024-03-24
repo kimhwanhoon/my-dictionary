@@ -4,6 +4,7 @@ import { Button, Input } from "@nextui-org/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { FormEvent, useState } from "react";
 import { SelectLanguage } from "./SelectLanguage";
+import { debounce } from "lodash";
 
 export const SearchInput = () => {
   const router = useRouter();
@@ -13,15 +14,17 @@ export const SearchInput = () => {
 
   const [inputValue, setInputValue] = useState<string>(currentWord);
 
-  const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmitHandler = debounce(() => {
     router.push(`/dictionary?lang=${currentLanguage}&search=${inputValue}`);
-  };
+  }, 1000);
 
   return (
     <form
       className="flex flex-col gap-2 p-6 primary-bg"
-      onSubmit={onSubmitHandler}
+      onSubmit={(e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        onSubmitHandler();
+      }}
     >
       <Input
         label={"Search words"}
