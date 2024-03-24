@@ -2,7 +2,7 @@ import { checkUserSession } from "@/utils/supabase/sessionChecker";
 import { redirect } from "next/navigation";
 
 const Home = async () => {
-  const { isSession, userData } = await checkUserSession();
+  const { isSession } = await checkUserSession();
 
   isSession ? redirect("/home") : redirect("/signin");
 

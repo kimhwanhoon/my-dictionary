@@ -18,7 +18,7 @@ export const OTP = ({ email }: Props) => {
   const [codeMatched, setCodeMatched] = useState<boolean>(false);
 
   // alert
-  const { onOpen, isOpen, onClose, onOpenChange } = useDisclosure();
+  const { onOpen } = useDisclosure();
   //
   const router = useRouter();
 
@@ -48,8 +48,7 @@ export const OTP = ({ email }: Props) => {
     }
     if (!error) {
       setCodeMatched(true);
-      await block(1000);
-      router.replace("/");
+      router.refresh();
     }
   };
 
@@ -72,13 +71,9 @@ export const OTP = ({ email }: Props) => {
             </div>
           </div>
           <div>
-            <form action="#" method="post">
+            <form method="post">
               <div className="flex justify-center">
-                {codeMatched ? (
-                  <span className="text-gray-600 font-medium text-base">
-                    CODE MATCHED
-                  </span>
-                ) : (
+                {!codeMatched && (
                   <OTPInput
                     shouldAutoFocus
                     inputType="number"

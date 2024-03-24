@@ -19,7 +19,7 @@ export const SearchResult = async ({ search, lang }: Props) => {
     );
   } else {
     return (
-      <section className="flex flex-col p-4 dictionary-result-background">
+      <section className="flex flex-col p-4 dictionary-result-background pt-8">
         {parse(data.entryContent)}
       </section>
     );

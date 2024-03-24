@@ -8,7 +8,7 @@ import { SelectLanguage } from "./SelectLanguage";
 export const SearchInput = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const currentLanguage = searchParams.get("lang");
+  const currentLanguage = searchParams.get("lang") ?? "en";
   const currentWord = searchParams.get("search") ?? "";
 
   const [inputValue, setInputValue] = useState<string>(currentWord);
@@ -29,7 +29,7 @@ export const SearchInput = () => {
         onChange={(e) => setInputValue(e.target.value)}
         endContent={<SelectLanguage currentLanguage={currentLanguage} />}
       />
-      <Button color="primary" fullWidth size="md">
+      <Button color="primary" fullWidth size="md" type="submit">
         Search
       </Button>
     </form>
