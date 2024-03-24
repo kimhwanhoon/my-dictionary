@@ -16,7 +16,6 @@ import {
 import { IconMail } from "@tabler/icons-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ReactNode, useEffect, useRef, useState } from "react";
-import { OTP } from "./OTP";
 
 interface Props {
   type: "sign-in" | "sign-up";
@@ -53,18 +52,21 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
 
   const onSignUpHandler = async (type: "sign-in" | "sign-up") => {
     // On Error
-    const onError = async (message: string) => {
+    const onError = async (message: string | ReactNode) => {
       setProgressBarColor("danger");
       changeProgress({
-        title: <span className="text-red-500">{message}</span>,
+        title: <div className="text-gray-700">{message}</div>,
         value: 100,
       });
-      await block(3000);
+      await block(5000);
+      setIsLoading(false);
       setProgressBarColor("primary");
     };
     // Email duplicate check (sign-up)
     //
     if (type === "sign-up") {
+      console.log(0);
+      console.log(duplicateChecked);
       if (!duplicateChecked) {
         setIsLoading(true);
         changeProgress({ title: "Checking your email", value: 0 });
@@ -83,7 +85,6 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
         if (error) {
           setDuplicateChecked(false);
           await onError("Email is already registered.");
-          setIsLoading(false);
           router.replace("/signup?error=true");
         } else {
           changeProgress({
@@ -110,9 +111,10 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
         setProgressValue(85);
         const { error, message } = await response.json();
         if (error) {
+          console.log(321312);
+          console.log(error);
+          setDuplicateChecked(false);
           await onError("Error occurred. Please try again.");
-          await block(3000);
-          setIsLoading(false);
           router.replace("/signup?error=true");
         } else {
           changeProgress({
@@ -140,22 +142,27 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
       setTimeout(() => {
         changeProgress({ title: "Finding your email...", value: 60 });
       }, 1000);
-      setTimeout(() => {
-        changeProgress({ title: "Finding your email...", value: 70 });
-      }, 1500);
       try {
         const body = { email: emailValue };
         const response = await fetch("/auth/signin", {
           method: "post",
           body: JSON.stringify(body),
         });
-        changeProgress({ title: "Sending you a mail...", value: 75 });
+        changeProgress({ title: "Finding your email...", value: 70 });
         await block(500);
-        const { error } = await response.json();
+        const { error, message } = await response.json();
         if (error) {
-          await onError("Error occurred. Please try again.");
-          await block(3000);
-          setIsLoading(false);
+          if (message.includes("Signups not allowed for otp")) {
+            await onError(
+              <>
+                <p>This email is not associated with this app.</p>
+                <p>You&apos;re redirecting you to sign up page.</p>
+              </>
+            );
+            router.push("/signup");
+          } else {
+            await onError("Error occurred. Please try again.");
+          }
         } else {
           changeProgress({
             title: (
@@ -173,8 +180,6 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
         }
       } catch (error) {
         await onError("Error occurred. Please try again.");
-        await block(3000);
-        setIsLoading(false);
       } finally {
         setProgressValue(100);
       }
@@ -209,7 +214,7 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
           {(onClose) => (
             <>
               <div className="p-5 pb-3 flex flex-col gap-2">
-                <p className="text-sm text-gray-800">{progressTitle}</p>
+                <div className="text-sm text-gray-800">{progressTitle}</div>
                 <Progress
                   color={progressBarColor}
                   size="sm"

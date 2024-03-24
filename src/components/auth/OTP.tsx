@@ -34,7 +34,7 @@ export const OTP = ({ email }: Props) => {
     setProgress(50);
     const { error, message } = await res.json();
     setProgress(95);
-    await block(1000);
+    await block(500);
     setIsLoading(false);
     setProgress(100);
 

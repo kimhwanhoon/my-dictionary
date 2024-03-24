@@ -9,13 +9,13 @@ const addToMyList = async (req: NextRequest) => {
   const { userData } = await checkUserSession();
   const userId = userData?.user.id;
 
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from("my_words")
     .select("words")
     .eq("author_id", userId)
     .single();
 
-  const words: string[] = data?.words;
+  const words: string[] = data?.words ?? [];
   // duplicate check
   if (words.includes(word)) {
     return NextResponse.json({ data: null, error: "duplicated" });
@@ -23,18 +23,18 @@ const addToMyList = async (req: NextRequest) => {
 
   // update
   words.push(word);
+
   const { error: updateError } = await supabase
     .from("my_words")
-    .update({ words })
+    .upsert({ words })
     .eq("author_id", userId);
 
   if (updateError) {
     console.log(updateError);
+    return NextResponse.json({ data: null, error: true });
   } else {
     return NextResponse.json({ data: "ok", error: null });
   }
-
-  return NextResponse.json({ data: words, error });
 };
 
 export { addToMyList as POST };

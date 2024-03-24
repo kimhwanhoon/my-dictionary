@@ -18,8 +18,17 @@ const signIn = async (req: NextRequest): Promise<RouteReturnType> => {
 
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
+      options: { shouldCreateUser: false },
     });
+    console.log(data);
+    console.log(error);
     if (error) {
+      console.log(1);
+      if (error.message.includes("Signups not allowed for otp")) {
+        console.log(2);
+        console.log(error.message);
+        return NextResponse.json({ error: true, message: error.message });
+      }
       console.log(error);
       return NextResponse.json({ error: true, message: error.message });
     } else {
