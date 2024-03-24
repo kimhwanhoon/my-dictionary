@@ -15,7 +15,9 @@ export const SearchInput = () => {
   const [inputValue, setInputValue] = useState<string>(currentWord);
 
   const onSubmitHandler = debounce(() => {
-    router.push(`/dictionary?lang=${currentLanguage}&search=${inputValue}`);
+    router.push(
+      `/dictionary?lang=${currentLanguage}&search=${inputValue.toLowerCase()}`
+    );
   }, 1000);
 
   return (
