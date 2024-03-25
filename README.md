@@ -12,9 +12,14 @@
 2. Connect auth
 3. Create tables for the database.
 
+- Let's make the card clickable so after clicking the definition and examples can be revealed.
+- If url is signin or signup, let's hide header and footer.
+- Dictionary API should be added. the fastest one!
+- if same word is registered to the words, need to do something about it.
+
 ## Types
 
-I have set route-handler's return type on `src/types/routeReturnTypes.ts`.
+I have set the route-handler's return type on `src/types/routeReturnTypes.ts`.
 
 ```ts
 import { NextResponse } from "next/server";
@@ -46,3 +51,15 @@ const POST = async (req: NextRequest): Promise<RouteReturnType> => {};
 ### Bugs
 
 1. Footer icons must be filled with purple color depending on the current URL. But when it goes to layout, it seems that the code is cached so the current URL won't be updated.
+2. [solved]On iPhone (android not tested, when clicking input, it zooms so the user has to zoom out again.) => The problem has been fixed by setting meta option interactive-widget to resizes-content.
+   ref: <https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag>
+
+#### Ideas
+
+1. french_dictionary 테이블에서 다른 컬럼 추가하고 모든 유저를 넣을 수 있게 해서 해당 유저가 직접 그 단어의 뜻을 커스텀해서 볼 수 있게 하는 기능. official app에서 검색해도 자기가 저장했던 의미가 자신에게만 보인다!!!
+
+2. Maybe, connect dictionary API first, and then put unique id for each word, and then add customizable user note (or definition, examples, etc) for that uid(word).
+
+3. on Searching word, should I just push the url to `?word={value}` and do the searching work on page server component? Or should I just make client -> route handler logic..?
+
+3-1. if (!searchURLParam...) => show default, if param value exist -> search function (server side) activates.

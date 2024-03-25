@@ -7,7 +7,7 @@ interface Props {
   searchParams: { sent: string };
 }
 
-const OTPPage = ({ searchParams }: Props) => {
+const OTPPage = async ({ searchParams }: Props) => {
   const hasOtpSent = searchParams.sent === "true" ? true : false;
   const cookieStore = cookies();
   const userEmail = cookieStore.get("email")
@@ -21,7 +21,7 @@ const OTPPage = ({ searchParams }: Props) => {
     redirect("/signin?error=true");
   }
   return (
-    <div>
+    <div className="flex justify-center items-center h-full">
       <OTP email={userEmail} />
     </div>
   );

@@ -12,7 +12,42 @@ const SignUpPage = async ({ searchParams: { email } }: Props) => {
     redirect("/home");
   }
   return (
-    <section className="pattern-bg-knitting h-full bg-main flex flex-col items-center justify-center">
+    <section className="h-full bg-transparent flex flex-col items-center justify-center">
+      <div className="background -z-10">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
       <AuthPage type="sign-up" email={email} />
     </section>
   );

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers as NextUIProvider } from "@/NextUI/provider";
@@ -19,6 +19,13 @@ export const metadata: Metadata = {
     "This web app is where we save our vocabularies, idioms and sentences that we want to memorize.",
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  interactiveWidget: "resizes-content",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -31,10 +38,10 @@ export default function RootLayout({
       <body className={`${inter.className} h-dvh`} suppressHydrationWarning>
         <NextUIProvider>
           <Header />
-          <main className="h-[calc(100dvh-150px)] overflow-auto">
+          <main className="h-[calc(100dvh-130px)] overflow-auto">
             {children}
           </main>
-          <Footer url={requestUrl} />
+          <Footer />
         </NextUIProvider>
         <SpeedInsights />
         <Analytics />

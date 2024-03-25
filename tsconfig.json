@@ -27,7 +27,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/types/**/*.d.ts",
-    "src/components/auth/OTP.jsx"
+    "src/components/auth/OTP.jsx",
+    "src/utils/middleware/urlToOrigin.js"
   ],
   "exclude": ["node_modules"]
 }

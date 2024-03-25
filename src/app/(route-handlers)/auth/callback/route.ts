@@ -24,7 +24,6 @@ export async function GET(req: NextRequest) {
       type,
       token_hash,
     });
-    console.log("🚀 ~ GET ~ error:", error);
 
     if (!error) {
       redirectTo.searchParams.delete("next");

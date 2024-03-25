@@ -1,32 +1,56 @@
+import "server-only";
+
 import { NextRequest } from "next/server.js";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { RouteReturnType } from "@/types/routeReturnTypes";
+import { isUserEmailDuplicated } from "@/utils/supabase/auth/isUserEmailDuplicated";
 
 const signUp = async (req: NextRequest): Promise<RouteReturnType> => {
-  const formData = await req.formData();
-  const email = formData.get("email") as string;
+  const {
+    email,
+    duplicateChecked,
+  }: { email: string; duplicateChecked: boolean } = await req.json();
 
-  // if email was empty, return error
-  if (!formData || !email) {
-    return NextResponse.json({ error: true, message: "email is empty." });
-  }
+  //
+  // Email duplicate check
+  //
+  if (!duplicateChecked) {
+    const { duplicated, error: duplicateEmailCheckingError } =
+      await isUserEmailDuplicated(email);
 
-  try {
-    const cookieStore = cookies();
-    const supabase = createClient(cookieStore);
+    if (duplicateEmailCheckingError) {
+      return NextResponse.json({
+        error: true,
+        message: "Error occurred.",
+      });
+    }
 
-    const { data, error } = await supabase.auth.signInWithOtp({
-      email: email as string,
+    if (duplicated) {
+      return NextResponse.json({
+        error: true,
+        message: "Email already registered.",
+      });
+    } else {
+      return NextResponse.json({
+        error: false,
+        message: "Email not duplicated.",
+      });
+    }
+    //
+    // Create user by "signin through OTP"
+    //
+  } else {
+    const supabase = createClient(cookies());
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
       options: {
         shouldCreateUser: true,
       },
     });
-    //
-    // console.log(data);
-    //
     if (error) {
+      console.log(error);
       return NextResponse.json({ error: true, message: error.message });
     } else {
       return NextResponse.json({
@@ -34,8 +58,6 @@ const signUp = async (req: NextRequest): Promise<RouteReturnType> => {
         message: "ok",
       });
     }
-  } catch (error) {
-    return NextResponse.json({ error: true, message: "" });
   }
 };
 

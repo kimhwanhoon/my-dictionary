@@ -1,11 +1,19 @@
 import { ToastContainer as Container } from "react-toastify";
 
-export const ToastContainer = () => {
+interface ToastProps {
+  autoClose?: boolean;
+  duration?: number;
+}
+
+export const ToastContainer = ({
+  autoClose = false,
+  duration = 3000,
+}: ToastProps) => {
   return (
     <Container
       closeButton={false}
       position="top-right"
-      autoClose={5000}
+      autoClose={autoClose && duration}
       // hideProgressBar={false}
       newestOnTop={false}
       closeOnClick
