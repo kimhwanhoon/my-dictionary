@@ -328,6 +328,7 @@
   left: 0;
   background: #f5f7fa;
   overflow: hidden;
+  @apply dark:bg-slate-800;
 }
 
 .background span {

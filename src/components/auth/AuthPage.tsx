@@ -16,6 +16,7 @@ import {
 import { IconMail } from "@tabler/icons-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ReactNode, useEffect, useRef, useState } from "react";
+import { Logo } from "../Logo";
 
 interface Props {
   type: "sign-in" | "sign-up";
@@ -226,11 +227,14 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
         </ModalContent>
       </Modal>
       {/* Modal ends */}
-      <div className="px-8 w-full mx-auto max-w-[400px] space-y-6">
+      <div className="px-10 py-16 rounded-xl shadow-xl shadow-slate-700 w-full mx-auto max-w-[400px] space-y-3 dark:bg-slate-800 dark:bg-opacity-60">
+        <div className="pb-4 ">
+          <Logo customClass="" />
+        </div>
         <div className="space-y-2 text-center">
-          <h1 className="text-3xl font-bold text-main-5 py-4">
+          <h2 className="text-3xl font-bold text-primary-5 py-4">
             {type === "sign-in" ? "Sign In" : "Sign Up"}
-          </h1>
+          </h2>
           <p className="text-gray-500 dark:text-gray-400 text-15">
             {type === "sign-in"
               ? "Enter your information to sign in"
