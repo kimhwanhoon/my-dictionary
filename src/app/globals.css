@@ -590,7 +590,7 @@
 }
 
 .orth {
-  @apply text-primary-600 font-serif text-15;
+  @apply text-indigo-600 font-serif text-15;
 }
 
 .pos {

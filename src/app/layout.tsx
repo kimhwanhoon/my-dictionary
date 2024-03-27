@@ -29,18 +29,18 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const requestUrl = headers().get("x-url") || "";
+  // const requestUrl = headers().get("x-url") || "";
   const { isSession } = await checkUserSession();
-  const heightVariation = isSession ? "h-[calc(100dvh-130px)]" : "h-[100dvh]";
+  const heightVariation = isSession
+    ? "h-[calc(100dvh-130px)]"
+    : "h-[calc(100dvh-70px)]";
 
   return (
     <html lang="en" className="bg-main" suppressHydrationWarning>
       <body className={`${inter.className} h-dvh`} suppressHydrationWarning>
         <NextUIProvider>
           <Header />
-          <main className={`${heightVariation} overflow-auto light`}>
-            {children}
-          </main>
+          <main className={`${heightVariation} overflow-auto`}>{children}</main>
           <Footer />
           <SpeedInsights />
           <Analytics />

@@ -227,15 +227,12 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
         </ModalContent>
       </Modal>
       {/* Modal ends */}
-      <div className="px-10 py-16 rounded-xl shadow-xl shadow-slate-700 w-full mx-auto max-w-[400px] space-y-3 dark:bg-slate-800 dark:bg-opacity-60">
-        <div className="pb-4 ">
-          <Logo customClass="" />
-        </div>
+      <div className="px-10 py-16 rounded-xl shadow-large w-full mx-auto max-w-[400px] space-y-3 bg-slate-100 bg-opacity-70 dark:bg-slate-900 dark:bg-opacity-70">
         <div className="space-y-2 text-center">
-          <h2 className="text-3xl font-bold text-primary-5 py-4">
+          <h2 className="text-3xl font-bold text-indigo-600 dark:text-gray-200 py-4">
             {type === "sign-in" ? "Sign In" : "Sign Up"}
           </h2>
-          <p className="text-gray-500 dark:text-gray-400 text-15">
+          <p className="text-gray-600 dark:text-gray-300 text-15">
             {type === "sign-in"
               ? "Enter your information to sign in"
               : "Enter your information to sign up"}
@@ -247,7 +244,6 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
               isDisabled={isLoading}
               ref={emailInputRef}
               className="py-2"
-              classNames={{ inputWrapper: "bg-white" }}
               name="email"
               size={"md"}
               type="email"
@@ -310,7 +306,7 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
                 : "Already have an account?"}
             </span>
             <Link
-              className="flex justify-end underline-offset-2 mr-2 text-sm"
+              className="flex justify-end underline-offset-2 mr-2 text-sm dark:text-slate-400"
               size="sm"
               color="primary"
               underline="always"

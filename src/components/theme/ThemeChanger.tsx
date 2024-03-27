@@ -23,24 +23,24 @@ export const ThemeChanger = () => {
     }
   };
 
-  const Icon = ({ size }: { size: number }) => {
-    if (theme === "light") {
-      return <IconMoon size={size} />;
-    } else {
-      return <IconSun size={size} />;
-    }
-  };
+  const ThemeToggleButton = ({ size }: { size: number }) => (
+    <Button
+      isIconOnly
+      size="sm"
+      onClick={themeChanger}
+      className={`bg-opacity-50 hover:bg-opacity-100 ${
+        theme === "light"
+          ? "hover:bg-indigo-800 hover:text-white"
+          : "text-indigo-800 bg-slate-300"
+      }`}
+    >
+      {theme === "light" ? <IconMoon size={size} /> : <IconSun size={size} />}
+    </Button>
+  );
 
   return (
     <div className="absolute right-2">
-      <Button
-        isIconOnly
-        size="sm"
-        onClick={themeChanger}
-        className="bg-opacity-40"
-      >
-        <Icon size={16} />
-      </Button>
+      <ThemeToggleButton size={16} />
     </div>
   );
 };
