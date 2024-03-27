@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Providers as NextUIProvider } from "@/NextUI/Provider";
+import { Provider } from "@/NextUI/Provider";
 import { Header } from "@/components/header/Header";
 import { Footer } from "@/components/footer/Footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -40,13 +40,13 @@ export default async function RootLayout({
         className={`${inter.className} h-dvh dark:bg-slate-900`}
         suppressHydrationWarning
       >
-        <NextUIProvider>
+        <Provider>
           <Header />
           <main className={`${heightVariation} overflow-auto`}>{children}</main>
           <Footer />
           <SpeedInsights />
           <Analytics />
-        </NextUIProvider>
+        </Provider>
       </body>
     </html>
   );
