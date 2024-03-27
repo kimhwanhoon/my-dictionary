@@ -37,7 +37,10 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className="bg-main" suppressHydrationWarning>
-      <body className={`${inter.className} h-dvh`} suppressHydrationWarning>
+      <body
+        className={`${inter.className} h-dvh dark:bg-slate-900`}
+        suppressHydrationWarning
+      >
         <NextUIProvider>
           <Header />
           <main className={`${heightVariation} overflow-auto`}>{children}</main>

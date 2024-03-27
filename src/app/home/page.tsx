@@ -6,7 +6,6 @@ export default async function PrivatePage() {
   if (!isSession) {
     redirect("/signin");
   } else {
-    // console.log(userData?.user.identities);
     return (
       <div>
         <p>User email: {userData!.user.email}</p>

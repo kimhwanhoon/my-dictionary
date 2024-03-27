@@ -2,15 +2,26 @@
 
 import { Button, Input } from "@nextui-org/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { SelectLanguage } from "./SelectLanguage";
 import { debounce } from "lodash";
+import { useTheme } from "next-themes";
 
 export const SearchInput = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentLanguage = searchParams.get("lang") ?? "en";
   const currentWord = searchParams.get("search") ?? "";
+  const { theme } = useTheme();
+  const [backgroundStyle, setBackgroundStyle] = useState<string>("");
+
+  useEffect(() => {
+    if (theme === "light") {
+      setBackgroundStyle("light-search-input-bg");
+    } else {
+      setBackgroundStyle("dark-search-input-bg");
+    }
+  }, [theme]);
 
   const [inputValue, setInputValue] = useState<string>(currentWord);
 
@@ -22,7 +33,7 @@ export const SearchInput = () => {
 
   return (
     <form
-      className="flex flex-col gap-2 p-6 primary-bg"
+      className={`flex flex-col gap-2 p-6 ${backgroundStyle}`}
       onSubmit={(e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         onSubmitHandler();

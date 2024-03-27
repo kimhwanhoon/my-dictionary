@@ -27,6 +27,9 @@ const config: Config = {
       backgroundColor: {
         main: "#f5f7fa",
       },
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(circle, var(--tw-gradient-stops))",
+      },
       fontSize: { 15: "15px" },
     },
   },
@@ -49,7 +52,7 @@ const config: Config = {
         dark: {
           colors: {
             primary: {
-              DEFAULT: "#3730a3",
+              DEFAULT: "#3730A3",
               foreground: "#ffffff",
             },
             // focus: "#d7d4ff",

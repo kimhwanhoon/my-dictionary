@@ -59,8 +59,8 @@ export const OTP = ({ email }: Props) => {
   }, [otp]);
 
   return (
-    <div className="flex-col justify-center overflow-hidden bg-gray-50 py-12">
-      <div className="relative bg-white px-6 pt-10 pb-9 shadow-xl mx-auto w-full max-w-lg rounded-2xl">
+    <div className="flex-col justify-center overflow-hidden py-12">
+      <div className="relative bg-white dark:bg-slate-800 dark:bg-opacity-80 px-6 pt-10 pb-9 shadow-xl mx-auto w-full max-w-lg rounded-2xl">
         <div className="mx-auto flex w-full max-w-md flex-col space-y-16">
           <div className="flex flex-col items-center justify-center text-center space-y-2">
             <div className="font-semibold text-3xl">
@@ -83,7 +83,7 @@ export const OTP = ({ email }: Props) => {
                     renderInput={(props) => (
                       <input
                         {...props}
-                        className="bg-gray-100 py-3 mx-1 rounded-md shadow-small"
+                        className="bg-gray-100 dark:bg-slate-500 py-3 mx-1 rounded-md shadow-small dark:text-white"
                         style={{ textAlign: "center", width: "100%" }}
                       />
                     )}
