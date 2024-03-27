@@ -5,14 +5,15 @@ import { NextRequest, NextResponse } from "next/server";
 
 const addToMyList = async (req: NextRequest) => {
   const { word } = await req.json();
-  const supabase = createClient(cookies());
+  const supabase: any = createClient(cookies());
+
   const { userData } = await checkUserSession();
   const userId = userData?.user.id;
 
   const { data } = await supabase
     .from("my_words")
     .select("words")
-    .eq("author_id", userId)
+    .eq("author_id", userId!)
     .single();
 
   const words: string[] = data?.words ?? [];

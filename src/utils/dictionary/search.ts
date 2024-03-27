@@ -1,5 +1,4 @@
 import { env } from "process";
-import "server-only";
 
 interface SearchProps {
   word: string | null;

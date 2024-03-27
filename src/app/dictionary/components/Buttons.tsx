@@ -50,7 +50,7 @@ export const Buttons = ({ word }: Props) => {
   };
   return (
     <div>
-      <Popover placement="top" isOpen={isAdded || isError}>
+      <Popover placement="top" isOpen={isAdded || isError} shadow="lg">
         <PopoverTrigger>
           <Button
             onClick={onClickHandler}

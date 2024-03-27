@@ -6,7 +6,7 @@ export const Footer = async () => {
   return (
     <>
       {isSession && (
-        <footer className="fixed bottom-0 left-0 right-0 bg-main w-full h-[70px] shadow-medium">
+        <footer className="fixed bottom-0 left-0 right-0 bg-main dark:bg-slate-900 w-full h-[70px] shadow-medium">
           <FooterIcons />
         </footer>
       )}
