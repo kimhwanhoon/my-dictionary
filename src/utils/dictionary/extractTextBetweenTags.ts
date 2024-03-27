@@ -1,4 +1,7 @@
 export const extractTextBetweenTags = (text: string): string | null => {
+  if (!text) {
+    return null;
+  }
   const regex = /<h1 class="hwd">(.*?)<\/h1>/;
   const match = text.match(regex);
 

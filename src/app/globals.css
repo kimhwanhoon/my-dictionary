@@ -587,11 +587,19 @@ input[type="number"]::-webkit-outer-spin-button {
 
 /* 
    */
-.dictionary-result-background {
+.light-dictionary-result-background {
   background-color: #ffffff;
   opacity: 1;
   background-image: linear-gradient(#444cf720 1.1px, transparent 1.1px),
     linear-gradient(to right, #444cf720 1.1px, #ffffff 1.1px);
+  background-size: 22px 22px;
+}
+
+.dark-dictionary-result-background {
+  /* background-color: #ffffff; */
+  /* opacity: 1; */
+  background-image: linear-gradient(#a7a7a730 1.1px, transparent 1.1px),
+    linear-gradient(to right, #a7a7a730 1.1px, #0f172b 1.1px);
   background-size: 22px 22px;
 }
 

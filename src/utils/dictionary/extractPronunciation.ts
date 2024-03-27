@@ -1,4 +1,7 @@
 export const extractPronunciation = (originalText: string): string | null => {
+  if (!originalText) {
+    return null;
+  }
   const regex = /<span class="pron" type="">(.*?)<a href="#"/; // 정규식 패턴
   const match = originalText.match(regex); // 정규식과 일치하는 문자열 찾기
 
