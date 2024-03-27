@@ -43,10 +43,10 @@ export const SearchResult = ({ search, lang }: Props) => {
     }
   }, [theme]);
 
-  const resultBefore = isSuccess && data.entryContent;
+  const resultBefore: string = (isSuccess && data.entryContent) ?? "";
   const resultWord = extractTextBetweenTags(resultBefore) ?? "";
   const pronunciation = extractPronunciation(resultBefore) ?? "";
-  const titleRemoved = removeTitle(resultBefore);
+  const titleRemoved = removeTitle(resultBefore) ?? "";
 
   return (
     <div

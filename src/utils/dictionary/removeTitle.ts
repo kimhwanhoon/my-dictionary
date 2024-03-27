@@ -1,4 +1,4 @@
-export function removeTitle(text: string): string {
+export function removeTitle(text: string): string | null {
   if (!text) {
     return null;
   }
