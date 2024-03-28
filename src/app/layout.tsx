@@ -1,12 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Provider } from "@/NextUI/Provider";
+
 import { Header } from "@/components/header/Header";
 import { Footer } from "@/components/footer/Footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import { checkUserSession } from "@/utils/supabase/sessionChecker";
+import { Provider } from "@/NextUI/Provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -44,9 +45,9 @@ export default async function RootLayout({
           <Header />
           <main className={`${heightVariation} overflow-auto`}>{children}</main>
           <Footer />
-          <SpeedInsights />
-          <Analytics />
         </Provider>
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
