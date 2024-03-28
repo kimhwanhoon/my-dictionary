@@ -7,7 +7,7 @@ import { Footer } from "@/components/footer/Footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import { checkUserSession } from "@/utils/supabase/sessionChecker";
-import { Provider } from "@/NextUI/Provider";
+import NextUIProvider from "@/NextUI/Provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -41,11 +41,11 @@ export default async function RootLayout({
         className={`${inter.className} h-dvh dark:bg-slate-900`}
         suppressHydrationWarning
       >
-        <Provider>
+        <NextUIProvider>
           <Header />
           <main className={`${heightVariation} overflow-auto`}>{children}</main>
           <Footer />
-        </Provider>
+        </NextUIProvider>
         <SpeedInsights />
         <Analytics />
       </body>
