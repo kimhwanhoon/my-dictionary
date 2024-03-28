@@ -7,7 +7,7 @@ import { Footer } from "@/components/footer/Footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import { checkUserSession } from "@/utils/supabase/sessionChecker";
-import NextUIProvider from "@/NextUI/Provider";
+import NextUIProvider from "@/NextUI/NextUIProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
