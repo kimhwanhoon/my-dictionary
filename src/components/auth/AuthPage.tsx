@@ -66,8 +66,6 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
     // Email duplicate check (sign-up)
     //
     if (type === "sign-up") {
-      console.log(0);
-      console.log(duplicateChecked);
       if (!duplicateChecked) {
         setIsLoading(true);
         changeProgress({ title: "Checking your email", value: 0 });
@@ -205,8 +203,8 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
     <>
       {/* Modal starts */}
       <Modal
+        className="z-10"
         placement="top"
-        backdrop="opaque"
         isOpen={isOpen}
         onClose={() => setIsLoading(false)}
         isDismissable={false}

@@ -21,7 +21,42 @@ const OTPPage = async ({ searchParams }: Props) => {
     redirect("/signin?error=true");
   }
   return (
-    <div className="dark:bg-slate-900 flex justify-center items-center h-[calc(100dvh)]">
+    <div className="dark:bg-gray-900 dark:bg-opacity-0 flex justify-center items-center h-full">
+      <div className="background">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
       <OTP email={userEmail} />
     </div>
   );
