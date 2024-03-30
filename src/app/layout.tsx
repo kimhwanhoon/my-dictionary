@@ -7,7 +7,7 @@ import { Footer } from "@/components/footer/Footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import { checkUserSession } from "@/utils/supabase/sessionChecker";
-import NextUIProvider from "@/NextUI/NextUIProvider";
+import NextUIProvider from "@/NextUI/Provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,7 +29,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const requestUrl = headers().get("x-url") || "";
   const { isSession } = await checkUserSession();
   const heightVariation = isSession
     ? "h-[calc(100dvh-130px)]"
@@ -38,7 +37,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className="bg-main" suppressHydrationWarning>
       <body
-        className={`${inter.className} h-dvh dark:bg-slate-900`}
+        className={`${inter.className} h-dvh dark:bg-slate-900 relative -z-50`}
         suppressHydrationWarning
       >
         <NextUIProvider>

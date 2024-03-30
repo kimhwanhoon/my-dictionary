@@ -334,17 +334,11 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .background {
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  background: #f5f7fa;
-  overflow: hidden;
-  @apply dark:bg-slate-800;
+  @apply -z-10 fixed w-dvw h-screen top-0 left-0 overflow-hidden bg-[#f5f7fa] bg-opacity-30 dark:bg-gray-900;
 }
 
 .background span {
+  @apply cursor-default dark:opacity-80;
   width: 24vmin;
   height: 24vmin;
   border-radius: 24vmin;

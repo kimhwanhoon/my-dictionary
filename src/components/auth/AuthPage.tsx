@@ -227,7 +227,7 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
         </ModalContent>
       </Modal>
       {/* Modal ends */}
-      <div className="px-10 py-16 rounded-xl shadow-large w-full mx-auto max-w-[400px] space-y-3 bg-slate-100 bg-opacity-70 dark:bg-slate-900 dark:bg-opacity-70">
+      <div className="px-10 py-16 rounded-xl shadow-large w-full mx-auto max-w-[400px] space-y-3 bg-slate-100 dark:bg-slate-900 bg-opacity-70 dark:bg-opacity-70">
         <div className="space-y-2 text-center">
           <h2 className="text-3xl font-bold text-indigo-600 dark:text-gray-200 py-4">
             {type === "sign-in" ? "Sign In" : "Sign Up"}
@@ -293,7 +293,7 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
               }}
               isLoading={isLoading}
               disabled={emailRegex.test(emailValue) ? false : true}
-              className="disabled:bg-opacity-50"
+              className="disabled:bg-opacity-50 disabled:cursor-not-allowed"
             >
               {type === "sign-in" ? "Sign In" : "Sign Up"}
             </Button>
