@@ -208,12 +208,15 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
         isOpen={isOpen}
         onClose={() => setIsLoading(false)}
         isDismissable={false}
+        backdrop="transparent"
       >
         <ModalContent>
           {(onClose) => (
             <>
               <div className="p-5 pb-3 flex flex-col gap-2">
-                <div className="text-sm text-gray-800">{progressTitle}</div>
+                <div className="text-sm text-gray-800 dark:text-gray-200">
+                  {progressTitle}
+                </div>
                 <Progress
                   color={progressBarColor}
                   size="sm"
@@ -225,7 +228,7 @@ export const AuthPage = ({ type, isError, email = "" }: Props) => {
         </ModalContent>
       </Modal>
       {/* Modal ends */}
-      <div className="px-10 py-16 rounded-xl shadow-large w-full mx-auto max-w-[400px] space-y-3 bg-slate-100 dark:bg-slate-900 bg-opacity-70 dark:bg-opacity-70">
+      <div className="px-10 py-16 rounded-xl shadow-large w-full mx-auto max-w-[400px] space-y-3 bg-slate-100 dark:bg-slate-900 bg-opacity-70 dark:bg-opacity-80">
         <div className="space-y-2 text-center">
           <h2 className="text-3xl font-bold text-indigo-600 dark:text-gray-200 py-4">
             {type === "sign-in" ? "Sign In" : "Sign Up"}

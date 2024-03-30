@@ -4,6 +4,7 @@
 import { block } from "@/utils/block";
 import {
   Button,
+  Link,
   Modal,
   ModalContent,
   Progress,
@@ -22,6 +23,9 @@ export const OTP = ({ email }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [codeMatched, setCodeMatched] = useState<boolean>(false);
+  const [isResendDisabled, setIsResendDisabled] = useState<boolean>(true);
+  const [hasResent, setHasResent] = useState<boolean>(false);
+  const [disableCount, setDisableCount] = useState<number>(60);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   // alert
@@ -63,13 +67,37 @@ export const OTP = ({ email }: Props) => {
     }
   }, [otp]);
 
-  // useEffect(() => {
-  //   if (isLoading) {
-  //     openModal();
-  //   } else {
-  //     closeModal();
-  //   }
-  // }, [isLoading]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDisableCount((prev) => {
+        if (prev === 0) {
+          setIsResendDisabled(false);
+          clearInterval(interval);
+          return prev;
+        } else {
+          return prev - 1;
+        }
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [hasResent]);
+
+  const resendOTP = async () => {
+    const body = JSON.stringify({ email });
+    const res = await fetch("/auth/signin", { method: "post", body });
+    const { error, message } = await res.json();
+    console.log(error);
+    console.log(message);
+    if (!error) {
+      console.log("resent success.");
+      setHasResent(true);
+      setDisableCount(60);
+      setIsResendDisabled(true);
+    } else {
+      console.log(error, message);
+    }
+  };
 
   return (
     <>
@@ -96,8 +124,8 @@ export const OTP = ({ email }: Props) => {
       </Modal>
       {/* Modal ends */}
       <div className="flex-col justify-center overflow-hidden py-12">
-        <div className="relative bg-slate-100 dark:bg-slate-900 bg-opacity-70 dark:bg-opacity-70 px-6 pt-10 pb-9 shadow-xl mx-auto w-full max-w-lg rounded-2xl">
-          <div className="mx-auto flex w-full max-w-md flex-col space-y-16">
+        <div className="relative bg-slate-100 dark:bg-gray-900 bg-opacity-80 dark:bg-opacity-80 px-6 pt-10 pb-9 shadow-xl mx-auto w-full max-w-lg rounded-2xl">
+          <div className="mx-auto flex w-full max-w-md flex-col space-y-12">
             <div className="flex flex-col items-center justify-center text-center space-y-2">
               <div className="font-semibold text-3xl">
                 <p>Email Verification</p>
@@ -127,10 +155,30 @@ export const OTP = ({ email }: Props) => {
                     />
                   )}
                 </div>
-
+                {/* resend code count */}
+                <div className="flex justify-center items-center pt-4">
+                  <p
+                    className={`text-sm underline ${
+                      isResendDisabled
+                        ? "cursor-wait opacity-50"
+                        : "cursor-pointer"
+                    }`}
+                    onClick={resendOTP}
+                  >
+                    Resend code
+                  </p>
+                  {isResendDisabled && (
+                    <span className="pl-2 text-sm opacity-50">
+                      {disableCount}
+                    </span>
+                  )}
+                </div>
+                {/*  */}
                 <div className="pt-8">
                   {!codeMatched && (
                     <Button
+                      className="disabled:bg-opacity-90 disabled:cursor-not-allowed"
+                      disabled={otp.length !== 6}
                       color="primary"
                       fullWidth
                       onClick={verifyOTP}
