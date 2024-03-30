@@ -7,11 +7,11 @@ export const footerIconColor = {
   light: {
     base: {
       line: "#d3d8ec",
-      fill: "#fff",
+      fill: "transparent",
     },
     selected: {
-      line: "#aba5f7",
-      fill: "#8980f2",
+      line: "#4438ca",
+      fill: "transparent",
     },
   },
   dark: {

@@ -32,7 +32,9 @@ export const searchDictionary = async ({ word, lang }: SearchProps) => {
       hotname: "http://localhost:3000",
     },
   });
+  console.log(requestURL);
   const data = await res.json();
+  console.log(data);
 
   return data;
 };

@@ -54,8 +54,9 @@ export const FooterIcon = ({ Icon, href }: Props) => {
   }, [currentPath, theme]);
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center ">
       <Icon
+        className="cursor-pointer"
         fill={fillColor}
         size={32}
         color={lineColor}

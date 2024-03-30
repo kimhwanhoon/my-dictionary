@@ -130,8 +130,9 @@ export const OTP = ({ email }: Props) => {
               <div className="font-semibold text-3xl">
                 <p>Email Verification</p>
               </div>
-              <div className="flex flex-row text-sm text-gray-600 dark:text-gray-200">
-                <p>We have sent a code to your email {email}</p>
+              <div className="flex flex-col text-sm text-gray-600 dark:text-gray-200">
+                <p>We have sent you the mail with the code.</p>
+                <p className="text-[13px]">Email: {email}</p>
               </div>
             </div>
             <div>
@@ -156,23 +157,25 @@ export const OTP = ({ email }: Props) => {
                   )}
                 </div>
                 {/* resend code count */}
-                <div className="flex justify-center items-center pt-4">
-                  <p
-                    className={`text-sm underline ${
-                      isResendDisabled
-                        ? "cursor-wait opacity-50"
-                        : "cursor-pointer"
-                    }`}
-                    onClick={resendOTP}
-                  >
-                    Resend code
-                  </p>
-                  {isResendDisabled && (
-                    <span className="pl-2 text-sm opacity-50">
-                      {disableCount}
-                    </span>
-                  )}
-                </div>
+                {!codeMatched && (
+                  <div className="flex justify-center items-center pt-4">
+                    <p
+                      className={`text-sm underline ${
+                        isResendDisabled
+                          ? "cursor-wait opacity-50"
+                          : "cursor-pointer"
+                      }`}
+                      onClick={resendOTP}
+                    >
+                      Resend code
+                    </p>
+                    {isResendDisabled && (
+                      <span className="pl-2 text-sm opacity-50">
+                        {disableCount}
+                      </span>
+                    )}
+                  </div>
+                )}
                 {/*  */}
                 <div className="pt-8">
                   {!codeMatched && (
