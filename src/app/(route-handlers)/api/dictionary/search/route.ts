@@ -1,4 +1,3 @@
-import { searchDictionary } from "@/utils/dictionary/search";
 import { NextRequest, NextResponse } from "next/server";
 import { env } from "process";
 
@@ -31,6 +30,7 @@ const searchWord = async (req: NextRequest) => {
       hotname: "http://localhost:3000",
     },
   });
+
   const { entryContent: data } = await res.json();
 
   if (!data) {
