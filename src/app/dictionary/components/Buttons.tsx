@@ -35,7 +35,6 @@ export const Buttons = ({ word }: Props) => {
         console.log(error);
         setIsError(true);
       } else {
-        console.log("added.");
         setIsAdded(true);
       }
     } catch (error) {

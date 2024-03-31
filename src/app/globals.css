@@ -286,7 +286,7 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .gramGrp {
-  @apply text-sm font-light tracking-wide p-1 text-gray-600 text-right dark:text-gray-100;
+  @apply text-sm font-light tracking-wide p-1 text-gray-600 dark:text-gray-100 mb-1;
 }
 
 .hom {
@@ -318,7 +318,15 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .pos {
-  @apply px-2 py-1 bg-gray-700 text-white rounded-xl font-medium text-sm dark:text-gray-100;
+  @apply px-2 py-1 bg-gray-700 text-white rounded-xl font-normal text-sm dark:text-gray-100;
+}
+
+.cit .quote span {
+  @apply text-xs font-mono text-gray-600 dark:text-indigo-100;
+}
+
+.cit .quote {
+  @apply text-sm font-serif tracking-[0.2px] text-gray-600 dark:text-indigo-100;
 }
 
 /* .quote {
@@ -604,18 +612,18 @@ input[type="number"]::-webkit-outer-spin-button {
 /* 
    */
 .light-dictionary-result-background {
-  background-color: #ffffff;
+  background-color: #f8f8f8;
   opacity: 1;
   background-image: linear-gradient(#444cf720 1.1px, transparent 1.1px),
-    linear-gradient(to right, #444cf720 1.1px, #ffffff 1.1px);
+    linear-gradient(to right, #444cf720 1.1px, #f8f8f8 1.1px);
   background-size: 22px 22px;
 }
 
 .dark-dictionary-result-background {
   /* background-color: #ffffff; */
   /* opacity: 1; */
-  background-image: linear-gradient(#a7a7a730 1.1px, transparent 1.1px),
-    linear-gradient(to right, #a7a7a730 1.1px, #0f172b 1.1px);
+  background-image: linear-gradient(#a7a7a720 1.1px, transparent 1.1px),
+    linear-gradient(to right, #a7a7a720 1.1px, #0f172b 1.1px);
   background-size: 22px 22px;
 }
 

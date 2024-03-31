@@ -8,6 +8,8 @@ import { Buttons } from "./Buttons";
 import parse from "html-react-parser";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
+import { deleteText } from "@/utils/dictionary/deleteText";
+import { replaceText } from "@/utils/dictionary/replaceText";
 
 interface Props {
   search: string | null;
@@ -53,12 +55,26 @@ export const SearchResult = ({ search, lang }: Props) => {
   const resultWord = extractTextBetweenTags(resultBefore) ?? "";
   const pronunciation = extractPronunciation(resultBefore) ?? "";
   const titleRemoved = removeTitle(resultBefore) ?? "";
+  const specialLetterRemoved = deleteText({
+    originalText: titleRemoved,
+    target: "▷",
+  });
+  const specialLetterRemoved2 = deleteText({
+    originalText: titleRemoved,
+    target: "▶",
+  });
+
+  const output = replaceText({
+    originalText: specialLetterRemoved2,
+    replacement: `<br/><span class="pl-5">■</span>`,
+    target: "■",
+  });
 
   return (
     <div
       className={`min-h-[calc(100dvh-212px)] flex flex-col p-4 pt-8 ${backgroundColor}`}
     >
-      <section className="flex items-center justify-between ">
+      <section className="flex items-center justify-between">
         {isSuccess && (
           <>
             <div className="flex gap-2 items-center">
@@ -73,7 +89,7 @@ export const SearchResult = ({ search, lang }: Props) => {
           </>
         )}
       </section>
-      {isSuccess ? <>{parse(titleRemoved)}</> : <p>No result found.</p>}
+      {isSuccess ? <>{parse(output)}</> : <p>No result found.</p>}
     </div>
   );
 };
