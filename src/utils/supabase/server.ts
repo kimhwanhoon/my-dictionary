@@ -3,7 +3,7 @@ import "server-only";
 import { Database as DatabasePublic } from "@/types/supabaseTypes";
 import { Database as DatabaseAuth } from "@/types/supabaseAuth";
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
-import { type cookies } from "next/headers";
+import { cookies } from "next/headers";
 
 export function createClient(
   cookieStore: ReturnType<typeof cookies>,
@@ -34,17 +34,17 @@ export function createClient(
       },
     },
   };
-  if (auth) {
-    return createServerClient<DatabaseAuth>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      returnClientProps
-    );
-  } else {
+  if (!auth) {
     return createServerClient<DatabasePublic>(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      returnClientProps
+      { ...returnClientProps }
+    );
+  } else {
+    return createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      { ...returnClientProps }
     );
   }
 }
