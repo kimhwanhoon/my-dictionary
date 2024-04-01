@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { deleteText } from "@/utils/dictionary/deleteText";
 import { replaceText } from "@/utils/dictionary/replaceText";
+import { ScrollShadow } from "@nextui-org/react";
 
 interface Props {
   search: string | null;
@@ -60,42 +61,41 @@ export const SearchResult = ({ search, lang }: Props) => {
     target: "▷",
   });
   const specialLetterRemoved2 = deleteText({
-    originalText: titleRemoved,
+    originalText: specialLetterRemoved,
     target: "▶",
   });
 
-  const output = replaceText({
+  const specialLetterRemoved3 = deleteText({
     originalText: specialLetterRemoved2,
+    target: ";",
+  });
+
+  const output = replaceText({
+    originalText: specialLetterRemoved3,
     replacement: `<br/><span class="pl-5">■</span>`,
     target: "■",
   });
 
   return (
-    <div
-      className={`min-h-[calc(100dvh-212px)] flex flex-col p-4 pt-8 ${backgroundColor}`}
-    >
-      <section className="flex items-center justify-between">
-        {isSuccess && (
-          <>
-            <div className="flex gap-2 items-center">
-              <h1 className="text-4xl font-semibold pr-2">
-                {capitalizeFirstLetter(resultWord)}
-              </h1>
-              <span className="text-xs text-gray-700 dark:text-gray-200">
-                [{pronunciation}]
-              </span>
-            </div>
-            <Buttons word={resultWord as string} />
-          </>
-        )}
-      </section>
-      {isSuccess ? <>{parse(output)}</> : <p>No result found.</p>}
-    </div>
+    <ScrollShadow className="h-[calc(100dvh-300px)] w-full" size={50}>
+      <div className={`flex flex-col p-4 pt-8 ${backgroundColor}`}>
+        <section className="flex items-center justify-between">
+          {isSuccess && (
+            <>
+              <div className="flex gap-2 items-center">
+                <h1 className="text-4xl font-semibold pr-2">
+                  {capitalizeFirstLetter(resultWord)}
+                </h1>
+                <span className="text-xs text-gray-700 dark:text-gray-200">
+                  [{pronunciation}]
+                </span>
+              </div>
+              <Buttons word={resultWord as string} />
+            </>
+          )}
+        </section>
+        {isSuccess ? <>{parse(output)}</> : <p>No result found.</p>}
+      </div>
+    </ScrollShadow>
   );
 };
-// search not found
-// returns
-//{
-// errorCode: 'InvalidDictionary',
-// errorMessage: "Dictionary 'null' not found."
-// }
