@@ -3,56 +3,66 @@
 import { block } from "@/utils/block";
 import {
   Button,
+  Checkbox,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@nextui-org/react";
 import { IconPlus } from "@tabler/icons-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface Props {
   word: string;
+}
+
+interface List {
+  id: number;
+  name: string;
+}
+
+interface WordObject {
+  word: string;
+  listId: number;
 }
 
 export const Buttons = ({ word }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAdded, setIsAdded] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-  const onClickHandler = async () => {
+  const [list, setList] = useState<List[]>([]);
+  const [toBeChecked, setToBeChecked] = useState<{
+    listId: number;
+    check: boolean;
+  } | null>(null);
+
+  useEffect(() => {
+    fetchList();
+  }, []);
+
+  const fetchList = async () => {
     setIsLoading(true);
     try {
-      const body = JSON.stringify({ word });
-      const res = await fetch("/api/dictionary/add-to-my-list", {
-        body,
-        method: "post",
-      });
-      const { data, error } = await res.json();
-
+      const { error, data } = await fetch("/api/wordbook/fetch").then((res) =>
+        res.json()
+      );
       if (error) {
-        if (error === "duplicated") {
-          console.log("duplicated. Not added to list.");
-        }
-        console.log(error);
-        setIsError(true);
-      } else {
-        setIsAdded(true);
+        throw new Error(error);
       }
-    } catch (error) {
-      console.log(error);
-      setIsError(true);
-    } finally {
+      setList(data.lists);
       setIsLoading(false);
-      await block(3000);
-      setIsAdded(false);
-      setIsError(false);
+    } catch (error) {
+      console.error(error);
+      setIsError(true);
+      setIsLoading(false);
     }
   };
+
   return (
     <div>
-      <Popover placement="top" isOpen={isAdded || isError} shadow="lg">
+      <Popover placement="top" shadow="lg">
         <PopoverTrigger>
           <Button
-            onClick={onClickHandler}
+            onClick={fetchList}
             size="sm"
             isIconOnly
             color="primary"
@@ -63,11 +73,16 @@ export const Buttons = ({ word }: Props) => {
         </PopoverTrigger>
 
         <PopoverContent>
-          {isAdded ? (
-            <span className="text-sm text-gray-600">Added! 🚀</span>
-          ) : isError ? (
-            <span className="text-sm text-gray-600">Error occurred! 😢</span>
-          ) : null}
+          <div className="space-y-2 p-2 flex flex-col justify-center">
+            {list.map((item) => {
+              return (
+                <div key={item.id} className="flex gap-1">
+                  <span>{item.name}</span>
+                  <Checkbox defaultSelected />
+                </div>
+              );
+            })}
+          </div>
         </PopoverContent>
       </Popover>
     </div>

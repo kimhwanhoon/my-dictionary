@@ -1,7 +1,8 @@
 "use client";
 
 import { Button, Card, CardBody, CardHeader, Divider } from "@nextui-org/react";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useCallback } from "react";
 
 interface Props {
   title: string;
@@ -9,6 +10,11 @@ interface Props {
 }
 
 export const ListCard = ({ title, number }: Props) => {
+  const router = useRouter();
+  const onClickHandler = useCallback(() => {
+    router.push(`/wordbook/${title}`);
+  }, [router, title]);
+
   return (
     <Card className="min-w-[330px]" shadow="md">
       <CardHeader>
@@ -27,6 +33,7 @@ export const ListCard = ({ title, number }: Props) => {
             className="w-[250px] text-gray-800 dark:text-slate-100 dark:bg-indigo-900"
             color="primary"
             variant="flat"
+            onPress={onClickHandler}
           >
             See words
           </Button>
