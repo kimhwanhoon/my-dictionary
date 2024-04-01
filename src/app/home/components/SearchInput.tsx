@@ -27,7 +27,7 @@ export const SearchInput = () => {
 
   const onSubmitHandler = debounce(() => {
     router.push(
-      `/dictionary?lang=${currentLanguage}&search=${inputValue.toLowerCase()}`
+      `/home?lang=${currentLanguage}&search=${inputValue.toLowerCase()}`
     );
   }, 1000);
 

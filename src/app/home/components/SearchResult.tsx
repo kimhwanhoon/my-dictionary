@@ -51,7 +51,6 @@ export const SearchResult = ({ search, lang }: Props) => {
       setBackgroundColor("dark-dictionary-result-background");
     }
   }, [theme]);
-
   const resultBefore: string = (isSuccess && data) ?? "";
   const resultWord = extractTextBetweenTags(resultBefore) ?? "";
   const pronunciation = extractPronunciation(resultBefore) ?? "";
@@ -77,8 +76,11 @@ export const SearchResult = ({ search, lang }: Props) => {
   });
 
   return (
-    <ScrollShadow className="h-[calc(100dvh-300px)] w-full" size={50}>
-      <div className={`flex flex-col p-4 pt-8 ${backgroundColor}`}>
+    <ScrollShadow
+      className={`h-[calc(100dvh-282px)] w-full ${backgroundColor}`}
+      size={50}
+    >
+      <div className={`flex flex-col p-4 pt-8`}>
         <section className="flex items-center justify-between">
           {isSuccess && (
             <>
@@ -94,7 +96,13 @@ export const SearchResult = ({ search, lang }: Props) => {
             </>
           )}
         </section>
-        {isSuccess ? <>{parse(output)}</> : <p>No result found.</p>}
+        {isSuccess ? (
+          <>{parse(output)}</>
+        ) : (
+          // <div className="h-[calc(100vh-282px)]">
+          <p>No result found.</p>
+          // </div>
+        )}
       </div>
     </ScrollShadow>
   );

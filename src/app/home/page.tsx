@@ -1,15 +1,24 @@
-import { redirect } from "next/navigation";
+import { SearchInput } from "./components/SearchInput";
+import { SearchResult } from "./components/SearchResult";
 import { checkUserSession } from "@/utils/supabase/sessionChecker";
+import { redirect } from "next/navigation";
 
-export default async function PrivatePage() {
-  const { isSession, userData } = await checkUserSession();
+interface Props {
+  searchParams: { search: string | null; lang: string };
+}
+
+const HomePage = async ({ searchParams: { search, lang } }: Props) => {
+  const { isSession } = await checkUserSession();
   if (!isSession) {
     redirect("/signin");
   } else {
     return (
-      <div>
-        <p>User email: {userData!.user.email}</p>
+      <div className="h-full dictionary-result-background">
+        <SearchInput />
+        <SearchResult search={search} lang={lang} />
       </div>
     );
   }
-}
+};
+
+export default HomePage;
