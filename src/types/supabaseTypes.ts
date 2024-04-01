@@ -6,6 +6,16 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
+interface ListType {
+  id: number;
+  name: string;
+}
+
+interface WordType {
+  listId: number;
+  word: string;
+}
+
 export type Database = {
   public: {
     Tables: {
@@ -36,18 +46,18 @@ export type Database = {
       my_words: {
         Row: {
           author_id: string;
-          lists: Json | null;
-          words: Json | null;
+          lists: ListType[] | null;
+          words: WordType[] | null;
         };
         Insert: {
           author_id?: string;
-          lists?: Json | null;
-          words?: Json | null;
+          lists?: ListType[] | null;
+          words?: WordType[] | null;
         };
         Update: {
           author_id?: string;
-          lists?: Json | null;
-          words?: Json | null;
+          lists?: ListType[] | null;
+          words?: WordType[] | null;
         };
         Relationships: [
           {

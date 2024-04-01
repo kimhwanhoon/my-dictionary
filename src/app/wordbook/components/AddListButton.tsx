@@ -11,14 +11,20 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { IconList } from "@tabler/icons-react";
-import { set } from "lodash";
+import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 
 export const AddListButton = () => {
+  const router = useRouter();
   const [listValue, setListValue] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const { isOpen, onOpen: openModal, onOpenChange } = useDisclosure();
+  const {
+    isOpen,
+    onOpen: openModal,
+    onOpenChange,
+    onClose: closeModal,
+  } = useDisclosure();
 
   const addListHandler = async (e: FormEvent<HTMLFormElement>) => {
     setIsLoading(true);
@@ -38,6 +44,8 @@ export const AddListButton = () => {
       console.log(error);
     } finally {
       setIsLoading(false);
+      closeModal();
+      router.refresh();
     }
   };
 
@@ -65,6 +73,7 @@ export const AddListButton = () => {
               </ModalHeader>
               <ModalBody>
                 <Input
+                  maxLength={20}
                   startContent={<IconList size={"1rem"} />}
                   name="list"
                   size="md"
