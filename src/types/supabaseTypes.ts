@@ -8,7 +8,7 @@ export type Json =
 
 export interface WordType {
   word: string;
-  definition: string;
+  definition: string | null;
   original_definition: string | null;
 }
 

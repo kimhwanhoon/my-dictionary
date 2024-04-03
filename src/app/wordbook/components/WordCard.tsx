@@ -1,5 +1,6 @@
 "use client";
 
+import { Database, WordType } from "@/types/supabaseTypes";
 import {
   Button,
   Card,
@@ -12,11 +13,12 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import React from "react";
+import parse from "html-react-parser";
 
 interface Props {
-  word: string;
-  definition: string;
-  originalDefinition: string | null;
+  word: WordType["word"];
+  definition: WordType["definition"];
+  originalDefinition: WordType["original_definition"];
 }
 
 export const WordCard = ({ word, definition, originalDefinition }: Props) => {
@@ -32,39 +34,41 @@ export const WordCard = ({ word, definition, originalDefinition }: Props) => {
   };
 
   const CardDetailModal = () => (
-    <Card className="w-full cursor-pointer">
-      <CardHeader onClick={cardOnClickHandler}>
-        <p className="w-full text-center font-medium text-gray-800 dark:text-gray-100">
-          {word}
-        </p>
-      </CardHeader>
-      <Divider />
-      <CardBody onClick={cardOnClickHandler}>
-        <div>
-          <p className="w-full text-center text-15 text-gray-700 dark:text-gray-200">
-            {definition}
+    <>
+      <Card className="w-full">
+        <CardHeader onClick={cardOnClickHandler}>
+          <p className="pt-2 text-xl w-full text-center font-medium text-gray-800 dark:text-gray-100">
+            {word}
           </p>
-          {originalDefinition && <Divider />}
-          {originalDefinition && <p>{originalDefinition}</p>}
-        </div>
-      </CardBody>
-      <Divider />
-      <CardFooter>
-        <div className="flex gap-2 w-full">
-          {["Edit", "Delete"].map((el, i) => (
-            <Button
-              key={i}
-              className="w-full"
-              fullWidth
-              color={el === "Edit" ? "primary" : "danger"}
-              variant="flat"
-            >
-              {el}
-            </Button>
-          ))}
-        </div>
-      </CardFooter>
-    </Card>
+        </CardHeader>
+        {definition && <Divider />}
+        <CardBody onClick={cardOnClickHandler}>
+          <div>
+            <p className="w-full text-center text-15 text-gray-700 dark:text-gray-200">
+              {definition}
+            </p>
+            {originalDefinition && <Divider />}
+            {originalDefinition && parse(originalDefinition)}
+          </div>
+        </CardBody>
+        <Divider />
+        <CardFooter>
+          <div className="flex gap-2 w-full">
+            {["Edit", "Delete"].map((el, i) => (
+              <Button
+                key={i}
+                className="w-full"
+                fullWidth
+                color={el === "Edit" ? "primary" : "danger"}
+                variant="flat"
+              >
+                {el}
+              </Button>
+            ))}
+          </div>
+        </CardFooter>
+      </Card>
+    </>
   );
 
   return (
