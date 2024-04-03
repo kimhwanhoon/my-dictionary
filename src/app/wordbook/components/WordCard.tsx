@@ -48,6 +48,7 @@ export const WordCard = ({ word, definition, originalDefinition }: Props) => {
           {originalDefinition && <p>{originalDefinition}</p>}
         </div>
       </CardBody>
+      <Divider />
       <CardFooter>
         <div className="flex gap-2 w-full">
           {["Edit", "Delete"].map((el, i) => (

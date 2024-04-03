@@ -4,20 +4,27 @@ import { capitalizeFirstLetter } from "@/utils/dictionary/capitalizeFirstLetter"
 import { extractPronunciation } from "@/utils/dictionary/extractPronunciation";
 import { extractTextBetweenTags } from "@/utils/dictionary/extractTextBetweenTags";
 import { removeTitle } from "@/utils/dictionary/removeTitle";
-import { Buttons } from "./Buttons";
+import { AddToWordbookButton } from "./AddToWordbookButton";
 import parse from "html-react-parser";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { deleteText } from "@/utils/dictionary/deleteText";
 import { replaceText } from "@/utils/dictionary/replaceText";
 import { ScrollShadow } from "@nextui-org/react";
+import { Database } from "@/types/supabaseTypes";
 
 interface Props {
   search: string | null;
   lang: string;
+  wordbookList: Array<
+    Pick<
+      Database["public"]["Tables"]["wordbook"]["Row"],
+      "name" | "words" | "id"
+    >
+  >;
 }
 
-export const SearchResult = ({ search, lang }: Props) => {
+export const SearchResult = ({ search, lang, wordbookList }: Props) => {
   const { theme } = useTheme();
   const [backgroundColor, setBackgroundColor] = useState<string>("");
 
@@ -92,7 +99,11 @@ export const SearchResult = ({ search, lang }: Props) => {
                   [{pronunciation}]
                 </span>
               </div>
-              <Buttons word={resultWord as string} />
+              <AddToWordbookButton
+                word={resultWord as string}
+                originalDefinition={output}
+                wordbookList={wordbookList}
+              />
             </>
           )}
         </section>
