@@ -11,10 +11,12 @@ const addOrDeleteWordFromWordbook = async (req: NextRequest) => {
     word,
     original_definition,
     wordbookId,
+    language,
   }: {
     word: string;
     original_definition: string;
     wordbookId: string;
+    language: "English" | "French";
   } = await req.json();
 
   const supabase = createClient(cookies());
@@ -48,12 +50,12 @@ const addOrDeleteWordFromWordbook = async (req: NextRequest) => {
       return NextResponse.json({ error: false, data: updatedWordbookData });
     } else {
       // if word does not exist in the wordbook, add it
-      const newWord = {
+      const newWord: WordType = {
         word,
         definition: null,
         original_definition,
+        language,
       };
-      console.log(wordbookData);
       await supabase
         .from("wordbook")
         .update({ words: [...wordbookData, newWord] })

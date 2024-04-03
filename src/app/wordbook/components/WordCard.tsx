@@ -36,7 +36,7 @@ export const WordCard = ({ word, definition, originalDefinition }: Props) => {
 
   const CardDetailModal = () => (
     <>
-      <Card className="w-full h-[calc(90dvh)]">
+      <Card className="w-full max-h-[calc(90dvh)]">
         <CardHeader onClick={cardOnClickHandler}>
           <p className="pt-2 text-xl w-full text-center font-medium text-gray-800 dark:text-gray-100">
             {word}

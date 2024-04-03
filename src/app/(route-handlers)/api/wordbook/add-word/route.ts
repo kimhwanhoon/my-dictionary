@@ -9,6 +9,7 @@ const addWord = async (req: NextRequest) => {
     listName,
     definition,
     original_definition,
+    language,
   } = await req.json();
 
   if (!newWordValue) {
@@ -44,6 +45,7 @@ const addWord = async (req: NextRequest) => {
         word: newWordValue,
         definition,
         original_definition: original_definition || null,
+        language,
       };
       await supabase
         .from("wordbook")
