@@ -7,6 +7,7 @@ import { AddWordButton } from "../components/AddWordButton";
 import { Button, Card, CardBody, CardHeader, Divider } from "@nextui-org/react";
 import Link from "next/link";
 import { WordCard } from "../components/WordCard";
+import { WordType } from "@/types/supabaseTypes";
 
 interface Props {
   params: { name: string };
@@ -58,10 +59,10 @@ const WordbookDetailPage = async ({ params: { name } }: Props) => {
       return (
         <div className="p-4 space-y-4 flex flex-col items-center">
           <AddWordButton listName={listName} />
-          {wordbook.words.map((el, i) => {
+          {wordbook.words.map((el: WordType, i) => {
             return (
               <WordCard
-                key={i}
+                key={i.toString()}
                 word={el.word}
                 definition={el.definition}
                 originalDefinition={el.original_definition}

@@ -32,13 +32,13 @@ const addOrDeleteWordFromWordbook = async (req: NextRequest) => {
   } else {
     const wordbookData = fetchedWordbookData.words;
     const wordExists = wordbookData.some(
-      (wordInDatabase) => wordInDatabase.word === word
+      (wordInDatabase: WordType) => wordInDatabase.word === word
     );
 
     if (wordExists) {
       // if word exists in the wordbook, delete it
       const updatedWordbookData = wordbookData.filter(
-        (wordInDatabase) => wordInDatabase.word !== word
+        (wordInDatabase: WordType) => wordInDatabase.word !== word
       );
       await supabase
         .from("wordbook")
