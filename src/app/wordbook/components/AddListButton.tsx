@@ -2,6 +2,7 @@
 
 import {
   Button,
+  ButtonProps,
   Input,
   Modal,
   ModalBody,
@@ -14,7 +15,17 @@ import { IconList } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 
-export const AddListButton = () => {
+interface Props {
+  size?: ButtonProps["size"];
+  variant?: ButtonProps["variant"];
+  fullWidth?: boolean;
+}
+
+export const AddListButton = ({
+  size = "md",
+  variant = "solid",
+  fullWidth = true,
+}: Props) => {
   const router = useRouter();
   const [listValue, setListValue] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
@@ -102,7 +113,14 @@ export const AddListButton = () => {
           )}
         </ModalContent>
       </Modal>
-      <Button color="primary" fullWidth onPress={openModal}>
+      <Button
+        variant={variant}
+        size={size}
+        color="primary"
+        fullWidth={fullWidth}
+        onPress={openModal}
+        className="dark:text-gray-200"
+      >
         Add a list
       </Button>
     </>

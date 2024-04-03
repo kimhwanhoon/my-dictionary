@@ -1,6 +1,8 @@
 "use client";
 
+import { AddListButton } from "@/app/wordbook/components/AddListButton";
 import { Database } from "@/types/supabaseTypes";
+import { block } from "@/utils/block";
 import {
   Button,
   Checkbox,
@@ -9,10 +11,10 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/react";
-import { IconPlus } from "@tabler/icons-react";
+import { IconCheck, IconPlus } from "@tabler/icons-react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
-import React, { Key } from "react";
+import React, { Key, useState } from "react";
 
 interface Props {
   word: string;
@@ -23,6 +25,7 @@ interface Props {
       "name" | "words" | "id"
     >
   >;
+  language: "English" | "French" | null;
 }
 
 const toggleWordbookList = async ({
@@ -30,16 +33,19 @@ const toggleWordbookList = async ({
   originalDefinition,
   wordbookId,
   router,
+  language,
 }: {
   word: Props["word"];
   originalDefinition: Props["originalDefinition"];
   wordbookId: Key;
   router: AppRouterInstance;
+  language: Props["language"];
 }) => {
   const body = JSON.stringify({
     word,
     original_definition: originalDefinition,
     wordbookId,
+    language,
   });
 
   try {
@@ -49,12 +55,12 @@ const toggleWordbookList = async ({
     });
     const { error, data } = await res.json();
     if (error) {
-      console.log(error);
+      return false;
     } else {
-      console.log(data);
+      return true;
     }
   } catch (error) {
-    console.log(error);
+    return false;
   } finally {
     router.refresh();
   }
@@ -64,26 +70,45 @@ export const AddToWordbookButton = ({
   word,
   originalDefinition,
   wordbookList,
+  language,
 }: Props) => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
   return (
     <Dropdown>
       <DropdownTrigger>
-        <Button color="primary" isIconOnly>
-          <IconPlus />
+        <Button isLoading={loading} color="primary" isIconOnly>
+          {isSuccess ? <IconCheck /> : <IconPlus />}
         </Button>
       </DropdownTrigger>
       <DropdownMenu
         aria-label="Dynamic Actions"
         items={wordbookList}
         onAction={async (e: Key) => {
-          await toggleWordbookList({
+          setLoading(true);
+          const success = await toggleWordbookList({
             word,
             originalDefinition,
             wordbookId: e,
             router,
+            language,
           });
+          await block(500);
+          setLoading(false);
+          setIsSuccess(success);
+          await block(2000);
+          setIsSuccess(false);
         }}
+        emptyContent={
+          <div className="flex flex-col gap-[6px] w-full">
+            <p className="text-gray-600 dark:text-gray-200 text-sm text-center">
+              No wordbook found.
+            </p>
+            <AddListButton fullWidth={false} size="sm" variant="ghost" />
+          </div>
+        }
       >
         {(wordbook) => {
           if (

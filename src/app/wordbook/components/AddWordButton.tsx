@@ -42,7 +42,6 @@ export const AddWordButton = ({ listName }: Props) => {
       if (error) {
         throw new Error(message);
       } else {
-        console.log("word added.");
         setWord("");
         setDefinition("");
       }

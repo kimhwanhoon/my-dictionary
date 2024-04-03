@@ -115,6 +115,7 @@ export const SearchResult = ({ search, lang, wordbookList }: Props) => {
                 word={resultWord as string}
                 originalDefinition={output}
                 wordbookList={wordbookList}
+                language={language}
               />
             </>
           )}
