@@ -40,7 +40,6 @@ export const SearchResult = ({ search, lang, wordbookList }: Props) => {
       });
       const { error, data } = await res.json();
 
-      // const data = await searchDictionary({ word: search, lang });
       if (error) {
         setIsSuccess(false);
       } else {
@@ -82,6 +81,15 @@ export const SearchResult = ({ search, lang, wordbookList }: Props) => {
     target: "■",
   });
 
+  const language: "English" | "French" | null =
+    lang === "en"
+      ? "English"
+      : lang === "en-fr"
+      ? "English"
+      : lang === "fr-en"
+      ? "French"
+      : null;
+
   return (
     <ScrollShadow
       className={`h-[calc(100dvh-282px)] w-full ${backgroundColor}`}
@@ -91,10 +99,14 @@ export const SearchResult = ({ search, lang, wordbookList }: Props) => {
         <section className="flex items-center justify-between">
           {isSuccess && (
             <>
-              <div className="flex gap-2 items-center">
-                <h1 className="text-4xl font-semibold pr-2">
+              <div className="flex gap-2 items-center space-x-1">
+                <h1 className="text-4xl font-semibold">
                   {capitalizeFirstLetter(resultWord)}
                 </h1>
+                <div className="h-[40px] flex items-start">
+                  <span>{language === "English" ? "🇬🇧" : "🇫🇷"}</span>
+                </div>
+
                 <span className="text-xs text-gray-700 dark:text-gray-200">
                   [{pronunciation}]
                 </span>

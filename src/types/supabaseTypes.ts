@@ -10,6 +10,7 @@ export interface WordType {
   word: string;
   definition: string | null;
   original_definition: string | null;
+  language: "en" | "fr";
 }
 
 export type Database = {

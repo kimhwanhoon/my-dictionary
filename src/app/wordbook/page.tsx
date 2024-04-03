@@ -16,7 +16,8 @@ const WordbookPage = async () => {
     const { data: wordbook } = await supabase
       .from("wordbook")
       .select("*")
-      .eq("user_id", uid);
+      .eq("user_id", uid)
+      .order("created_at", { ascending: true });
 
     if (wordbook!.length === 0) {
       // no list is added.
