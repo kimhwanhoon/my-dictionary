@@ -29,7 +29,6 @@ const WordbookPage = async () => {
         </div>
       );
     } else {
-      console.log(wordbook);
       return (
         <div className="p-4 space-y-4 flex flex-col items-center">
           <AddListButton />

@@ -39,21 +39,21 @@ export type Database = {
           id: string
           name: string
           user_id: string
-          words: string[]
+          words: Json[]
         }
         Insert: {
           created_at?: string
           id?: string
           name?: string
           user_id?: string
-          words: string[]
+          words: Json[]
         }
         Update: {
           created_at?: string
           id?: string
           name?: string
           user_id?: string
-          words?: string[]
+          words?: Json[]
         }
         Relationships: [
           {

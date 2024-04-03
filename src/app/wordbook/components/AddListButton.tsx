@@ -30,7 +30,7 @@ export const AddListButton = () => {
     setIsLoading(true);
     e.preventDefault();
     try {
-      const { error, message } = await fetch("/api/wordbook/addList", {
+      const { error, message } = await fetch("/api/wordbook/add-list", {
         method: "POST",
         body: JSON.stringify({ name: listValue }),
       }).then((res) => res.json());

@@ -6,6 +6,12 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
+export interface WordType {
+  word: string;
+  definition: string;
+  original_definition: string | null;
+}
+
 export type Database = {
   public: {
     Tables: {
@@ -39,21 +45,21 @@ export type Database = {
           id: string;
           name: string;
           user_id: string;
-          words: string[];
+          words: WordType[];
         };
         Insert: {
           created_at?: string;
           id?: string;
           name?: string;
           user_id?: string;
-          words: string[];
+          words: WordType[];
         };
         Update: {
           created_at?: string;
           id?: string;
           name?: string;
           user_id?: string;
-          words?: string[];
+          words?: WordType[];
         };
         Relationships: [
           {
