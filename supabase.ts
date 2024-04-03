@@ -33,27 +33,33 @@ export type Database = {
         }
         Relationships: []
       }
-      my_words: {
+      wordbook: {
         Row: {
-          author_id: string
-          lists: Json[] | null
-          words: Json[] | null
+          created_at: string
+          id: string
+          name: string
+          user_id: string
+          words: string[]
         }
         Insert: {
-          author_id?: string
-          lists?: Json[] | null
-          words?: Json[] | null
+          created_at?: string
+          id?: string
+          name?: string
+          user_id?: string
+          words: string[]
         }
         Update: {
-          author_id?: string
-          lists?: Json[] | null
-          words?: Json[] | null
+          created_at?: string
+          id?: string
+          name?: string
+          user_id?: string
+          words?: string[]
         }
         Relationships: [
           {
-            foreignKeyName: "public_my_words_created_by_fkey"
-            columns: ["author_id"]
-            isOneToOne: true
+            foreignKeyName: "public_wordbook_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           },

@@ -1,6 +1,5 @@
 "use client";
 
-import { block } from "@/utils/block";
 import {
   Button,
   Checkbox,
@@ -30,25 +29,23 @@ export const Buttons = ({ word }: Props) => {
   const [isAdded, setIsAdded] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [list, setList] = useState<List[]>([]);
-  const [toBeChecked, setToBeChecked] = useState<{
-    listId: number;
-    check: boolean;
-  } | null>(null);
-
-  useEffect(() => {
-    fetchList();
-  }, []);
+  const [words, setWords] = useState<WordObject[]>([]);
+  const [inWhatList, setInWhatList] = useState<number[]>([]);
 
   const fetchList = async () => {
     setIsLoading(true);
     try {
-      const { error, data } = await fetch("/api/wordbook/fetch").then((res) =>
-        res.json()
-      );
+      const body = JSON.stringify({ word });
+      const { error, data } = await fetch("/api/wordbook/fetch", {
+        method: "post",
+        body,
+      }).then((res) => res.json());
       if (error) {
         throw new Error(error);
       }
       setList(data.lists);
+      setWords(data.words);
+      setInWhatList(data.listIds);
       setIsLoading(false);
     } catch (error) {
       console.error(error);
@@ -56,6 +53,12 @@ export const Buttons = ({ word }: Props) => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      setInWhatList([]);
+    };
+  }, []);
 
   return (
     <div>
@@ -75,10 +78,11 @@ export const Buttons = ({ word }: Props) => {
         <PopoverContent>
           <div className="space-y-2 p-2 flex flex-col justify-center">
             {list.map((item) => {
+              console.log(inWhatList.includes(item.id));
               return (
                 <div key={item.id} className="flex gap-1">
                   <span>{item.name}</span>
-                  <Checkbox defaultSelected />
+                  <Checkbox defaultSelected={inWhatList.includes(item.id)} />
                 </div>
               );
             })}

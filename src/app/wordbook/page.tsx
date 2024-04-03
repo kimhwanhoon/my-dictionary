@@ -4,7 +4,6 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { AddListButton } from "./components/AddListButton";
 import { ListCard } from "./components/ListCard";
-import { countWordsByListId } from "@/utils/dictionary/list/countWordsByListId";
 
 const WordbookPage = async () => {
   const { isSession, userData } = await checkUserSession();
@@ -14,19 +13,13 @@ const WordbookPage = async () => {
     const uid = userData?.user.id!;
     const supabase = createClient(cookies());
 
-    const { data: my_words, error } = await supabase
-      .from("my_words")
-      .select("lists")
-      .eq("author_id", uid)
-      .single();
+    const { data: wordbook } = await supabase
+      .from("wordbook")
+      .select("*")
+      .eq("user_id", uid);
 
-    const { data: words, error: error2 } = await supabase
-      .from("my_words")
-      .select("words")
-      .eq("author_id", uid)
-      .single();
-
-    if (error || !my_words.lists) {
+    if (wordbook!.length === 0) {
+      // no list is added.
       return (
         <div className="w-full h-full flex-col flex justify-center items-center p-4">
           <div className="space-y-2">
@@ -36,18 +29,15 @@ const WordbookPage = async () => {
         </div>
       );
     } else {
-      const wordCount = countWordsByListId(words?.words || []);
-
+      console.log(wordbook);
       return (
         <div className="p-4 space-y-4 flex flex-col items-center">
           <AddListButton />
-          {my_words.lists.map((el) => (
-            <ListCard
-              key={el.id}
-              title={el.name}
-              number={wordCount[el.id] || 0}
-            />
-          ))}
+          {wordbook!.map((el, i) => {
+            return (
+              <ListCard key={i} title={el.name} number={el.words.length} />
+            );
+          })}
         </div>
       );
     }
