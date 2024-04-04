@@ -1,7 +1,7 @@
 {
   "name": "my-dictionary",
   "version": "0.5.0",
-  "private": "false",
+  "private": "true",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@nextui-org/react": "^2.2.9",
+    "@sentry/nextjs": "^7.109.0",
     "@supabase/ssr": "^0.1.0",
     "@supabase/supabase-js": "^2.39.3",
     "@tabler/icons-react": "^2.47.0",

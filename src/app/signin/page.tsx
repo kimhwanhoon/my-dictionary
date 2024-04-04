@@ -14,8 +14,8 @@ const SignInPage = async ({ searchParams }: Props) => {
     redirect("/home");
   }
   return (
-    <section className="h-full bg-transparent flex flex-col items-center justify-center ">
-      <div className="background -z-10">
+    <section className="h-full  flex flex-col items-center justify-center ">
+      <div className="background">
         <span></span>
         <span></span>
         <span></span>

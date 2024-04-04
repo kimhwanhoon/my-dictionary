@@ -20,7 +20,7 @@ interface Props {
 
 export const footerIcons = [
   { icon: IconHome, href: "/home" },
-  { icon: IconNotebook, href: "/dictionary" },
+  { icon: IconNotebook, href: "/wordbook" },
   { icon: IconUser, href: "/user" },
   { icon: IconSettings, href: "/settings" },
 ];
@@ -29,8 +29,8 @@ export const FooterIcon = ({ Icon, href }: Props) => {
   const router = useRouter();
   const currentPath = usePathname();
   const { theme } = useTheme();
-  const [fillColor, setFillColor] = useState<string>("");
-  const [lineColor, setLineColor] = useState<string>("");
+  const [fillColor, setFillColor] = useState<string>("transparent");
+  const [lineColor, setLineColor] = useState<string>("#d3d8ec");
 
   useEffect(() => {
     if (theme === "light") {
@@ -54,8 +54,9 @@ export const FooterIcon = ({ Icon, href }: Props) => {
   }, [currentPath, theme]);
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center ">
       <Icon
+        className="hover:scale-110 duration-700 ease-soft-spring cursor-pointer"
         fill={fillColor}
         size={32}
         color={lineColor}

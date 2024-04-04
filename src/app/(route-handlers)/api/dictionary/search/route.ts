@@ -1,14 +1,12 @@
+import { NextRequest, NextResponse } from "next/server";
 import { env } from "process";
 
-interface SearchProps {
-  word: string | null;
-  lang: string;
-}
-
-export const searchDictionary = async ({ word, lang }: SearchProps) => {
+const searchWord = async (req: NextRequest) => {
+  const { word, lang } = await req.json();
   if (!word || !lang) {
-    return false;
+    return NextResponse.json({ error: true, data: null });
   }
+
   const API_URL = env.COLLINS_DICTIONARY_URL;
   const API_KEY = env.COLLINS_DICTIONARY_API_KEY || "";
 
@@ -32,7 +30,14 @@ export const searchDictionary = async ({ word, lang }: SearchProps) => {
       hotname: "http://localhost:3000",
     },
   });
-  const data = await res.json();
 
-  return data;
+  const { entryContent: data } = await res.json();
+
+  if (!data) {
+    return NextResponse.json({ error: true, data: null });
+  } else {
+    return NextResponse.json({ error: false, data });
+  }
 };
+
+export { searchWord as POST };

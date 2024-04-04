@@ -38,3 +38,5 @@ next-env.d.ts
 # dictionary
 words_list.csv
 *.xlsx
+# Sentry Config File
+.sentryclirc
