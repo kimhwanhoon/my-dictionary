@@ -1,7 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { dictionaryLanguages } from "@/types/languages";
+import useSearchInputLanguageChanger from "@/store/searchInputLanguage";
+import { Language } from "@/types/languages";
 import {
   Button,
   Dropdown,
@@ -9,100 +9,57 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/react";
-import { IconChevronRight, IconWorld } from "@tabler/icons-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import React, { type ReactNode, useState, useEffect } from "react";
 
-interface Props {
-  currentLanguage: string | null;
-}
+const languages = [
+  {
+    key: "en",
+    title: "English",
+    desc: "🇬🇧",
+    icon: "🇬🇧",
+  },
+  {
+    key: "en-fr",
+    title: "English -> French",
+    desc: "🇬🇧 -> 🇫🇷",
+    icon: "🇫🇷",
+  },
+  {
+    key: "fr-en",
+    title: "French -> English",
+    desc: "🇫🇷 -> 🇬🇧",
+    icon: "🇬🇧",
+  },
+];
 
-export const SelectLanguage = ({ currentLanguage }: Props) => {
-  const languages = [
-    {
-      key: "en",
-      title: "English",
-      desc: "🇬🇧",
-      icon: "🇬🇧",
-    },
-    {
-      key: "en-fr",
-      title: "English -> French",
-      desc: "🇬🇧 -> 🇫🇷",
-      icon: "🇫🇷",
-    },
-    {
-      key: "fr-en",
-      title: "French -> English",
-      desc: "🇫🇷 -> 🇬🇧",
-      icon: "🇫🇷",
-    },
-  ];
-
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const currentWord = searchParams.get("search");
-
-  const [currentIcon, setCurrentIcon] = useState<ReactNode>(<></>);
-
-  const languageRedirect = (lang: string) => {
-    if (!currentWord) {
-      router.replace(`?lang=${lang}`);
-    } else {
-      router.replace(`?lang=${lang}&search=${currentWord}`);
-    }
-  };
-
-  const DropdownItems = languages.map((language) => (
-    <DropdownItem
-      key={language.key}
-      description={language.desc}
-      onPress={() => {
-        languageRedirect(language.key);
-        setCurrentIcon(language.icon);
-      }}
-    >
-      <span className="text-gray-600 text-sm font-medium">
-        {language.title}
-      </span>
-    </DropdownItem>
-  ));
-
-  // if url's lang params is different from what we offer, send them to '/dictionary'
-  useEffect(() => {
-    const selectedLanguage = dictionaryLanguages.find(
-      (lang) => lang === currentLanguage || null
-    );
-    if (currentLanguage !== selectedLanguage) {
-      router.replace("/dictionary");
-    }
-  }, []);
-
-  useEffect(() => {
-    // find if url's language matches with language.
-    const selectedLanguage = languages.find(
-      (language) => currentLanguage === language.key || null
-    );
-    if (!selectedLanguage) {
-      setCurrentIcon(<IconWorld color="gray" size={16} />);
-    } else {
-      // if not matched, show default icon.
-      setCurrentIcon(selectedLanguage.icon);
-    }
-  }, [currentLanguage]);
+export const SelectLanguage = () => {
+  const { language, setLanguage } = useSearchInputLanguageChanger();
 
   return (
-    <Dropdown placement="bottom-end">
+    <Dropdown>
       <DropdownTrigger>
-        <Button
-          isIconOnly
-          className="flex h-full text-lg bg-transparent items-center"
-        >
-          {currentIcon}
+        <Button variant="bordered" className="capitalize">
+          {language === "en"
+            ? languages[0].desc
+            : language === "en-fr"
+            ? languages[1].desc
+            : language === "fr-en"
+            ? languages[2].desc
+            : languages[0].desc}
         </Button>
       </DropdownTrigger>
-      <DropdownMenu aria-label="Language Options" className="max-w-[300px]">
-        {DropdownItems}
+      <DropdownMenu
+        aria-label="Single selection example"
+        variant="flat"
+        disallowEmptySelection
+        selectionMode="single"
+        selectedKeys={[language]}
+        onAction={(e) => setLanguage(e.toString() as Language)}
+      >
+        {languages.map((lang) => (
+          <DropdownItem key={lang.key} endContent={lang.desc}>
+            {lang.title}
+          </DropdownItem>
+        ))}
       </DropdownMenu>
     </Dropdown>
   );
