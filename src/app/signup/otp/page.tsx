@@ -15,10 +15,10 @@ const OTPPage = async ({ searchParams }: Props) => {
     : null;
 
   if (!hasOtpSent) {
-    redirect("/signin");
+    redirect("/signup");
   }
   if (!userEmail) {
-    redirect("/signin?error=true");
+    redirect("/signup?error=true");
   }
   return (
     <div className="dark:bg-gray-900 dark:bg-opacity-0 flex justify-center items-center h-full">
