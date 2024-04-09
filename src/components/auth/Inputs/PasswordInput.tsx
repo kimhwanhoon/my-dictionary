@@ -5,7 +5,7 @@ interface PasswordInputProps {
   passwordValue: string;
   setPasswordValue: (value: string) => void;
   isHidden: boolean;
-  type: string;
+  type: "signin" | "signup";
   togglePasswordVisibility: () => void;
 }
 
@@ -28,7 +28,7 @@ export const PasswordInput = ({
         </div>
       }
       name="password"
-      autoComplete={type === "sign-in" ? "current-password" : "new-password"}
+      autoComplete={type === "signin" ? "current-password" : "new-password"}
       endContent={
         <button
           className="focus:outline-none"
@@ -43,9 +43,11 @@ export const PasswordInput = ({
         </button>
       }
       description={
-        <span className="text-xs text-gray-600 dark:text-gray-300">
-          Password must be at least 8 characters long.
-        </span>
+        type === "signup" && (
+          <span className="text-xs text-gray-600 dark:text-gray-300">
+            Password must be at least 8 characters long.
+          </span>
+        )
       }
     />
   );

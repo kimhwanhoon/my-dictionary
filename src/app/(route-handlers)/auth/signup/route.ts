@@ -7,10 +7,10 @@ import { AuthBody } from "@/types/auth/AuthBody";
 const signUp = async (req: NextRequest) => {
   const { email, password }: AuthBody = await req.json();
 
-  // if email was empty, return error
-  if (!email) {
+  // if email or password is empty, return error
+  if (email.length === 0) {
     return NextResponse.json({ error: { message: "email is empty." } });
-  } else if (!password) {
+  } else if (password.length === 0) {
     return NextResponse.json({ error: { message: "password is empty." } });
   }
 
@@ -18,21 +18,19 @@ const signUp = async (req: NextRequest) => {
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
 
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { error: signupError } = await supabase.auth.signUp({
       email,
       password,
     });
-    console.log(data);
-    console.log(error);
-    if (error) {
-      return NextResponse.json({ error });
+
+    if (signupError) {
+      throw new Error(signupError.message);
     } else {
       return NextResponse.json({
         error: null,
       });
     }
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ error });
   }
 };

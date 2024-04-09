@@ -14,7 +14,7 @@ const SignInPage = async () => {
       <div className="background">
         <Circles />
       </div>
-      <AuthPage type="sign-in" />
+      <AuthPage />
     </section>
   );
 };

@@ -4,20 +4,25 @@
 import { emailRegex } from "@/utils/regex/email";
 import { Button, Divider, Link } from "@nextui-org/react";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PasswordInput } from "./Inputs/PasswordInput";
 import { EmailInput } from "./Inputs/EmailInput";
 import { signinHandler } from "@/utils/supabase/auth/signinHandler";
 import { signupHandler } from "@/utils/supabase/auth/signupHandler";
 
-interface Props {
-  type: "sign-in" | "sign-up";
-}
-
-export const AuthPage = ({ type }: Props) => {
+export const AuthPage = () => {
   // path & router
   const pathname = usePathname();
   const router = useRouter();
+  // ---------------------
+  // type (signin or signup)
+  const [type, setType] = useState<"signin" | "signup">(
+    pathname.includes("signin") ? "signin" : "signup"
+  );
+  // set type based on pathname
+  useEffect(() => {
+    setType(pathname.includes("signin") ? "signin" : "signup");
+  }, [pathname]);
   // ---------------------
   // email and password
   const [emailValue, setEmailValue] = useState<string>("");
@@ -31,6 +36,9 @@ export const AuthPage = ({ type }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   // ---------------------
+  // Form submit handler
+  // signinHandler & signupHandler
+  // ---------------------
   const formSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
     const handler = pathname.includes("signin") ? signinHandler : signupHandler;
@@ -42,14 +50,18 @@ export const AuthPage = ({ type }: Props) => {
       setIsLoading,
     });
   };
+  // ---------------------
   return (
     <div className="px-10 py-16 rounded-xl shadow-large w-full mx-auto max-w-[400px] space-y-3 bg-slate-100 dark:bg-slate-900 bg-opacity-70 dark:bg-opacity-80">
       <div className="space-y-2 text-center">
-        <h2 className="text-3xl font-bold text-indigo-600 dark:text-gray-200 py-4">
-          {type === "sign-in" ? "Sign In" : "Sign Up"}
+        <h2
+          key={type + 0}
+          className="text-3xl font-bold text-indigo-600 dark:text-gray-200 py-4"
+        >
+          {type === "signin" ? "Sign In" : "Sign Up"}
         </h2>
         <p className="text-gray-600 dark:text-gray-300 text-15">
-          {type === "sign-in"
+          {type === "signin"
             ? "Enter your information to sign in"
             : "Enter your information to sign up"}
         </p>
@@ -78,7 +90,7 @@ export const AuthPage = ({ type }: Props) => {
             }
             className="disabled:bg-opacity-50 disabled:cursor-not-allowed"
           >
-            {type === "sign-in" ? "Sign In" : "Sign Up"}
+            {type === "signin" ? "Sign In" : "Sign Up"}
           </Button>
           {errorMessage && (
             <span className="text-red-500 text-sm">{errorMessage}</span>
@@ -87,7 +99,7 @@ export const AuthPage = ({ type }: Props) => {
         {isLoading ? <></> : <Divider className="my-8" />}
         <div className="text-center flex flex-col items-center gap-1">
           <span className="text-sm">
-            {type === "sign-in"
+            {type === "signin"
               ? "Don't have an account?"
               : "Already have an account?"}
           </span>
@@ -96,9 +108,9 @@ export const AuthPage = ({ type }: Props) => {
             size="sm"
             color="primary"
             underline="always"
-            href={type === "sign-in" ? "/signup" : "/signin"}
+            href={type === "signin" ? "/signup" : "/signin"}
           >
-            {type === "sign-in" ? "Create an Account" : "Go to Sign in page"}
+            {type === "signin" ? "Create an Account" : "Go to Sign in page"}
           </Link>
         </div>
       </form>

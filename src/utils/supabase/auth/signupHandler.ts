@@ -19,7 +19,7 @@ export const signupHandler = async ({
       email: emailValue,
       password: passwordValue,
     });
-    const { error } = await fetch("/auth/nonce", {
+    const { error } = await fetch("/auth/signup", {
       method: "POST",
       body,
     }).then((res) => res.json());
@@ -27,7 +27,7 @@ export const signupHandler = async ({
       throw new Error(error.message);
     } else {
       // if no error, redirect to home
-      router.push("/signup/otp?sent=true");
+      router.push("/signup?success=true");
     }
   } catch (error: any) {
     // error handling

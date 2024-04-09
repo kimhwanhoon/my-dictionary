@@ -38,6 +38,8 @@ export const signinHandler = async ({
       setErrorMessage("Password is empty.");
     } else if (error.message === "Invalid login credentials") {
       setErrorMessage("Invalid email or password.");
+    } else if (error.message === "Email not confirmed") {
+      setErrorMessage("Your email is not confirmed yet.");
     }
   } finally {
     setIsLoading(false);

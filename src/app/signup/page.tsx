@@ -14,7 +14,7 @@ const SignUpPage = async () => {
       <div className="background -z-10">
         <Circles />
       </div>
-      <AuthPage type="sign-up" />
+      <AuthPage />
     </section>
   );
 };
