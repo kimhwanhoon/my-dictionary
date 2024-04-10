@@ -66,6 +66,7 @@ const WordbookDetailPage = async ({ params: { name } }: Props) => {
                 word={el.word}
                 definition={el.definition}
                 originalDefinition={el.original_definition}
+                wordbookId={wordbook.id}
               />
             );
           })}

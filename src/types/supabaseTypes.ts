@@ -11,6 +11,7 @@ export interface WordType {
   definition: string | null;
   original_definition: string | null;
   language: "English" | "French" | null;
+  wordbook_id: string;
 }
 
 export type Database = {
