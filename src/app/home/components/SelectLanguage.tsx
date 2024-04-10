@@ -37,7 +37,7 @@ export const SelectLanguage = () => {
   return (
     <Dropdown>
       <DropdownTrigger>
-        <Button variant="bordered" className="capitalize">
+        <Button variant="faded" className="capitalize">
           {language === "en"
             ? languages[0].desc
             : language === "en-fr"

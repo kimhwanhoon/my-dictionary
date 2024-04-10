@@ -59,13 +59,14 @@ const WordbookDetailPage = async ({ params: { name } }: Props) => {
       return (
         <div className="p-4 space-y-4 flex flex-col items-center">
           <AddWordButton listName={listName} />
-          {wordbook.words.map((el: WordType, i) => {
+          {wordbook.words.map((el: WordType, i: number) => {
             return (
               <WordCard
                 key={i.toString()}
                 word={el.word}
                 definition={el.definition}
                 originalDefinition={el.original_definition}
+                wordbookId={wordbook.id}
               />
             );
           })}

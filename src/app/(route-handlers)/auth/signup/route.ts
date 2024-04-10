@@ -1,63 +1,37 @@
-import "server-only";
-
 import { NextRequest } from "next/server.js";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { RouteReturnType } from "@/types/routeReturnTypes";
-import { isUserEmailDuplicated } from "@/utils/supabase/auth/isUserEmailDuplicated";
+import { AuthBody } from "@/types/auth/AuthBody";
 
-const signUp = async (req: NextRequest): Promise<RouteReturnType> => {
-  const {
-    email,
-    duplicateChecked,
-  }: { email: string; duplicateChecked: boolean } = await req.json();
+const signUp = async (req: NextRequest) => {
+  const { email, password }: AuthBody = await req.json();
 
-  //
-  // Email duplicate check
-  //
-  if (!duplicateChecked) {
-    const { duplicated, error: duplicateEmailCheckingError } =
-      await isUserEmailDuplicated(email);
+  // if email or password is empty, return error
+  if (email.length === 0) {
+    return NextResponse.json({ error: { message: "email is empty." } });
+  } else if (password.length === 0) {
+    return NextResponse.json({ error: { message: "password is empty." } });
+  }
 
-    if (duplicateEmailCheckingError) {
-      return NextResponse.json({
-        error: true,
-        message: "Error occurred.",
-      });
-    }
+  try {
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
 
-    if (duplicated) {
-      return NextResponse.json({
-        error: true,
-        message: "Email already registered.",
-      });
-    } else {
-      return NextResponse.json({
-        error: false,
-        message: "Email not duplicated.",
-      });
-    }
-    //
-    // Create user by "signin through OTP"
-    //
-  } else {
-    const supabase = createClient(cookies());
-    const { error } = await supabase.auth.signInWithOtp({
+    const { error: signupError } = await supabase.auth.signUp({
       email,
-      options: {
-        shouldCreateUser: true,
-      },
+      password,
     });
-    if (error) {
-      console.log(error);
-      return NextResponse.json({ error: true, message: error.message });
+
+    if (signupError) {
+      throw new Error(signupError.message);
     } else {
       return NextResponse.json({
         error: null,
-        message: "ok",
       });
     }
+  } catch (error) {
+    return NextResponse.json({ error });
   }
 };
 

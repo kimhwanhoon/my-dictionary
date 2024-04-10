@@ -1,14 +1,10 @@
 import { AuthPage } from "@/components/auth/AuthPage";
+import { Circles } from "@/components/auth/background/Circles";
 import { checkUserSession } from "@/utils/supabase/sessionChecker";
 import { redirect } from "next/navigation";
 
-interface Props {
-  searchParams: { error: string };
-}
-
-const SignInPage = async ({ searchParams }: Props) => {
-  const isError = searchParams.error === "true" ? true : false;
-  const { isSession, userData } = await checkUserSession();
+const SignInPage = async () => {
+  const { isSession } = await checkUserSession();
 
   if (isSession) {
     redirect("/home");
@@ -16,41 +12,9 @@ const SignInPage = async ({ searchParams }: Props) => {
   return (
     <section className="h-full  flex flex-col items-center justify-center ">
       <div className="background">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
+        <Circles />
       </div>
-      <AuthPage type="sign-in" isError={isError} />
+      <AuthPage />
     </section>
   );
 };

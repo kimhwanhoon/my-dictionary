@@ -84,6 +84,9 @@ export const AddToWordbookButton = ({
         </Button>
       </DropdownTrigger>
       <DropdownMenu
+        topContent={
+          <AddListButton fullWidth={false} size="sm" variant="ghost" />
+        }
         aria-label="Dynamic Actions"
         items={wordbookList}
         onAction={async (e: Key) => {
