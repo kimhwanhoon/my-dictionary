@@ -40,6 +40,16 @@ export const signupHandler = async ({
       setErrorMessage("Password is empty.");
     } else if (error.message === "Invalid login credentials") {
       setErrorMessage("Invalid email or password.");
+    } else if (
+      error.message.includes(
+        "Password should contain at least one character of each"
+      )
+    ) {
+      setErrorMessage(
+        "Password requires: lowercase, uppercase, numbers, special characters."
+      );
+    } else {
+      setErrorMessage(error.message);
     }
   } finally {
     setIsLoading(false);

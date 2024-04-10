@@ -90,7 +90,7 @@ export const AuthPage = () => {
             {type === "signin" ? "Sign In" : "Sign Up"}
           </Button>
           {errorMessage && (
-            <span className="text-red-500 text-sm">{errorMessage}</span>
+            <span className="text-red-500 text-[13px]">{errorMessage}</span>
           )}
         </div>
         {isLoading ? <></> : <Divider className="my-8" />}

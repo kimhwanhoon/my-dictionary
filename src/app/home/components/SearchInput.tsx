@@ -53,7 +53,6 @@ export const SearchInput = () => {
       );
 
       setSearchedWordList((prev) => {
-        console.log(searchedWordList);
         return searchedWordList as string[];
       });
     } else {
@@ -76,13 +75,17 @@ export const SearchInput = () => {
       <Input
         label={"Search words"}
         value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
+        onChange={(e) =>
+          setInputValue((prev) => {
+            const loweredWord = e.target.value.toLowerCase();
+            return loweredWord;
+          })
+        }
         endContent={<SelectLanguage />}
       />
       {searchedWordList.length > 1 && (
         <div>
           <Listbox
-            variant="faded"
             color="primary"
             aria-label="Actions"
             onAction={(key) => {

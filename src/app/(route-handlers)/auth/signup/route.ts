@@ -24,13 +24,14 @@ const signUp = async (req: NextRequest) => {
     });
 
     if (signupError) {
-      throw new Error(signupError.message);
+      return NextResponse.json({ error: signupError });
     } else {
       return NextResponse.json({
         error: null,
       });
     }
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ error });
   }
 };

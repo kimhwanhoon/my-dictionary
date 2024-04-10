@@ -105,12 +105,9 @@ export const AddToWordbookButton = ({
           setIsSuccess(false);
         }}
         emptyContent={
-          <div className="flex flex-col gap-[6px] w-full">
-            <p className="text-gray-600 dark:text-gray-200 text-sm text-center">
-              No wordbook found.
-            </p>
-            <AddListButton fullWidth={false} size="sm" variant="ghost" />
-          </div>
+          <p className="text-gray-600 dark:text-gray-200 text-[13px] text-center">
+            No wordbook found.
+          </p>
         }
       >
         {(wordbook) => {
