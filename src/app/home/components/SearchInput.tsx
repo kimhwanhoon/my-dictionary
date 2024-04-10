@@ -1,12 +1,13 @@
 "use client";
 
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, Listbox, ListboxItem } from "@nextui-org/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { FormEvent, useEffect, useState } from "react";
 import { SelectLanguage } from "./SelectLanguage";
 import { debounce } from "lodash";
 import { useTheme } from "next-themes";
 import useSearchInputLanguageChanger from "@/store/searchInputLanguage";
+import { makeWordSearchList } from "@/utils/dictionary/makeWordSearchList";
 
 export const SearchInput = () => {
   const router = useRouter();
@@ -42,6 +43,23 @@ export const SearchInput = () => {
   }, [theme]);
 
   const [inputValue, setInputValue] = useState<string>(currentWord);
+  const [searchedWordList, setSearchedWordList] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (inputValue.length > 1) {
+      const searchedWordList = makeWordSearchList(
+        language as "en" | "en-fr" | "fr-en",
+        inputValue
+      );
+
+      setSearchedWordList((prev) => {
+        console.log(searchedWordList);
+        return searchedWordList as string[];
+      });
+    } else {
+      setSearchedWordList([]);
+    }
+  }, [inputValue, language]);
 
   const onSubmitHandler = debounce(() => {
     router.push(`/home?lang=${language}&search=${inputValue.toLowerCase()}`);
@@ -61,6 +79,21 @@ export const SearchInput = () => {
         onChange={(e) => setInputValue(e.target.value)}
         endContent={<SelectLanguage />}
       />
+      {searchedWordList.length > 1 && (
+        <div>
+          <Listbox
+            aria-label="Actions"
+            onAction={(key) => {
+              setInputValue(key as string);
+              setSearchedWordList([]);
+            }}
+          >
+            {searchedWordList.map((word) => (
+              <ListboxItem key={word}>{word}</ListboxItem>
+            ))}
+          </Listbox>
+        </div>
+      )}
       <Button color="primary" fullWidth size="md" type="submit">
         Search
       </Button>

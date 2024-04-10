@@ -39,10 +39,10 @@ export const AuthPage = () => {
   // Form submit handler
   // signinHandler & signupHandler
   // ---------------------
-  const formSubmitHandler = (e: React.FormEvent) => {
+  const formSubmitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     const handler = pathname.includes("signin") ? signinHandler : signupHandler;
-    handler({
+    await handler({
       emailValue,
       passwordValue,
       router,
@@ -54,10 +54,7 @@ export const AuthPage = () => {
   return (
     <div className="px-10 py-16 rounded-xl shadow-large w-full mx-auto max-w-[400px] space-y-3 bg-slate-100 dark:bg-slate-900 bg-opacity-80 dark:bg-opacity-80">
       <div className="space-y-2 text-center">
-        <h2
-          key={type + 0}
-          className="text-3xl font-bold text-indigo-600 dark:text-gray-200 py-4"
-        >
+        <h2 className="text-3xl font-bold text-indigo-600 dark:text-gray-200 py-4">
           {type === "signin" ? "Sign In" : "Sign Up"}
         </h2>
         <p className="text-gray-600 dark:text-gray-300 text-15">

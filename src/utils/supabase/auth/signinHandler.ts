@@ -1,9 +1,11 @@
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+
 interface SignInHandlerProps {
   emailValue: string;
   passwordValue: string;
   setIsLoading: (value: boolean) => void;
   setErrorMessage: (value: string) => void;
-  router: any;
+  router: AppRouterInstance;
 }
 
 export const signinHandler = async ({
@@ -28,6 +30,7 @@ export const signinHandler = async ({
     } else {
       // if no error, redirect to home
       router.push("/");
+      router.refresh();
     }
   } catch (error: any) {
     // error handling
