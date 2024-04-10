@@ -40,6 +40,8 @@ export const signupHandler = async ({
       setErrorMessage("Password is empty.");
     } else if (error.message === "Invalid login credentials") {
       setErrorMessage("Invalid email or password.");
+    } else {
+      setErrorMessage(error.message);
     }
   } finally {
     setIsLoading(false);
