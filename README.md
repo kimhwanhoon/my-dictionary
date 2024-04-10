@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Title: My-dictionary
 
-## Getting Started
+## Crucial plan
 
-First, run the development server:
+> Make sure to follow this plan and always think about the big streams.<br>
+> Never fall into the rabbit hole! => MVP FIRST
+> Never try to do design.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Try to finish MVP first and if any bugs are found, write them down on "Bugs" below this page.
+
+1. Organize basic routing plans.
+2. Connect auth
+3. Create tables for the database.
+
+- Let's make the card clickable so after clicking the definition and examples can be revealed.
+- If url is signin or signup, let's hide header and footer.
+- Dictionary API should be added. the fastest one!
+- if same word is registered to the words, need to do something about it.
+
+## Types
+
+I have set the route-handler's return type on `src/types/routeReturnTypes.ts`.
+
+```ts
+import { NextResponse } from "next/server";
+
+interface ReturnType {
+  error: boolean | null;
+  message: "ok" | string;
+}
+
+export type RouteReturnType = NextResponse<ReturnType>;
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This is usable like this.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```ts
+const POST = async (req: NextRequest): Promise<RouteReturnType> => {};
+```
 
-## Learn More
+## What I did that I learned new
 
-To learn more about Next.js, take a look at the following resources:
+1. By setting the body height to 100dvh, the header and the footer will be always shown even on Safari or Android dynamic browsers.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### What to edit before promoting to the production
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+1. Supabase Auth setup -> SMTP Provider settings -> Minimum interval between emails being sent to 60 seconds.
 
-## Deploy on Vercel
+### Bugs
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Footer icons must be filled with purple color depending on the current URL. But when it goes to layout, it seems that the code is cached so the current URL won't be updated.
+2. [solved]On iPhone (android not tested, when clicking input, it zooms so the user has to zoom out again.) => The problem has been fixed by setting meta option interactive-widget to resizes-content.
+   ref: <https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag>
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+#### Ideas
+
+1. french_dictionary 테이블에서 다른 컬럼 추가하고 모든 유저를 넣을 수 있게 해서 해당 유저가 직접 그 단어의 뜻을 커스텀해서 볼 수 있게 하는 기능. official app에서 검색해도 자기가 저장했던 의미가 자신에게만 보인다!!!
+
+2. Maybe, connect dictionary API first, and then put unique id for each word, and then add customizable user note (or definition, examples, etc) for that uid(word).
+
+3. on Searching word, should I just push the url to `?word={value}` and do the searching work on page server component? Or should I just make client -> route handler logic..?
+
+3-1. if (!searchURLParam...) => show default, if param value exist -> search function (server side) activates.
