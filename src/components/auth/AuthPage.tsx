@@ -52,7 +52,7 @@ export const AuthPage = () => {
   };
   // ---------------------
   return (
-    <div className="px-10 py-16 rounded-xl shadow-large w-full mx-auto max-w-[400px] space-y-3 bg-slate-100 dark:bg-slate-900 bg-opacity-70 dark:bg-opacity-80">
+    <div className="px-10 py-16 rounded-xl shadow-large w-full mx-auto max-w-[400px] space-y-3 bg-slate-100 dark:bg-slate-900 bg-opacity-80 dark:bg-opacity-80">
       <div className="space-y-2 text-center">
         <h2
           key={type + 0}

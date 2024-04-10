@@ -2,8 +2,15 @@ import { AuthPage } from "@/components/auth/AuthPage";
 import { Circles } from "@/components/auth/background/Circles";
 import { checkUserSession } from "@/utils/supabase/sessionChecker";
 import { redirect } from "next/navigation";
+import { ConfirmationSent } from "./components/ConfirmationSent";
 
-const SignUpPage = async () => {
+interface SignUpPageProps {
+  searchParams: { success: string };
+}
+
+const SignUpPage = async ({ searchParams: { success } }: SignUpPageProps) => {
+  const isConfirmMailSent = Boolean(success);
+
   const { isSession } = await checkUserSession();
   if (isSession) {
     redirect("/home");
@@ -14,7 +21,7 @@ const SignUpPage = async () => {
       <div className="background -z-10">
         <Circles />
       </div>
-      <AuthPage />
+      {isConfirmMailSent ? <ConfirmationSent /> : <AuthPage />}
     </section>
   );
 };

@@ -1,4 +1,5 @@
 import { OTP } from "@/components/auth/OTP";
+import { Circles } from "@/components/auth/background/Circles";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -23,39 +24,7 @@ const OTPPage = async ({ searchParams }: Props) => {
   return (
     <div className="dark:bg-gray-900 dark:bg-opacity-0 flex justify-center items-center h-full">
       <div className="background">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
+        <Circles />
       </div>
       <OTP email={userEmail} />
     </div>

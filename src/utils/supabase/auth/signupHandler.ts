@@ -26,7 +26,7 @@ export const signupHandler = async ({
     if (error) {
       throw new Error(error.message);
     } else {
-      // if no error, redirect to home
+      // if no error, redirect to success page
       router.push("/signup?success=true");
     }
   } catch (error: any) {
