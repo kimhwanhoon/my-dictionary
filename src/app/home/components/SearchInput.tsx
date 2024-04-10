@@ -82,6 +82,8 @@ export const SearchInput = () => {
       {searchedWordList.length > 1 && (
         <div>
           <Listbox
+            variant="faded"
+            color="primary"
             aria-label="Actions"
             onAction={(key) => {
               setInputValue(key as string);
