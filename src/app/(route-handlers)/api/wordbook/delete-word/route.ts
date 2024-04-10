@@ -1,3 +1,4 @@
+import { WordType } from "@/types/supabaseTypes";
 import { createClient } from "@/utils/supabase/server";
 import { checkUserSession } from "@/utils/supabase/sessionChecker";
 import { cookies } from "next/headers";
@@ -22,7 +23,7 @@ const deleteWordFromWordbook = async (req: NextRequest) => {
   } else {
     const wordbookData = fetchedWordbookData.words;
     const updatedWordbookData = wordbookData.filter(
-      (wordInDatabase) => wordInDatabase.word !== word
+      (wordInDatabase: WordType) => wordInDatabase.word !== word
     );
     await supabase
       .from("wordbook")

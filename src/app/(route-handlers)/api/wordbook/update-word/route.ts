@@ -23,7 +23,7 @@ const updateWordFromWordbook = async (req: NextRequest) => {
   } else {
     const wordbookData = fetchedWordbookData.words;
     const updatedWordbookData: WordType[] = wordbookData.map(
-      (wordInDatabase) => {
+      (wordInDatabase: WordType) => {
         if (wordInDatabase.word === word) {
           return {
             word,
