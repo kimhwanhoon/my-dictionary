@@ -11,6 +11,7 @@ import {
   Modal,
   ModalContent,
   ScrollShadow,
+  Textarea,
   useDisclosure,
 } from "@nextui-org/react";
 import React from "react";
@@ -22,7 +23,7 @@ interface Props {
   word: WordType["word"];
   definition: WordType["definition"];
   originalDefinition: WordType["original_definition"];
-  wordbookId: WordType["wordbook_id"];
+  wordbookId: string;
 }
 
 export const WordCard = ({
@@ -39,6 +40,8 @@ export const WordCard = ({
   } = useDisclosure();
 
   const router = useRouter();
+  const [isEditing, setIsEditing] = React.useState(false);
+  const definitionRef = React.useRef<HTMLTextAreaElement>(null);
 
   const cardOnClickHandler = () => {
     openModal();
@@ -56,9 +59,24 @@ export const WordCard = ({
         <ScrollShadow hideScrollBar>
           <CardBody onClick={cardOnClickHandler}>
             <div>
-              <p className="w-full text-center text-15 text-gray-700 dark:text-gray-200">
-                {definition}
-              </p>
+              {isEditing ? (
+                <Textarea
+                  className="w-full text-center text-15 text-gray-700 dark:text-gray-200 border-none"
+                  ref={definitionRef}
+                  defaultValue={definition!}
+                  isDisabled={!isEditing}
+                  description={
+                    <p className="text-left">
+                      Edit the definition of the word. You cannot edit original
+                      definition from dictionary.
+                    </p>
+                  }
+                ></Textarea>
+              ) : (
+                <p className="w-full text-center text-15 text-gray-700 dark:text-gray-200 border-none">
+                  {definition}
+                </p>
+              )}
               {originalDefinition && <Divider />}
               {originalDefinition && parse(originalDefinition)}
             </div>
@@ -67,14 +85,51 @@ export const WordCard = ({
         <Divider />
         <CardFooter className="min-h-[60px]">
           <div className="flex gap-2 w-full">
-            <Button
-              className="w-full dark:text-gray-100"
-              fullWidth
-              color="primary"
-              variant="flat"
-            >
-              Edit
-            </Button>
+            {!isEditing ? (
+              <Button
+                className="w-full dark:text-gray-100"
+                fullWidth
+                color="primary"
+                variant="flat"
+                onClick={() => {
+                  if (confirm("Do you really want to edit this word?")) {
+                    setIsEditing(true);
+                  }
+                }}
+              >
+                Edit
+              </Button>
+            ) : (
+              <Button
+                className="w-full dark:text-gray-100"
+                fullWidth
+                color="primary"
+                variant="flat"
+                onClick={async () => {
+                  const updatedDefinition = definitionRef.current?.value;
+                  if (confirm("Do you really want to save this word?")) {
+                    setIsEditing(false);
+                    // save the updated definition
+                    const { error } = await fetch("/api/wordbook/update-word", {
+                      method: "POST",
+                      body: JSON.stringify({
+                        word,
+                        wordbookId,
+                        updatedDefinition,
+                      }),
+                    }).then((res) => res.json());
+                    if (error) {
+                      console.error("Failed to save the word.");
+                    } else {
+                      closeModal();
+                      router.refresh();
+                    }
+                  }
+                }}
+              >
+                Save
+              </Button>
+            )}
             <Button
               className="w-full"
               fullWidth
@@ -102,12 +157,16 @@ export const WordCard = ({
   return (
     <>
       <Modal
+        key={"word-card-modal"}
         closeButton
         placement="center"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
+        hideCloseButton
       >
-        <ModalContent>{(closeModal) => <CardDetailModal />}</ModalContent>
+        <ModalContent>
+          <CardDetailModal />
+        </ModalContent>
       </Modal>
       <Card className="w-full cursor-pointer">
         <CardHeader onClick={cardOnClickHandler}>
