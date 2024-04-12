@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Card, CardBody, CardHeader, Divider } from "@nextui-org/react";
+import { Card, CardBody } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import React, { useCallback } from "react";
 
@@ -17,28 +17,15 @@ export const ListCard = ({ title, number }: Props) => {
 
   return (
     <Card
-      className="flex-col justify-center py-2 w-full sm:w-[calc(50%-16px)] md:w-[calc(33.333333%-16px)] lg:w-[calc(20%-16px)]"
+      className="flex-col justify-center w-full sm:w-[calc(50%-8px)] md:w-[calc(33.333333%-12px)] lg:w-[calc(20%-14px)] cursor-pointer"
       shadow="md"
     >
-      <CardHeader>
-        <p className="w-full text-center font-medium font-mono">
-          {title}
-          <span className="font-sans w-full text-right text-xs text-gray-600 dark:text-gray-300">
+      <CardBody onClick={onClickHandler}>
+        <div className="w-full text-center space-y-1">
+          <p className="font-medium font-mono">{title}</p>
+          <p className="font-sans w-full text-right text-xs text-gray-600 dark:text-gray-300">
             ({number} words)
-          </span>
-        </p>
-      </CardHeader>
-      <Divider />
-      <CardBody>
-        <div className="flex justify-center w-full">
-          <Button
-            className="w-[250px] text-gray-800 dark:text-slate-100 dark:bg-indigo-900"
-            color="primary"
-            variant="flat"
-            onPress={onClickHandler}
-          >
-            See words
-          </Button>
+          </p>
         </div>
       </CardBody>
     </Card>
