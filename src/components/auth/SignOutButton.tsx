@@ -28,9 +28,9 @@ export const SignOutButton = () => {
       variant="faded"
       fullWidth
       onClick={signOut}
-      endContent={<IconLogout />}
+      endContent={<IconLogout size={18} />}
     >
-      Sign Out
+      Sign out
     </Button>
   );
 };

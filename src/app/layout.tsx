@@ -13,8 +13,18 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "My Dictionary",
+  applicationName: "My Dictionary",
   description:
-    "This web app is where we save our vocabularies, idioms and sentences that we want to memorize.",
+    "This web app serves as our repository for storing vocabularies, idioms, and sentences that we aim to memorize.",
+  appleWebApp: true,
+  authors: {
+    name: "Hwanhoon Kim",
+    url: "https://github.com/kimhwanhoon/my-dictionary",
+  },
+  creator: "Hwanhoon Kim",
+  publisher: "Hwanhoon Kim, Deployed by Vercel",
+  keywords: ["dictionary", "custom dictionary", "kimhwanhoon"],
+  category: "dictionary",
 };
 
 export const viewport: Viewport = {
@@ -35,7 +45,7 @@ export default async function RootLayout({
     : "h-[calc(100dvh-70px)]";
 
   return (
-    <html lang="en" className="bg-main" suppressHydrationWarning>
+    <html lang="en" className="bg-main" suppressHydrationWarning vocab="">
       <body
         className={`${inter.className} h-dvh dark:bg-slate-900 relative -z-50`}
         suppressHydrationWarning

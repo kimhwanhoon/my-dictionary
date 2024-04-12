@@ -1,14 +1,9 @@
 import { Circles } from "@/components/auth/background/Circles";
 import { checkUserSession } from "@/utils/supabase/sessionChecker";
 import { redirect } from "next/navigation";
-import React from "react";
 
-interface Props {
-  searchParams: { username: string };
-}
-
-const UserPage = async ({ searchParams }: Props) => {
-  const { isSession, userData } = await checkUserSession();
+const UserPage = async () => {
+  const { isSession } = await checkUserSession();
   if (!isSession) {
     redirect("/signin");
   } else {

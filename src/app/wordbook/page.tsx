@@ -32,18 +32,16 @@ const WordbookPage = async () => {
       );
     } else {
       return (
-        <div>
-          <WordbookBackground className="p-4 h-[calc(100dvh-130px)] space-y-4">
-            <AddListButton />
-            <section className="w-full gap-4 flex justify-start flex-wrap">
-              {wordbook!.map((el, i) => {
-                return (
-                  <ListCard key={i} title={el.name} number={el.words.length} />
-                );
-              })}
-            </section>
-          </WordbookBackground>
-        </div>
+        <WordbookBackground className="p-4 h-[calc(100dvh-130px)]">
+          <AddListButton />
+          <section className="py-4 w-full gap-4 flex justify-start flex-wrap">
+            {wordbook!.map((el, i) => {
+              return (
+                <ListCard key={i} title={el.name} number={el.words.length} />
+              );
+            })}
+          </section>
+        </WordbookBackground>
       );
     }
   }
