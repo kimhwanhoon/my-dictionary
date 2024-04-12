@@ -4,6 +4,7 @@ export const extractPronunciation = (originalText: string): string | null => {
   if (!originalText) {
     return null;
   }
+
   const regex = /<span class="pron" type="">(.*?)<a href="#"/;
   const match = originalText.match(regex);
 
@@ -11,18 +12,11 @@ export const extractPronunciation = (originalText: string): string | null => {
     return null;
   }
 
-  const removeUnnecessaryTag = deleteText({
-    originalText: match[1],
-    target: `<sup class="hi">`,
-  });
-  const removeUnnecessaryTag2 = deleteText({
-    originalText: removeUnnecessaryTag,
-    target: `</sup>`,
-  });
-  const removeUnnecessaryTag3 = deleteText({
-    originalText: removeUnnecessaryTag2,
-    target: `ˈ`,
-  });
+  const unnecessaryTags = [`<sup class="hi">`, `</sup>`, `ˈ`];
 
-  return removeUnnecessaryTag3;
+  const cleanedText = unnecessaryTags.reduce((text, tag) => {
+    return deleteText({ originalText: text, target: tag });
+  }, match[1]);
+
+  return cleanedText;
 };
