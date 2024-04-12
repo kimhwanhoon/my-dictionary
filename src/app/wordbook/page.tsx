@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { AddListButton } from "./components/AddListButton";
 import { ListCard } from "./components/ListCard";
+import { WordbookBackground } from "./components/Background";
 
 const WordbookPage = async () => {
   const { isSession, userData } = await checkUserSession();
@@ -31,13 +32,17 @@ const WordbookPage = async () => {
       );
     } else {
       return (
-        <div className="p-4 space-y-4 flex flex-col items-center">
-          <AddListButton />
-          {wordbook!.map((el, i) => {
-            return (
-              <ListCard key={i} title={el.name} number={el.words.length} />
-            );
-          })}
+        <div>
+          <WordbookBackground className="p-4 h-[calc(100dvh-130px)] space-y-4">
+            <AddListButton />
+            <section className="w-full gap-4 flex justify-start flex-wrap">
+              {wordbook!.map((el, i) => {
+                return (
+                  <ListCard key={i} title={el.name} number={el.words.length} />
+                );
+              })}
+            </section>
+          </WordbookBackground>
         </div>
       );
     }

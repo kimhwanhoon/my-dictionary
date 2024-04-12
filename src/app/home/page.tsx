@@ -28,7 +28,7 @@ const HomePage = async ({ searchParams: { search, lang } }: Props) => {
     }
 
     return (
-      <div className="h-full dictionary-result-background">
+      <div className="h-full">
         <SearchInput />
         <SearchResult
           search={search}

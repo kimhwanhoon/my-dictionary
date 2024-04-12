@@ -23,7 +23,13 @@ export const SignOutButton = () => {
     }
   };
   return (
-    <Button onClick={signOut} endContent={<IconLogout />}>
+    <Button
+      className="max-w-[300px]"
+      variant="faded"
+      fullWidth
+      onClick={signOut}
+      endContent={<IconLogout />}
+    >
       Sign Out
     </Button>
   );
