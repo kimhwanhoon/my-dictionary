@@ -8,7 +8,7 @@ It has a default Collins API that uses "English", "English - French" and "French
 
 |                                         Signin & Signup page                                          |
 | :---------------------------------------------------------------------------------------------------: |
-| <img src="https://i.ibb.co/3YzWG2V/signin-signup-page-11.gif" alt="signin-signup-page-11" border="0"> |
+| <img src="https://i.ibb.co/3YzWG2V/signin-signup-page-11.gif" alt="signin-signup-page-11" border="0" width="400"> |
 
 |                                 Search word on dictionary and add to a list                                 |
 | :---------------------------------------------------------------------------------------------------------: |
