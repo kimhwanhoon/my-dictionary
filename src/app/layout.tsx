@@ -20,6 +20,7 @@ export const metadata: Metadata = {
     capable: true,
     title: "My Dictionary",
     statusBarStyle: "black-translucent",
+    startupImage: ["./apple-icon.png"],
   },
   authors: {
     name: "Hwanhoon Kim",
@@ -29,6 +30,7 @@ export const metadata: Metadata = {
   publisher: "Hwanhoon Kim, Deployed by Vercel",
   keywords: ["dictionary", "custom dictionary", "kimhwanhoon"],
   category: "dictionary",
+  icons: "https://i.ibb.co/sysbxn8/apple-icon.png",
 };
 
 export const viewport: Viewport = {

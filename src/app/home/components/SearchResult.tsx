@@ -128,9 +128,11 @@ export const SearchResult = ({ search: word, lang, wordbookList }: Props) => {
                   <span>{language === "English" ? "🇬🇧" : "🇫🇷"}</span>
                 </div>
 
-                <span className="text-xs text-gray-700 dark:text-gray-200">
-                  [{pronunciation}]
-                </span>
+                {!!pronunciation && (
+                  <span className="text-xs text-gray-700 dark:text-gray-200">
+                    [{pronunciation}]
+                  </span>
+                )}
               </div>
               <AddToWordbookButton
                 word={resultWord as string}

@@ -8,6 +8,7 @@ import { debounce } from "lodash";
 import { useTheme } from "next-themes";
 import useSearchInputLanguageChanger from "@/store/searchInputLanguage";
 import { makeWordSearchList } from "@/utils/dictionary/makeWordSearchList";
+import { IconChevronDown, IconX } from "@tabler/icons-react";
 
 export const SearchInput = () => {
   const router = useRouter();
@@ -17,6 +18,8 @@ export const SearchInput = () => {
   const { theme } = useTheme();
   const [backgroundStyle, setBackgroundStyle] = useState<string>("");
   const { language, setLanguage } = useSearchInputLanguageChanger();
+
+  const [isListClosed, setIsListClosed] = useState<boolean>(false);
 
   useEffect(() => {
     switch (currentLanguage) {
@@ -73,6 +76,18 @@ export const SearchInput = () => {
     router.push(`/home?lang=${language}&search=${inputValue.toLowerCase()}`);
   }, 1000);
 
+  useEffect(() => {
+    const getDataFromCookies = async () => {
+      const response = await fetch("/api/dictionary/data");
+      const data = await response.json();
+      const { word } = data;
+      if (word) {
+        setInputValue(word);
+      }
+    };
+    getDataFromCookies();
+  }, []);
+
   return (
     <form
       className={`flex flex-col gap-2 p-6 ${backgroundStyle}`}
@@ -93,19 +108,36 @@ export const SearchInput = () => {
         endContent={<SelectLanguage />}
       />
       {searchedWordList.length > 1 && (
-        <div>
-          <Listbox
-            color="primary"
-            aria-label="Actions"
-            onAction={(key) => {
-              setInputValue(key as string);
-              setSearchedWordList([]);
-            }}
-          >
-            {searchedWordList.map((word) => (
-              <ListboxItem key={word}>{word}</ListboxItem>
-            ))}
-          </Listbox>
+        <div className="relative">
+          <div className="h-6">
+            {!isListClosed ? (
+              <IconX
+                className="z-10 absolute right-1 top-1 text-gray-800 opacity-50 hover:opacity-90 duration-300 ease-in-out cursor-pointer"
+                onClick={() => setIsListClosed(true)}
+              />
+            ) : (
+              <IconChevronDown
+                className="z-10 absolute right-1 top-1 text-gray-800 opacity-50 hover:opacity-90 duration-300 ease-in-out cursor-pointer"
+                onClick={() => setIsListClosed(false)}
+              />
+            )}
+          </div>
+
+          {!isListClosed && (
+            <Listbox
+              color="primary"
+              aria-label="Actions"
+              onAction={(key) => {
+                setInputValue(key as string);
+                setSearchedWordList([]);
+                setIsListClosed(false);
+              }}
+            >
+              {searchedWordList.map((word) => (
+                <ListboxItem key={word}>{word}</ListboxItem>
+              ))}
+            </Listbox>
+          )}
         </div>
       )}
       <Button color="primary" fullWidth size="md" type="submit">
