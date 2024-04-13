@@ -46,7 +46,7 @@ export const SearchResult = ({ search: word, lang, wordbookList }: Props) => {
         window.history.replaceState(
           null,
           "",
-          `/?search=${wordFromCookie}&lang=${languageFromCookie}`
+          `/home?search=${wordFromCookie}&lang=${languageFromCookie}`
         );
       }
 
