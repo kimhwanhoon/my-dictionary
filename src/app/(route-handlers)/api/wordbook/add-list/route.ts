@@ -16,7 +16,7 @@ const addList = async (req: NextRequest) => {
     } = await supabase.auth.getUser();
     const uid = user?.id as string;
 
-    const { error } = await supabase
+    const { data: wordbookList, error } = await supabase
       .from("wordbook")
       .select("*")
       .eq("user_id", uid);
@@ -24,10 +24,23 @@ const addList = async (req: NextRequest) => {
     if (error) {
       return NextResponse.json({ error: true, message: error.message });
     } else {
-      await supabase
-        .from("wordbook")
-        .insert([{ user_id: uid, name, words: [] }]);
-      return NextResponse.json({ error: false, message: "new list created." });
+      const listNameDuplicated = wordbookList?.some(
+        (list) => list.name === name
+      );
+      if (listNameDuplicated) {
+        return NextResponse.json({
+          error: true,
+          message: "List name already exists.",
+        });
+      } else {
+        await supabase
+          .from("wordbook")
+          .insert([{ user_id: uid, name, words: [] }]);
+        return NextResponse.json({
+          error: false,
+          message: "new list created.",
+        });
+      }
     }
   }
 };

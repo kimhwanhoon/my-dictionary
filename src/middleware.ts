@@ -31,7 +31,6 @@ export async function middleware(request: NextRequest) {
   requestHeaders.set("x-url", request.url);
   const originFromHeader = urlToOrigin(request.url);
   requestHeaders.set("x-origin", originFromHeader);
-  // console.log(requestHeaders);
 
   let response = NextResponse.next({
     request: {

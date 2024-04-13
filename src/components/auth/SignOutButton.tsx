@@ -19,12 +19,19 @@ export const SignOutButton = () => {
     } catch (error) {
       console.log(error);
     } finally {
+      await fetch("/api/dictionary/data", { method: "DELETE" });
       router.refresh();
     }
   };
   return (
-    <Button onClick={signOut} endContent={<IconLogout />}>
-      Sign Out
+    <Button
+      className="max-w-[300px]"
+      variant="faded"
+      fullWidth
+      onClick={signOut}
+      endContent={<IconLogout size={18} />}
+    >
+      Sign out
     </Button>
   );
 };

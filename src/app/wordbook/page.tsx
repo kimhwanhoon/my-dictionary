@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { AddListButton } from "./components/AddListButton";
 import { ListCard } from "./components/ListCard";
+import { WordbookBackground } from "./components/Background";
 
 const WordbookPage = async () => {
   const { isSession, userData } = await checkUserSession();
@@ -22,7 +23,7 @@ const WordbookPage = async () => {
     if (wordbook!.length === 0) {
       // no list is added.
       return (
-        <div className="w-full h-full flex-col flex justify-center items-center p-4">
+        <div className="w-full h-[calc(100dvh-130px)] flex-col flex justify-center items-center p-4">
           <div className="space-y-2">
             <p className="text-xl">Your list is empty.</p>
             <AddListButton />
@@ -31,14 +32,16 @@ const WordbookPage = async () => {
       );
     } else {
       return (
-        <div className="p-4 space-y-4 flex flex-col items-center">
+        <WordbookBackground className="p-4 h-[calc(100dvh-130px)]">
           <AddListButton />
-          {wordbook!.map((el, i) => {
-            return (
-              <ListCard key={i} title={el.name} number={el.words.length} />
-            );
-          })}
-        </div>
+          <section className="py-4 w-full gap-4 flex justify-start flex-wrap">
+            {wordbook!.map((el, i) => {
+              return (
+                <ListCard key={i} title={el.name} number={el.words.length} />
+              );
+            })}
+          </section>
+        </WordbookBackground>
       );
     }
   }

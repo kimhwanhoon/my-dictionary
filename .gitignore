@@ -40,3 +40,4 @@ words_list.csv
 *.xlsx
 # Sentry Config File
 .sentryclirc
+plan.md

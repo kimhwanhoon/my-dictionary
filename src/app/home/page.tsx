@@ -11,6 +11,7 @@ interface Props {
 
 const HomePage = async ({ searchParams: { search, lang } }: Props) => {
   const { isSession, userData } = await checkUserSession();
+
   if (!isSession) {
     redirect("/signin");
   } else {
@@ -28,7 +29,7 @@ const HomePage = async ({ searchParams: { search, lang } }: Props) => {
     }
 
     return (
-      <div className="h-full dictionary-result-background">
+      <div className="h-full">
         <SearchInput />
         <SearchResult
           search={search}

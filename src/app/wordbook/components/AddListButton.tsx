@@ -46,9 +46,11 @@ export const AddListButton = ({
         body: JSON.stringify({ name: listValue }),
       }).then((res) => res.json());
       if (error) {
+        if (message === "List name already exists.") {
+          alert("List name already exists.");
+        }
         throw new Error(message);
       } else {
-        console.log("List created.");
         setListValue("");
       }
     } catch (error) {

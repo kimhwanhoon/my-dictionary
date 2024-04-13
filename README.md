@@ -1,65 +1,321 @@
-# Title: My-dictionary
+# My Dictionary
 
-## Crucial plan
+This web app serves as our repository for storing vocabularies, idioms, and sentences that we aim to memorize.
 
-> Make sure to follow this plan and always think about the big streams.<br>
-> Never fall into the rabbit hole! => MVP FIRST
-> Never try to do design.
+It has a default Collins API that uses "English", "English - French" and "French-English".
 
-- Try to finish MVP first and if any bugs are found, write them down on "Bugs" below this page.
+## Demo
 
-1. Organize basic routing plans.
-2. Connect auth
-3. Create tables for the database.
+|                                         Signin & Signup page                                          |
+| :---------------------------------------------------------------------------------------------------: |
+| <img src="https://i.ibb.co/3YzWG2V/signin-signup-page-11.gif" alt="signin-signup-page-11" border="0"> |
 
-- Let's make the card clickable so after clicking the definition and examples can be revealed.
-- If url is signin or signup, let's hide header and footer.
-- Dictionary API should be added. the fastest one!
-- if same word is registered to the words, need to do something about it.
+|                                 Search word on dictionary and add to a list                                 |
+| :---------------------------------------------------------------------------------------------------------: |
+| <img src="https://i.ibb.co/xYfrbCw/search-word-and-add-list.gif" alt="search-word-and-add-list" border="0"> |
 
-## Types
+|                                  Wordbook                                   |
+| :-------------------------------------------------------------------------: |
+| <img src="https://i.ibb.co/rM1QDdT/wordbook.gif" alt="wordbook" border="0"> |
 
-I have set the route-handler's return type on `src/types/routeReturnTypes.ts`.
+## Service Architecture
 
-```ts
-import { NextResponse } from "next/server";
+<img src="https://i.ibb.co/cwCnKgy/service-architecture.png" alt="service-architecture" border="0">
 
-interface ReturnType {
-  error: boolean | null;
-  message: "ok" | string;
-}
+<details>
+<summary>ERD</summary>
+<div markdown="1">
+<img src="https://i.ibb.co/ngQhYw6/image.png" alt="image" border="0">
 
-export type RouteReturnType = NextResponse<ReturnType>;
+</div>
+</details>
+
+<details>
+<summary>File tree</summary>
+<pre markdown="2">
+
+src
+┣ NextUI
+┃ ┣ NextUIProvider.tsx
+┃ ┗ Provider.tsx
+┣ app
+┃ ┣ (route-handlers)
+┃ ┃ ┣ api
+┃ ┃ ┃ ┣ dictionary
+┃ ┃ ┃ ┃ ┣ data
+┃ ┃ ┃ ┃ ┃ ┗ route.ts
+┃ ┃ ┃ ┃ ┗ search
+┃ ┃ ┃ ┃ ┃ ┗ route.ts
+┃ ┃ ┃ ┗ wordbook
+┃ ┃ ┃ ┃ ┣ add-list
+┃ ┃ ┃ ┃ ┃ ┗ route.ts
+┃ ┃ ┃ ┃ ┣ add-or-remove-word
+┃ ┃ ┃ ┃ ┃ ┗ route.ts
+┃ ┃ ┃ ┃ ┣ add-word
+┃ ┃ ┃ ┃ ┃ ┗ route.ts
+┃ ┃ ┃ ┃ ┣ delete-word
+┃ ┃ ┃ ┃ ┃ ┗ route.ts
+┃ ┃ ┃ ┃ ┗ update-word
+┃ ┃ ┃ ┃ ┃ ┗ route.ts
+┃ ┃ ┗ auth
+┃ ┃ ┃ ┣ callback
+┃ ┃ ┃ ┃ ┗ route.ts
+┃ ┃ ┃ ┣ signin
+┃ ┃ ┃ ┃ ┗ route.ts
+┃ ┃ ┃ ┗ signup
+┃ ┃ ┃ ┃ ┗ route.ts
+┃ ┣ error
+┃ ┃ ┗ page.tsx
+┃ ┣ home
+┃ ┃ ┣ components
+┃ ┃ ┃ ┣ AddToWordbookButton.tsx
+┃ ┃ ┃ ┣ SearchInput.tsx
+┃ ┃ ┃ ┣ SearchResult.tsx
+┃ ┃ ┃ ┗ SelectLanguage.tsx
+┃ ┃ ┗ page.tsx
+┃ ┣ settings
+┃ ┃ ┣ components
+┃ ┃ ┃ ┣ About.tsx
+┃ ┃ ┃ ┗ SettingButtons.tsx
+┃ ┃ ┣ layout.tsx
+┃ ┃ ┗ page.tsx
+┃ ┣ signin
+┃ ┃ ┗ page.tsx
+┃ ┣ signup
+┃ ┃ ┣ components
+┃ ┃ ┃ ┗ ConfirmationSent.tsx
+┃ ┃ ┗ page.tsx
+┃ ┣ user
+┃ ┃ ┣ layout.tsx
+┃ ┃ ┗ page.tsx
+┃ ┣ wordbook
+┃ ┃ ┣ [name]
+┃ ┃ ┃ ┗ page.tsx
+┃ ┃ ┣ components
+┃ ┃ ┃ ┣ AddListButton.tsx
+┃ ┃ ┃ ┣ AddWordButton.tsx
+┃ ┃ ┃ ┣ Background.tsx
+┃ ┃ ┃ ┣ ListCard.tsx
+┃ ┃ ┃ ┗ WordCard.tsx
+┃ ┃ ┣ layout.tsx
+┃ ┃ ┗ page.tsx
+┃ ┣ apple-icon.png
+┃ ┣ favicon.ico
+┃ ┣ global-error.jsx
+┃ ┣ globals.css
+┃ ┣ icon.ico
+┃ ┣ layout.tsx
+┃ ┗ page.tsx
+┣ components
+┃ ┣ auth
+┃ ┃ ┣ Inputs
+┃ ┃ ┃ ┣ EmailInput.tsx
+┃ ┃ ┃ ┗ PasswordInput.tsx
+┃ ┃ ┣ background
+┃ ┃ ┃ ┗ Circles.tsx
+┃ ┃ ┣ AuthPage.tsx
+┃ ┃ ┗ SignOutButton.tsx
+┃ ┣ footer
+┃ ┃ ┣ Footer.tsx
+┃ ┃ ┣ Icon.tsx
+┃ ┃ ┗ Icons.tsx
+┃ ┣ header
+┃ ┃ ┗ Header.tsx
+┃ ┣ icons
+┃ ┃ ┗ Book.tsx
+┃ ┣ links
+┃ ┃ ┗ Link.tsx
+┃ ┣ theme
+┃ ┃ ┗ ThemeChanger.tsx
+┃ ┗ Logo.tsx
+┣ sources
+┃ ┗ stacks.ts
+┣ store
+┃ ┗ searchInputLanguage.ts
+┣ types
+┃ ┣ auth
+┃ ┃ ┗ AuthBody.ts
+┃ ┣ .DS_Store
+┃ ┣ icons.ts
+┃ ┣ languages.ts
+┃ ┣ routeReturnTypes.ts
+┃ ┣ supabaseAuth.ts
+┃ ┗ supabaseTypes.ts
+┣ utils
+┃ ┣ dictionary
+┃ ┃ ┣ capitalizeFirstLetter.ts
+┃ ┃ ┣ deleteText.ts
+┃ ┃ ┣ extractPronunciation.ts
+┃ ┃ ┣ extractTextBetweenTags.ts
+┃ ┃ ┣ insertBeforeDefinition.ts
+┃ ┃ ┣ makeWordSearchList.ts
+┃ ┃ ┣ removeTitle.ts
+┃ ┃ ┗ replaceText.ts
+┃ ┣ middleware
+┃ ┃ ┗ urlToOrigin.ts
+┃ ┣ nodeMailer
+┃ ┃ ┣ SendNonce.ts
+┃ ┃ ┣ SendingOTPForm.tsx
+┃ ┃ ┗ nodeMailer.ts
+┃ ┣ regex
+┃ ┃ ┣ email.ts
+┃ ┃ ┗ removeAccents.ts
+┃ ┣ store
+┃ ┣ supabase
+┃ ┃ ┣ auth
+┃ ┃ ┃ ┣ isUserEmailDuplicated.ts
+┃ ┃ ┃ ┣ signinHandler.ts
+┃ ┃ ┃ ┗ signupHandler.ts
+┃ ┃ ┣ client.ts
+┃ ┃ ┣ login.ts
+┃ ┃ ┣ server.ts
+┃ ┃ ┗ sessionChecker.ts
+┃ ┣ wordbook
+┃ ┃ ┗ deleteWord.ts
+┃ ┗ block.ts
+┣ .DS_Store
+┗ middleware.ts
+
+</div>
+</details>
+
+## Stacks
+
+- Next.js
+
+  Next.js is a React framework that offers advantages for SEO application and makes it easy to utilize Server-Side Rendering (SSR). It provides a robust set of features and tools to build fast and scalable web applications.
+
+- Typescript
+
+  TypeScript is a strongly-typed superset of JavaScript that allows for clear type declarations. It enhances code readability, maintainability, and provides better IDE support with features like autocompletion and type checking.
+
+- Supabase
+
+  Supabase is an open-source Firebase alternative that offers a set of useful PostgreSQL extension features and plugins. It provides a flexible and scalable backend solution for building modern web applications.
+
+- Zustand
+
+  zustand is a state management library for React applications that eliminates the need for a provider. By avoiding unnecessary app wrapping, it minimizes re-renders and improves performance, resulting in a smoother user experience.
+
+- Vercel
+
+  Vercel is a cloud platform that allows for easy deployment of Next.js applications. With features like automatic scaling, continuous deployment, and serverless functions, Vercel simplifies the deployment process and ensures high availability and performance of your applications.
+
+- Lodash
+
+  Lodash is a popular utility library for JavaScript that provides a wide range of methods for manipulating arrays, objects, and strings. It includes functions for tasks like throttling, debouncing, and deep object manipulation, enhancing productivity and ensuring consistent performance across different browsers.
+
+- Tailwind CSS
+
+  Tailwind CSS is a highly customizable CSS framework that allows for rapid development of user interfaces. It offers a utility-first approach, enabling developers to quickly style their applications without writing custom CSS. With Tailwind, you can create responsive and visually appealing designs for your Next.js applications.
+
+- Next UI
+
+  TailwindNext UI is a component library built specifically for Next.js applications. It provides a collection of pre-designed UI components, such as buttons, forms, and navigation elements, that can be easily integrated into your projects. With Next UI, you can streamline the development process and create consistent and visually appealing user interfaces for your Next.js applications.
+
+## APIs
+
+- [Collins Dictionary API](https://www.collinsdictionary.com/collins-api)
+
+## API Reference
+
+### Dictionary
+
+#### Search word using Collins Dictionary API
+
+```http
+  POST /api/dictionary/search
 ```
+
+| What is used | Type                     | Description                                        |
+| :----------- | :----------------------- | :------------------------------------------------- |
+| `API_URL`    | `string`                 | **Required**. Your API URL                         |
+| `API_KEY`    | `string`                 | **Required**. Your API Key                         |
+| `word`       | `string`                 | **Required**.                                      |
+| `language`   | `"en", "en-fr", "fr-en"` | **Required**. default value: "en"                  |
+| `API_URL2`   | `string`                 | `/${language}/search/first/?q=${word}&format=html` |
+
+#### Get, Set cookies
+
+It sets word and language on cookies so users can have the same page when they re-visit `/home` (dictionary) page from other page such as `/wordbook`, `/user`, and `/settings`.
+
+```http
+  GET, POST /api/dictionary/data
+```
+
+| What is used | Type                     | Description                  |
+| :----------- | :----------------------- | :--------------------------- |
+| `word`       | `string`                 | **Required**. word value     |
+| `language`   | `"en", "en-fr", "fr-en"` | **Required**. language value |
 
 ---
 
-This is usable like this.
+### Wordbook
 
-```ts
-const POST = async (req: NextRequest): Promise<RouteReturnType> => {};
+#### Add a list
+
+Users can add a new wordbook list so they can save their words or sentences. It has duplicate check so users cannot make the wordbook with the same name.
+
+```http
+  POST /api/wordbook/add-list
 ```
 
-## What I did that I learned new
+#### Add, update, delete word
 
-1. By setting the body height to 100dvh, the header and the footer will be always shown even on Safari or Android dynamic browsers.
+Users can add, update and delete word from their wordbook.
 
-### What to edit before promoting to the production
+```http
+  POST /api/wordbook/add-word
+  POST /api/wordbook/delete-word
+  POST /api/wordbook/edit-word
+```
 
-1. Supabase Auth setup -> SMTP Provider settings -> Minimum interval between emails being sent to 60 seconds.
+| What is used          | Type     | Description                                                                           |
+| :-------------------- | :------- | :------------------------------------------------------------------------------------ |
+| `uid`                 | `string` | **Required(all)**. users' uuid.                                                       |
+| `word`                | `string` | **Required(all)**. word value                                                         |
+| `wordbookId`          | `string` | **Required(all)**. wordbook uuid                                                      |
+| `definition`          | `string` | **Required**`/add-word` language value, users' customized definition value            |
+| `original_definition` | `string` | **Required**`/add-word` original definition is the definition got from dictionary API |
+| `language`            | `string` | _(Optional)_ `/add-word` language value                                               |
 
-### Bugs
+### Auth
 
-1. Footer icons must be filled with purple color depending on the current URL. But when it goes to layout, it seems that the code is cached so the current URL won't be updated.
-2. [solved]On iPhone (android not tested, when clicking input, it zooms so the user has to zoom out again.) => The problem has been fixed by setting meta option interactive-widget to resizes-content.
-   ref: <https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag>
+#### Callback
 
-#### Ideas
+This is used for user's mail confirmation. When user sends signup request, supabase will send the user a confirmation mail that contains site url along with the `token_hash`. By receiving a confirmation mail, user can click authenticate button to have themselves confirmed. When `token_hash` is valid, user is now confirmed and automatically redirected to `/home` page.
 
-1. french_dictionary 테이블에서 다른 컬럼 추가하고 모든 유저를 넣을 수 있게 해서 해당 유저가 직접 그 단어의 뜻을 커스텀해서 볼 수 있게 하는 기능. official app에서 검색해도 자기가 저장했던 의미가 자신에게만 보인다!!!
+```http
+  GET /auth/callback
+```
 
-2. Maybe, connect dictionary API first, and then put unique id for each word, and then add customizable user note (or definition, examples, etc) for that uid(word).
+#### Sign in & Sign up
 
-3. on Searching word, should I just push the url to `?word={value}` and do the searching work on page server component? Or should I just make client -> route handler logic..?
+Users can sign in or sign up with email and password.
 
-3-1. if (!searchURLParam...) => show default, if param value exist -> search function (server side) activates.
+```http
+  POST /auth/signin
+  POST /auth/signup
+```
+
+| What is used | Type     | Description                       |
+| :----------- | :------- | :-------------------------------- |
+| `email`      | `string` | **Required**. user email value.   |
+| `password`   | `string` | **Required**. user password value |
+
+## Authors
+
+- [@kimhwanhoon](https://www.github.com/kimhwanhoon)
+
+## Color Reference
+
+| Color                        | Hex                                                              |
+| ---------------------------- | ---------------------------------------------------------------- |
+| Primary Color                | ![#4438ca](https://via.placeholder.com/10/4438ca?text=+) #4438ca |
+| Background Color             | ![#f8f8f8](https://via.placeholder.com/10/f8f8f8?text=+) #f8f8f8 |
+| Primary Color (Dark mode)    | ![#3730a3](https://via.placeholder.com/10/3730a3?text=+) #3730a3 |
+| Background Color (Dark mode) | ![#27272a](https://via.placeholder.com/10/27272a?text=+) #27272a |
+
+## Badges
+
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/kimhwanhoon/my-dictionary/blob/dev/LICENSE)
