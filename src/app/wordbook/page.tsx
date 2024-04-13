@@ -23,7 +23,7 @@ const WordbookPage = async () => {
     if (wordbook!.length === 0) {
       // no list is added.
       return (
-        <div className="w-full h-full flex-col flex justify-center items-center p-4">
+        <div className="w-full h-[calc(100dvh-130px)] flex-col flex justify-center items-center p-4">
           <div className="space-y-2">
             <p className="text-xl">Your list is empty.</p>
             <AddListButton />

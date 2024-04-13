@@ -33,4 +33,15 @@ const getWordFromCookies = async () => {
   }
 };
 
-export { saveWordFromCookies as POST, getWordFromCookies as GET };
+const deleteWordFromCookies = async () => {
+  const cookieStore = cookies();
+  cookieStore.delete("word");
+  cookieStore.delete("language");
+  return NextResponse.json({ error: null });
+};
+
+export {
+  saveWordFromCookies as POST,
+  getWordFromCookies as GET,
+  deleteWordFromCookies as DELETE,
+};

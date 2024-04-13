@@ -19,6 +19,7 @@ export const SignOutButton = () => {
     } catch (error) {
       console.log(error);
     } finally {
+      await fetch("/api/dictionary/data", { method: "DELETE" });
       router.refresh();
     }
   };
