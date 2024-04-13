@@ -24,7 +24,7 @@ interface Props {
   >;
 }
 
-export const SearchResult = ({ search, lang, wordbookList }: Props) => {
+export const SearchResult = ({ search: word, lang, wordbookList }: Props) => {
   const { theme } = useTheme();
   const [backgroundColor, setBackgroundColor] = useState<string>("");
 
@@ -32,8 +32,29 @@ export const SearchResult = ({ search, lang, wordbookList }: Props) => {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
   useEffect(() => {
+    const getWordFromCookies = async () => {
+      const res = await fetch("/api/dictionary/data");
+      const { word, language } = await res.json();
+
+      return { word, language };
+    };
+
     const getData = async () => {
-      const body = JSON.stringify({ word: search, lang });
+      const { word: wordFromCookie, language: languageFromCookie } =
+        await getWordFromCookies();
+      if (wordFromCookie && languageFromCookie) {
+        window.history.replaceState(
+          null,
+          "",
+          `/?search=${wordFromCookie}&lang=${languageFromCookie}`
+        );
+      }
+
+      const body = JSON.stringify({
+        word: wordFromCookie ?? word,
+        lang: languageFromCookie ?? lang,
+      });
+
       const res = await fetch("/api/dictionary/search", {
         body,
         method: "post",
@@ -48,7 +69,7 @@ export const SearchResult = ({ search, lang, wordbookList }: Props) => {
       setData(data);
     };
     getData();
-  }, [search, lang]);
+  }, [word, lang]);
 
   useEffect(() => {
     if (theme === "light") {
@@ -120,13 +141,7 @@ export const SearchResult = ({ search, lang, wordbookList }: Props) => {
             </>
           )}
         </section>
-        {isSuccess ? (
-          <>{parse(output)}</>
-        ) : (
-          // <div className="h-[calc(100vh-282px)]">
-          <p>No result found.</p>
-          // </div>
-        )}
+        {isSuccess ? <>{parse(output)}</> : <p>No result found.</p>}
       </div>
     </ScrollShadow>
   );

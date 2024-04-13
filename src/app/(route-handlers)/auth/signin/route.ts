@@ -22,8 +22,6 @@ const signIn = async (req: NextRequest) => {
       email,
       password,
     });
-    console.log(data);
-    console.log(error);
     if (error) {
       return NextResponse.json({ error });
     } else {
@@ -32,7 +30,6 @@ const signIn = async (req: NextRequest) => {
       });
     }
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ error });
   }
 };

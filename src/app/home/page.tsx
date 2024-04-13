@@ -11,6 +11,7 @@ interface Props {
 
 const HomePage = async ({ searchParams: { search, lang } }: Props) => {
   const { isSession, userData } = await checkUserSession();
+
   if (!isSession) {
     redirect("/signin");
   } else {

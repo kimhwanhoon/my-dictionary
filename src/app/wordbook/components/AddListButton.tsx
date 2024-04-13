@@ -48,7 +48,6 @@ export const AddListButton = ({
       if (error) {
         throw new Error(message);
       } else {
-        console.log("List created.");
         setListValue("");
       }
     } catch (error) {

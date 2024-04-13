@@ -60,7 +60,16 @@ export const SearchInput = () => {
     }
   }, [inputValue, language]);
 
-  const onSubmitHandler = debounce(() => {
+  const onSubmitHandler = debounce(async () => {
+    const saveWordToCookies = async (word: string, language: string) => {
+      const body = JSON.stringify({ word, language });
+      await fetch("/api/dictionary/data", {
+        body,
+        method: "post",
+      });
+    };
+
+    await saveWordToCookies(inputValue, language);
     router.push(`/home?lang=${language}&search=${inputValue.toLowerCase()}`);
   }, 1000);
 
