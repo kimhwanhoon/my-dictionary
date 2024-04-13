@@ -16,7 +16,11 @@ export const metadata: Metadata = {
   applicationName: "My Dictionary",
   description:
     "This web app serves as our repository for storing vocabularies, idioms, and sentences that we aim to memorize.",
-  appleWebApp: true,
+  appleWebApp: {
+    capable: true,
+    title: "My Dictionary",
+    statusBarStyle: "black-translucent",
+  },
   authors: {
     name: "Hwanhoon Kim",
     url: "https://github.com/kimhwanhoon/my-dictionary",
@@ -29,9 +33,10 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   width: "device-width",
-  initialScale: 1,
+  initialScale: 2.3,
   maximumScale: 1,
   interactiveWidget: "resizes-content",
+  userScalable: false,
 };
 
 export default async function RootLayout({
