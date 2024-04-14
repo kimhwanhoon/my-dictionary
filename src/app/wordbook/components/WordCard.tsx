@@ -42,8 +42,7 @@ export const WordCard = ({
   const router = useRouter();
   const [isEditing, setIsEditing] = React.useState(false);
   const definitionRef = React.useRef<HTMLTextAreaElement>(null);
-  console.log(isEditing);
-  console.log(definition);
+
   const cardOnClickHandler = () => {
     openModal();
   };
