@@ -42,7 +42,8 @@ export const WordCard = ({
   const router = useRouter();
   const [isEditing, setIsEditing] = React.useState(false);
   const definitionRef = React.useRef<HTMLTextAreaElement>(null);
-
+  console.log(isEditing);
+  console.log(definition);
   const cardOnClickHandler = () => {
     openModal();
   };
@@ -59,11 +60,11 @@ export const WordCard = ({
         <ScrollShadow hideScrollBar>
           <CardBody onClick={cardOnClickHandler}>
             <div>
-              {definition && isEditing ? (
+              {isEditing ? (
                 <Textarea
                   className="w-full text-center text-15 text-gray-700 dark:text-gray-200 border-none"
                   ref={definitionRef}
-                  defaultValue={definition!}
+                  defaultValue={definition ?? ""}
                   isDisabled={!isEditing}
                   description={
                     <p className="text-left">
@@ -83,7 +84,9 @@ export const WordCard = ({
                 </div>
               ) : null}
               {originalDefinition && <Divider />}
-              {originalDefinition && parse(originalDefinition)}
+              <div className="py-4">
+                {originalDefinition && parse(originalDefinition)}
+              </div>
             </div>
           </CardBody>
         </ScrollShadow>
