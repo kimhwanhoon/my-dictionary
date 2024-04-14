@@ -63,7 +63,7 @@ export const WordCard = ({
                 <Textarea
                   className="w-full text-center text-15 text-gray-700 dark:text-gray-200 border-none"
                   ref={definitionRef}
-                  defaultValue={definition!}
+                  defaultValue={definition ?? ""}
                   isDisabled={!isEditing}
                   description={
                     <p className="text-left">
@@ -72,13 +72,20 @@ export const WordCard = ({
                     </p>
                   }
                 ></Textarea>
-              ) : (
-                <p className="w-full text-center text-15 text-gray-700 dark:text-gray-200 border-none">
-                  {definition}
-                </p>
-              )}
+              ) : definition && !isEditing ? (
+                <div className="">
+                  <h4 className="text-15 font-medium text-center">
+                    Custom definition
+                  </h4>
+                  <p className="w-full text-15 text-gray-700 dark:text-gray-200 border-none py-4">
+                    {definition}
+                  </p>
+                </div>
+              ) : null}
               {originalDefinition && <Divider />}
-              {originalDefinition && parse(originalDefinition)}
+              <div className="py-4">
+                {originalDefinition && parse(originalDefinition)}
+              </div>
             </div>
           </CardBody>
         </ScrollShadow>

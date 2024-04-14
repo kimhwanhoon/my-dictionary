@@ -1,6 +1,6 @@
 {
   "name": "my-dictionary",
-  "version": "0.5.5",
+  "version": "0.8.0",
   "private": "true",
   "scripts": {
     "dev": "next dev",
@@ -31,7 +31,6 @@
     "zustand": "^4.5.0"
   },
   "devDependencies": {
-    "@sentry/nextjs": "^7.109.0",
     "@types/lodash": "^4.17.0",
     "@types/node": "^20",
     "@types/nodemailer": "^6.4.14",
