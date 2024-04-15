@@ -16,15 +16,9 @@ import { Database } from "@/types/supabaseTypes";
 interface Props {
   search: string | null;
   lang: string;
-  wordbookList: Array<
-    Pick<
-      Database["public"]["Tables"]["wordbook"]["Row"],
-      "name" | "words" | "id"
-    >
-  >;
 }
 
-export const SearchResult = ({ search: word, lang, wordbookList }: Props) => {
+export const SearchResult = ({ search: word, lang }: Props) => {
   const { theme } = useTheme();
   const [backgroundColor, setBackgroundColor] = useState<string>("");
 

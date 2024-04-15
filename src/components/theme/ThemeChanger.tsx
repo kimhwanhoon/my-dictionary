@@ -1,24 +1,34 @@
 "use client";
 
+import { addThemeOnCookie } from "@/utils/theme/addThemeOnCookie";
 import { Button } from "@nextui-org/react";
 import { IconMoon, IconSun } from "@tabler/icons-react";
 import { useTheme } from "next-themes";
 import React, { useEffect, useState } from "react";
 
-export const ThemeChanger = () => {
+interface Props {
+  theme: string | undefined;
+}
+
+export const ThemeChanger = ({ theme: cookieTheme }: Props) => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
+    if (!cookieTheme) {
+      addThemeOnCookie("light");
+    }
   }, []);
 
   if (!mounted) return null;
 
   const themeChanger = () => {
     if (theme === "light") {
+      addThemeOnCookie("dark");
       setTheme("dark");
     } else {
+      addThemeOnCookie("light");
       setTheme("light");
     }
   };
