@@ -46,7 +46,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="bg-main" suppressHydrationWarning vocab="">
+    <html lang="en" className="bg-main" suppressHydrationWarning>
       <body
         className={`${inter.className} h-dvh dark:bg-slate-900 relative -z-50`}
         suppressHydrationWarning

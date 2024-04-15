@@ -5,21 +5,20 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { FormEvent, useEffect, useState } from "react";
 import { SelectLanguage } from "./SelectLanguage";
 import { debounce } from "lodash";
-import { useTheme } from "next-themes";
 import useSearchInputLanguageChanger from "@/store/searchInputLanguage";
 import { makeWordSearchList } from "@/utils/dictionary/makeWordSearchList";
 import { IconChevronDown, IconX } from "@tabler/icons-react";
+import { block } from "@/utils/block";
 
 export const SearchInput = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentLanguage = searchParams.get("lang");
   const currentWord = searchParams.get("search") ?? "";
-  const { theme } = useTheme();
-  const [backgroundStyle, setBackgroundStyle] = useState<string>("");
   const { language, setLanguage } = useSearchInputLanguageChanger();
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const [isListClosed, setIsListClosed] = useState<boolean>(false);
+  const [isListClosed, setIsListClosed] = useState<boolean>(true);
 
   useEffect(() => {
     switch (currentLanguage) {
@@ -36,14 +35,6 @@ export const SearchInput = () => {
         setLanguage("en");
     }
   }, [currentLanguage, setLanguage]);
-
-  useEffect(() => {
-    if (theme === "light") {
-      setBackgroundStyle("light-search-input-bg");
-    } else {
-      setBackgroundStyle("dark-search-input-bg");
-    }
-  }, [theme]);
 
   const [inputValue, setInputValue] = useState<string>(currentWord);
   const [searchedWordList, setSearchedWordList] = useState<string[]>([]);
@@ -90,13 +81,14 @@ export const SearchInput = () => {
 
   return (
     <form
-      className={`flex flex-col gap-2 p-6 ${backgroundStyle}`}
+      className={`flex flex-col gap-2 p-6 search-input-bg`}
       onSubmit={(e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         onSubmitHandler();
       }}
     >
       <Input
+        ref={inputRef}
         label={"Search words"}
         value={inputValue}
         onChange={(e) =>
@@ -105,9 +97,14 @@ export const SearchInput = () => {
             return loweredWord;
           })
         }
+        onFocus={() => setIsListClosed(false)}
+        onBlur={async () => {
+          await block(200);
+          setIsListClosed(true);
+        }}
         endContent={<SelectLanguage />}
       />
-      {searchedWordList.length > 1 && (
+      {searchedWordList.length > 1 && !isListClosed && (
         <div className="relative">
           <div className="h-6">
             {!isListClosed ? (

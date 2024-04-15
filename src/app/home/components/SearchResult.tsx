@@ -7,11 +7,9 @@ import { removeTitle } from "@/utils/dictionary/removeTitle";
 import { AddToWordbookButton } from "./AddToWordbookButton";
 import parse from "html-react-parser";
 import { useEffect, useState } from "react";
-import { useTheme } from "next-themes";
 import { deleteText } from "@/utils/dictionary/deleteText";
 import { replaceText } from "@/utils/dictionary/replaceText";
 import { ScrollShadow } from "@nextui-org/react";
-import { Database } from "@/types/supabaseTypes";
 
 interface Props {
   search: string | null;
@@ -19,9 +17,6 @@ interface Props {
 }
 
 export const SearchResult = ({ search: word, lang }: Props) => {
-  const { theme } = useTheme();
-  const [backgroundColor, setBackgroundColor] = useState<string>("");
-
   const [data, setData] = useState<any>(null);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
@@ -65,13 +60,6 @@ export const SearchResult = ({ search: word, lang }: Props) => {
     getData();
   }, [word, lang]);
 
-  useEffect(() => {
-    if (theme === "light") {
-      setBackgroundColor("light-dictionary-result-background");
-    } else {
-      setBackgroundColor("dark-dictionary-result-background");
-    }
-  }, [theme]);
   const resultBefore: string = (isSuccess && data) ?? "";
   const resultWord = extractTextBetweenTags(resultBefore) ?? "";
   const pronunciation = extractPronunciation(resultBefore) ?? "";
@@ -107,7 +95,7 @@ export const SearchResult = ({ search: word, lang }: Props) => {
 
   return (
     <ScrollShadow
-      className={`h-[calc(100dvh-282px)] w-full ${backgroundColor}`}
+      className="h-[calc(100dvh-282px)] w-full dictionary-result-background"
       size={50}
     >
       <div className={`flex flex-col p-4 pt-8`}>
@@ -131,7 +119,6 @@ export const SearchResult = ({ search: word, lang }: Props) => {
               <AddToWordbookButton
                 word={resultWord as string}
                 originalDefinition={output}
-                wordbookList={wordbookList}
                 language={language}
               />
             </>

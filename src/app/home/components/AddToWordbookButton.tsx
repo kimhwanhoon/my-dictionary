@@ -14,17 +14,15 @@ import {
 import { IconCheck, IconPlus } from "@tabler/icons-react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
-import React, { Key, useState } from "react";
+import React, { Key, useEffect, useState } from "react";
+
+type wordbookList = Array<
+  Pick<Database["public"]["Tables"]["wordbook"]["Row"], "name" | "words" | "id">
+>;
 
 interface Props {
   word: string;
   originalDefinition: string;
-  wordbookList: Array<
-    Pick<
-      Database["public"]["Tables"]["wordbook"]["Row"],
-      "name" | "words" | "id"
-    >
-  >;
   language: "English" | "French" | null;
 }
 
@@ -69,12 +67,31 @@ const toggleWordbookList = async ({
 export const AddToWordbookButton = ({
   word,
   originalDefinition,
-  wordbookList,
   language,
 }: Props) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [wordbookList, setWordbookList] = useState<any[]>();
+  const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
+
+  useEffect(() => {
+    const getWordbookList = async () => {
+      const res = await fetch("/api/wordbook/get-list");
+      const { wordbookList } = await res.json();
+      setWordbookList(wordbookList);
+    };
+    getWordbookList();
+  }, []);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const res = await fetch("/auth/check-session");
+      const { isSession } = await res.json();
+      setIsSignedIn(isSession);
+    };
+    checkSession();
+  }, []);
 
   return (
     <Dropdown>
@@ -85,10 +102,14 @@ export const AddToWordbookButton = ({
       </DropdownTrigger>
       <DropdownMenu
         topContent={
-          <AddListButton fullWidth={false} size="sm" variant="ghost" />
+          isSignedIn ? (
+            <AddListButton fullWidth={false} size="sm" variant="ghost" />
+          ) : (
+            <Button onClick={() => router.push("/signin")}>Sign in</Button>
+          )
         }
         aria-label="Dynamic Actions"
-        items={wordbookList}
+        items={(wordbookList as wordbookList) ?? []}
         onAction={async (e: Key) => {
           setLoading(true);
           const success = await toggleWordbookList({
