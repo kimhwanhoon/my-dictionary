@@ -104,17 +104,17 @@ export const SearchInput = () => {
         }}
         endContent={<SelectLanguage />}
       />
-      {searchedWordList.length > 1 && !isListClosed && (
+      {searchedWordList.length > 1 && (
         <div className="relative">
           <div className="h-6">
             {!isListClosed ? (
               <IconX
-                className="z-10 absolute right-1 top-1 text-gray-800 opacity-50 hover:opacity-90 duration-300 ease-in-out cursor-pointer"
+                className="z-10 absolute right-1 top-1 text-gray-800 opacity-50 hover:opacity-90 duration-300 ease-in-out cursor-pointer dark:text-gray-200"
                 onClick={() => setIsListClosed(true)}
               />
             ) : (
               <IconChevronDown
-                className="z-10 absolute right-1 top-1 text-gray-800 opacity-50 hover:opacity-90 duration-300 ease-in-out cursor-pointer"
+                className="z-10 absolute right-1 top-1 text-gray-800 opacity-50 hover:opacity-90 duration-300 ease-in-out cursor-pointer dark:text-gray-200"
                 onClick={() => setIsListClosed(false)}
               />
             )}

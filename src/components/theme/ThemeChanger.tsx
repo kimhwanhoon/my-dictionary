@@ -14,13 +14,13 @@ interface Props {
 export const ThemeChanger = ({ theme: cookieTheme }: Props) => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
-  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
     if (!cookieTheme) {
       addThemeOnCookie("light");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!mounted) return null;
