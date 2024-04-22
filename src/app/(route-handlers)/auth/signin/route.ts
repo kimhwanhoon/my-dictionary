@@ -22,8 +22,9 @@ const signIn = async (req: NextRequest) => {
       email,
       password,
     });
+
     if (error) {
-      return NextResponse.json({ error });
+      return NextResponse.json({ error: { message: error.message } });
     } else {
       return NextResponse.json({
         error: null,

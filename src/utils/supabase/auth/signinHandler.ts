@@ -26,6 +26,7 @@ export const signinHandler = async ({
       body,
     }).then((res) => res.json());
     if (error) {
+      console.log(error);
       throw new Error(error.message);
     } else {
       // if no error, redirect to home
@@ -33,6 +34,7 @@ export const signinHandler = async ({
       router.refresh();
     }
   } catch (error: any) {
+    console.log(error);
     // error handling
     console.log(error);
     if (error.message === "email is empty.") {

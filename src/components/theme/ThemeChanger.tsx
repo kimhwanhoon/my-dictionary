@@ -4,7 +4,6 @@ import { addThemeOnCookie } from "@/utils/theme/addThemeOnCookie";
 import { Button } from "@nextui-org/react";
 import { IconMoon, IconSun } from "@tabler/icons-react";
 import { useTheme } from "next-themes";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 interface Props {

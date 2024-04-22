@@ -9,6 +9,7 @@ import { PasswordInput } from "./Inputs/PasswordInput";
 import { EmailInput } from "./Inputs/EmailInput";
 import { signinHandler } from "@/utils/supabase/auth/signinHandler";
 import { signupHandler } from "@/utils/supabase/auth/signupHandler";
+import { OAuth } from "./OAuth";
 
 export const AuthPage = () => {
   // path & router
@@ -111,6 +112,7 @@ export const AuthPage = () => {
           </Link>
         </div>
       </form>
+      {/* <OAuth /> */}
     </div>
   );
 };
